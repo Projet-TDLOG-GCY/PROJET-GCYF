@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <title>Pricer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="banner">
+    <!-- Menu horizontal pour les onglets -->
+    <nav class="navigation">
+      <ul>
+        <li><a href="{{ url_for('hello') }}">Pricer</a></li>
+        <li><a href="{{ url_for('about_us') }}">About us</a></li>
+      </ul>
+      <!-- Bouton Dark Mode dans la bannière -->
+      <button id="dark-mode-toggle">Activer/Désactiver le Mode Sombre</button>
+    </nav>
+  </div>
+
+  <main id="main-container" class="main-container">
+    <header class="header">
+      <h1 class="header-title">Pricer</h1>
+    </header>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+      <label for="file">Uploader un PDF</label>
+      <input type="file" name="file" id="file" />
+      <input type="submit" value="Envoyer" />
+    </form>
+
+    <!--
+    <section class="messages-container" id="messages-container">
+      <div class="message message-ai">
+        Je suis ton AIssistant de cours personnel ! Pose-moi une question sur le cours et je te répondrai.
+      </div>
+    </section> -->
+
+    <form id="prompt-form" class="prompt-container">
+      <label for="prompt" id="prompt-label" class="prompt-label">Message</label>
+      <input type="text" id="prompt" name="prompt" class="prompt-input" autocomplete="off" />
+      <button type="submit" class="button" id="submit-button">Envoyer</button>
+      <button type="button" class="button" id="reset-button">Reset</button>
+      <button type="button" class="button" id="question-button">Pose-moi une question !</button>
+    </form>
+
+    <div class="about-us-content">
+      <p> Rentre les différents paramètres : </p>
+    </div>
+
+    <!-- Formulaire pour les paramètres -->
+    <div class="form-container">
+      <form id="price-form" class="rounded-form">
+        <div class="form-group">
+          <label for="param1">Paramètre 1 :</label>
+          <input type="text" id="param1" name="param1" required>
+        </div>
+
+        <div class="form-group">
+          <label for="param2">Paramètre 2 :</label>
+          <input type="text" id="param2" name="param2" required>
+        </div>
+
+        <div class="form-group">
+          <label for="prix strike K">Prix Strike K :</label>
+          <input type="text" id="strike K" name="strike K" required>
+        </div>
+
+        <div class="form-group">
+          <label for="taux sans risque r">Taux sans risque:</label>
+          <input type="text" id="taux r" name="taux r" required>
+        </div>
+
+        <div class="form-group">
+          <label for="prix strike K">Prix Strike K :</label>
+          <input type="text" id="strike K" name="strike K" required>
+        </div>
+
+        <!-- Autres paramètres à ajouter selon vos besoins -->
+
+        <button type="button" id="calculate-price">Calcul du prix</button>
+      </form>
+
+      <!-- Affichage dynamique du prix -->
+      <div id="result" class="rounded-result"></div>
+
+  </main>
+  <script src="{{ url_for('static', filename='prompt.js') }}"></script>
+  </main>
+  <script src="{{ url_for('static', filename='prompt.js') }}"></script>
+</body>
+
+</html>
