@@ -83,13 +83,19 @@ body {
 .about-us-content {
   background-color: #8ecaf2;
   /* Couleur d'arrière-plan pour la page "About Us" */
-  padding: 15px;
+  padding: 8px;
   margin: 80px;
   border-radius: 80px;
 }
 
 /* Le reste de vos styles CSS existants */
 
+.bubble-text {
+  position: relative;
+  top: 90%;
+  transform: translateY(-10%);
+  text-align: center;
+}
 
 
 /* Styles pour la bannière et le menu horizontal */
