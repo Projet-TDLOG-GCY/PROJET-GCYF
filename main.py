@@ -65,6 +65,27 @@ def index():
 from flask import Flask, render_template, request
 from scipy.stats import norm
 
+# Fonction pour effectuer le calcul
+def effectuer_calcul(param1, param2, strike_K, taux_r):
+    # Faites vos calculs ici
+    # Exemple de calcul : addition des paramètres
+    resultat = float(param1) + float(param2) + float(strike_K) + float(taux_r)
+    return resultat
+
+
+# Route pour le traitement des données et l'affichage du résultat
+@app.route('/resultat', methods=['POST'])
+def calcul():
+    param1 = request.form['param1']
+    param2 = request.form['param2']
+    strike_K = request.form['strike_K']
+    taux_r = request.form['taux_r']
+
+    resultat = effectuer_calcul(param1, param2, strike_K, taux_r)
+    return render_template('resultat.html', resultat=resultat)
+
+
+
 @app.route("/calculate-cdf", methods=["POST"])
 def calculate_cdf():
     try:
