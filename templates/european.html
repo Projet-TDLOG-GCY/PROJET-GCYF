@@ -40,43 +40,36 @@
 
     <!-- Formulaire pour les paramètres -->
     <div class="form-container">
-      <form id="price-form" class="rounded-form" action="/resultat" method="post">
+      <form id="price-form" class="rounded-form" action="/resultat_european" method="post">
         <div class="form-group">
-          <label for="spot_price_0">Prix sport S0:</label>
-          <input type="text" id="spot_price_0" name="spot_price_0" required>
+          <label for="spot_price_0_eur">Prix sport S0:</label>
+          <input type="text" id="spot_price_0_eur" name="spot_price_0_eur" required>
         </div>
 
         <div class="form-group">
-          <label for="strike_K">Prix Strike K :</label>
-          <input type="text" id="strike_K" name="strike_K" required>
+          <label for="strike_K_eur">Prix Strike K :</label>
+          <input type="text" id="strike_K_eur" name="strike_K_eur" required>
         </div>
 
         <div class="form-group">
-          <label for="maturity_T">Maturité T:</label>
-          <input type="text" id="maturity_T" name="maturity_T" required>
+          <label for="maturity_T_eur">Maturité T:</label>
+          <input type="text" id="maturity_T_eur" name="maturity_T_eur" required>
         </div>
+        
+        
 
         <div class="form-group">
-          <label for="number_of_period">Nombre de périodes :</label>
-          <input type="text" id="number_of_period" name="number_of_period" required>
+          <label for="taux_r_eur">Taux sans risque :</label>
+          <input type="text" id="taux_r_eur" name="taux_r_eur" required>
         </div>
         
 
         <div class="form-group">
-          <label for="taux_r">Taux sans risque :</label>
-          <input type="text" id="taux_r" name="taux_r" required>
+          <label for="sigma_eur">volatilité \sigma :</label>
+          <input type="text" id="sigma_eur" name="sigma_eur" required>
         </div>
+
         
-
-        <div class="form-group">
-          <label for="up">valeur de u :</label>
-          <input type="text" id="up" name="up" required>
-        </div>
-
-        <div class="form-group">
-          <label for="down">valeur de d:</label>
-          <input type="text" id="down" name="down" required>
-        </div>
 
         <!-- Autres paramètres à ajouter selon vos besoins -->
 

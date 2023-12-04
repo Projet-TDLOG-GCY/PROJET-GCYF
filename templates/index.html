@@ -7,7 +7,30 @@
   <title>Pricer</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-</head>
+  <style>
+    /* Styles spécifiques pour les boutons d'options */
+    .choose-option {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .choose-option button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #2a303b;
+      color: white;
+      transition: background-color 0.3s ease;
+      margin: 0 10px;
+    }
+
+    .choose-option button:hover {
+      background-color: #1c1f25;
+    }
+  </style>
+</head>ams
 
 <body>
   <div class="banner">
@@ -37,13 +60,13 @@
     <div class="choose-option">
       <form action="/choix_option" method="post">
         <p>Quel type d'option choisis-tu ?</p>
-        <select name="option">
-          <option value="americaine">Américaine</option>
-          <option value="europenne">Européenne</option>
-        </select>
-        <button type="submit">Valider</button>
+        <div class="option-buttons">
+          <button type="submit" name="option" value="americaine">Option Américaine</button>
+          <button type="submit" name="option" value="europenne">Option Européenne</button>
+        </div>
       </form>
     </div>
+    
   
 
 
