@@ -1,6 +1,8 @@
 
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
+
+
 from scipy.stats import norm
 import numpy as np
 
@@ -45,6 +47,24 @@ def upload():
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route('/choix_option', methods=['POST'])
+def choix_option():
+    option = request.form['option']
+
+    if option == 'americaine':
+        return redirect(url_for('american'))
+    elif option == 'europenne':
+        return redirect(url_for('european'))
+
+@app.route('/american')
+def american():
+    return render_template('american.html')
+
+@app.route('/european')
+def european():
+    return render_template('european.html')
 
 
 

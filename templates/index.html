@@ -33,56 +33,20 @@
       </div>
     </section>
 
-    <div class="about-us-content">
-      <p class="bubble-text">Rentre les différents paramètres :</p>
-    </div>
-    
 
-    <!-- Formulaire pour les paramètres -->
-    <div class="form-container">
-      <form id="price-form" class="rounded-form" action="/resultat" method="post">
-        <div class="form-group">
-          <label for="spot_price_0">Prix sport S0:</label>
-          <input type="text" id="spot_price_0" name="spot_price_0" required>
-        </div>
-
-        <div class="form-group">
-          <label for="strike_K">Prix Strike K :</label>
-          <input type="text" id="strike_K" name="strike_K" required>
-        </div>
-
-        <div class="form-group">
-          <label for="maturity_T">Maturité T:</label>
-          <input type="text" id="maturity_T" name="maturity_T" required>
-        </div>
-
-        <div class="form-group">
-          <label for="number_of_period">Nombre de périodes :</label>
-          <input type="text" id="number_of_period" name="number_of_period" required>
-        </div>
-        
-
-        <div class="form-group">
-          <label for="taux_r">Taux sans risque :</label>
-          <input type="text" id="taux_r" name="taux_r" required>
-        </div>
-        
-
-        <div class="form-group">
-          <label for="up">valeur de u :</label>
-          <input type="text" id="up" name="up" required>
-        </div>
-
-        <div class="form-group">
-          <label for="down">valeur de d:</label>
-          <input type="text" id="down" name="down" required>
-        </div>
-
-        <!-- Autres paramètres à ajouter selon vos besoins -->
-
-        <button type="submit" id="calculate-price">Calcul du prix</button>
+    <div class="choose-option">
+      <form action="/choix_option" method="post">
+        <p>Quel type d'option choisis-tu ?</p>
+        <select name="option">
+          <option value="americaine">Américaine</option>
+          <option value="europenne">Européenne</option>
+        </select>
+        <button type="submit">Valider</button>
       </form>
     </div>
+  
+
+
 
   </main>
   <script src="{{ url_for('static', filename='prompt.js') }}"></script>
