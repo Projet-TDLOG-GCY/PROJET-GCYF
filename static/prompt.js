@@ -193,31 +193,4 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// document.addEventListener("DOMContentLoaded", function () {
-//   const calculateCDFButton = document.getElementById("calculate-price");
-//   const cdfResultDiv = document.getElementById("result");
 
-//   calculateCDFButton.addEventListener("click", function () {
-//     // Récupération des valeurs des paramètres
-//     const param1Value = parseFloat(document.getElementById("param1").value);
-//     const param2Value = parseFloat(document.getElementById("param2").value);
-
-//     // Vérification si les valeurs sont des nombres valides
-//     if (!isNaN(param1Value) && !isNaN(param2Value)) {
-//       // Calcul de la fonction de répartition (CDF) pour param1 + param2 (à ajuster selon la distribution souhaitée)
-//       const cdfResult = calculateCDF(param1Value + param2Value);
-
-//       // Affichage du résultat de la CDF
-//       cdfResultDiv.textContent = `La fonction de répartition (CDF) est : ${cdfResult}`;
-//     } else {
-//       // Affichage d'un message si les valeurs ne sont pas des nombres valides
-//       cdfResultDiv.textContent = "Veuillez saisir des nombres valides pour les paramètres.";
-//     }
-//   });
-
-//   // Fonction pour calculer la CDF (à ajuster selon la distribution souhaitée)
-//   function calculateCDF(value) {
-//     // Exemple avec une distribution normale standard
-//     return math.erf(value / Math.sqrt(2)) / 2 + 0.5;
-//   }
-// });

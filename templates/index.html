@@ -42,13 +42,8 @@
     <div class="form-container">
       <form id="price-form" class="rounded-form" action="/resultat" method="post">
         <div class="form-group">
-          <label for="param1">Paramètre 1 :</label>
-          <input type="text" id="param1" name="param1" required>
-        </div>
-
-        <div class="form-group">
-          <label for="param2">Paramètre 2 :</label>
-          <input type="text" id="param2" name="param2" required>
+          <label for="spot_price_0">Prix sport S0:</label>
+          <input type="text" id="spot_price_0" name="spot_price_0" required>
         </div>
 
         <div class="form-group">
@@ -57,8 +52,30 @@
         </div>
 
         <div class="form-group">
+          <label for="maturity_T">Maturité T:</label>
+          <input type="text" id="maturity_T" name="maturity_T" required>
+        </div>
+
+        <div class="form-group">
+          <label for="number_of_period">Nombre de périodes :</label>
+          <input type="text" id="number_of_period" name="number_of_period" required>
+        </div>
+        
+
+        <div class="form-group">
           <label for="taux_r">Taux sans risque :</label>
           <input type="text" id="taux_r" name="taux_r" required>
+        </div>
+        
+
+        <div class="form-group">
+          <label for="up">valeur de u :</label>
+          <input type="text" id="up" name="up" required>
+        </div>
+
+        <div class="form-group">
+          <label for="down">valeur de d:</label>
+          <input type="text" id="down" name="down" required>
         </div>
 
         <!-- Autres paramètres à ajouter selon vos besoins -->

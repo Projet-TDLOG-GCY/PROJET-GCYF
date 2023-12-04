@@ -2,6 +2,8 @@
 
 from flask import Flask, render_template, request
 from scipy.stats import norm
+import numpy as np
+
 import os
 from src.ask_question_to_pdf import ask_question_to_pdf, gpt3_completion, gpt3_completion_context, verification
 
@@ -45,56 +47,60 @@ def index():
     return render_template("index.html")
 
 
-from flask import Flask, render_template, request
-from scipy.stats import norm
+
+def Cox_Ross(K,S0,r,T,num_periods,u,d):
+
+    dt = T / num_periods
+    q = (np.exp(r * dt) - d) / (u - d)
+    disc = np.exp(-r * dt)
+
+    # Initialization of the price at maturity
+    S = S0 * d**(np.arange(num_periods, -1, -1)) * u**(np.arange(0, num_periods + 1, 1))
+
+    # Payoff of the option
+    C = np.maximum(0, K - S)
+
+    for i in np.arange(num_periods - 1, -1, -1):
+        S = S0 * d**(np.arange(int(i), -1, -1)) * u**(np.arange(0, int(i) + 1, 1))
+        C_new = disc * (q * C[1:int(i) + 2] + (1 - q) * C[0:int(i) + 1])
+        C = np.maximum(C_new, K - S)
+    return C[0]
+
+
+@app.route('/resultat', methods=['POST'])
+def calcul():
+    try:
+        # Validate numerical inputs
+        K = float(request.form["strike_K"])
+        r = float(request.form["taux_r"])
+        T = float(request.form["maturity_T"])
+        S0 = float(request.form["spot_price_0"])
+        num_periods = float(request.form["number_of_period"])
+        u = float(request.form["up"])
+        d = float(request.form["down"])
+        
+        resultat=Cox_Ross(K,S0,r,T,num_periods,u,d)
+        return render_template("resultat.html", resultat=resultat)
+
+    except ValueError as e:
+        return render_template("error.html", error_message=str(e))
+
 
 # Fonction pour effectuer le calcul
-def effectuer_calcul(param1, param2, strike_K, taux_r):
-    # Faites vos calculs ici
-    # Exemple de calcul : addition des paramètres
-    resultat = float(param1) + float(param2) + float(strike_K) + float(taux_r)
-    return resultat
+# def effectuer_calcul(param1, param2, strike_K, taux_r):
+#     # Faites vos calculs ici
+#     # Exemple de calcul : addition des paramètres
+#     resultat = float(param1) + float(param2) + float(strike_K) + float(taux_r)
+#     return resultat
 
 
 # Route pour le traitement des données et l'affichage du résultat
-@app.route('/resultat', methods=['POST'])
-def calcul():
-    param1 = request.form['param1']
-    param2 = request.form['param2']
-    strike_K = request.form['strike_K']
-    taux_r = request.form['taux_r']
+# @app.route('/resultat', methods=['POST'])
+# def calcul():
+#     param1 = request.form['param1']
+#     param2 = request.form['param2']
+#     strike_K = request.form['strike_K']
+#     taux_r = request.form['taux_r']
 
-    resultat = effectuer_calcul(param1, param2, strike_K, taux_r)
-    return render_template('resultat.html', resultat=resultat)
-
-
-
-@app.route("/calculate-cdf", methods=["POST"])
-def calculate_cdf():
-    try:
-        # Récupère les valeurs depuis les champs de formulaire
-        K = float(request.form["strike-K"])
-        r = float(request.form["taux-r"])
-
-        # Vérifie si les valeurs sont des nombres valides
-        if not (r and K):
-            raise ValueError("Veuillez saisir des nombres valides pour les paramètres.")
-
-        # Calcule la somme
-        sum_result = r + K
-
-        # Calcul de la CDF pour illustrer l'exemple
-        cdf_result = norm.cdf(sum_result)
-
-        # Renvoie le résultat, y compris la CDF
-        return render_template("result.html", sum_result=sum_result, cdf_result=cdf_result)
-
-    except ValueError as e:
-        # Gère le cas où les valeurs d'entrée ne sont pas valides
-        return render_template("error.html", message=str(e))
-
-if __name__ == "__main__":
-    app.run()
-
-
-
+#     resultat = effectuer_calcul(param1, param2, strike_K, taux_r)
+#     return render_template('resultat.html', resultat=resultat)
