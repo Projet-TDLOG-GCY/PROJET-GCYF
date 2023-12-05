@@ -190,30 +190,7 @@ body {
   background-color: var(--secondary-color);
 }
 
-.prompt-container {
-  position: fixed;
-  bottom: 0px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: var(--max-body-width);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: var(--main-background-color);
-  padding: 20px;
-  border-top: 1px solid var(--border-color);
-}
 
-.prompt-label {
-  font-weight: bold;
-}
-
-.prompt-input {
-  flex-grow: 1;
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
-  padding: 5px;
-}
 
 .button {
   border: 1px solid var(--border-color);
@@ -382,3 +359,27 @@ input[type="text"] {
 
 /* Autres styles pour le thème sombre */
 /* ... */
+
+/* Ajoutez ceci à votre fichier style.css */
+
+.option-buttons {
+  display: flex;
+  justify-content: center; /* Pour centrer horizontalement les boutons */
+  margin-top: 20px; /* Pour ajouter de l'espace en haut des boutons */
+}
+
+.option-buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #2a303b;
+  color: white;
+  transition: background-color 0.3s ease;
+  margin: 0 10px;
+}
+
+.option-buttons button:hover {
+  background-color: #1c1f25;
+}
