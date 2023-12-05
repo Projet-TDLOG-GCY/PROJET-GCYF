@@ -1,5 +1,4 @@
 
-
 from flask import Flask, render_template, request
 from scipy.stats import norm
 import numpy as np
@@ -86,21 +85,7 @@ def calcul():
         return render_template("error.html", error_message=str(e))
 
 
-# Fonction pour effectuer le calcul
-# def effectuer_calcul(param1, param2, strike_K, taux_r):
-#     # Faites vos calculs ici
-#     # Exemple de calcul : addition des paramètres
-#     resultat = float(param1) + float(param2) + float(strike_K) + float(taux_r)
-#     return resultat
-
-
-# Route pour le traitement des données et l'affichage du résultat
-# @app.route('/resultat', methods=['POST'])
-# def calcul():
-#     param1 = request.form['param1']
-#     param2 = request.form['param2']
-#     strike_K = request.form['strike_K']
-#     taux_r = request.form['taux_r']
-
-#     resultat = effectuer_calcul(param1, param2, strike_K, taux_r)
-#     return render_template('resultat.html', resultat=resultat)
+def Black_Scholes(S0, K, r, T, sigma):
+    d1 = ( np.log(S0/K) + ( r + 0.5* sigma**2 ) * T ) / (sigma * np.sqrt(T) )
+    d2 = d1 - sigma * np.sqrt(T)
+    return S0 * norm.cdf(d1) - K * np.exp( -r * T ) * norm.cdf(d2)
