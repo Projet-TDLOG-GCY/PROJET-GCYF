@@ -7,7 +7,7 @@ import sys
 sys.path.append('/Users/clementdureuil/Downloads/2A/TDLOG/Projet TD LOG FINAL/PROJET-GCYF/src')
 
 import pandas as pd
-from financeProg import prix_de_cloture_passé, symbol, key  # Adjust the function name
+from src import financeProg
 
 
 from scipy.stats import norm
