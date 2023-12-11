@@ -81,7 +81,6 @@ def prix_actuelle(symbol,key):
     else:
         print('Échec de la requête. Vérifiez votre clé API ou le symbole de l\'action.')
 
-print(prix_de_cloture_passé(symbol, key))
 
 
 def plot_yesterday_stock(symbol):
@@ -144,4 +143,27 @@ def plot_yesterday_stock(symbol):
 
     plt.show()
 
-plot_yesterday_stock(symbol)
+def get_stock_symbols():
+
+    # Endpoint pour obtenir une liste de symboles boursiers
+    endpoint = f'https://financialmodelingprep.com/api/v3/stock/list?apikey=84b2859fb03d27f28125c365b0b8967d'
+
+    response = requests.get(endpoint)
+    data = response.json()
+    
+    # Création du dictionnaire marque-action
+    marques_actions = {}
+    for company in data:
+        marque = company['name']
+        marche=company["exchangeShortName"] 
+        symbol = company['symbol']
+        if marche=="NASDAQ":
+            marques_actions[marque] = symbol
+    return marques_actions
+
+def nom_marque_to_symbol(nom_marque):
+    marques_actions = get_stock_symbols()
+    return marques_actions[nom_marque]
+    
+
+print(nom_marque_to_symbol("Apple Inc."))
