@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask import redirect, url_for
+from flask import jsonify
 
 
 # Import other necessary modules
@@ -45,6 +46,18 @@ def upload():
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route('/stock_data')
+def stock_data():
+    # Code pour récupérer les données du cours de l'action (exemple fictif)
+    stock_data = {
+        "labels": ["January", "February", "March", "April", "May", "June", "July"],
+        "values": [65, 59, 80, 81, 56, 55, 40]
+    }
+    return jsonify(stock_data)
+
+
 
 
 @app.route('/choix_option', methods=['POST'])
