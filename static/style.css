@@ -383,3 +383,32 @@ input[type="text"] {
 .option-buttons button:hover {
   background-color: #1c1f25;
 }
+
+.option-buttons button {
+  /* ... Vos styles existants ... */
+
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Ajout de la transition */
+}
+
+.option-buttons button:hover {
+  background-color: #1c1f25;
+  transform: scale(1.05); /* Effet d'agrandissement au survol */
+}
+
+.option-buttons {
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
