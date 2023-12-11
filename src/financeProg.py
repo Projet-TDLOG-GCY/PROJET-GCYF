@@ -129,19 +129,20 @@ def plot_yesterday_stock(symbol):
     formatted_timestamps = [t.strftime('%H:%M') for t in filtered_timestamps]
 
     # Tracé initial du graphique
-    plt.figure(figsize=(15,8))
+    #plt.figure(figsize=(15,8))
     formatted_timestamps.reverse()
     filtered_prices.reverse()
-    plt.plot(formatted_timestamps, filtered_prices, label='Prix intraday')
-    plt.xlabel('Heure')
-    plt.ylabel('Prix de l\'action')
-    plt.title(f'Prix de l\'action {symbol} hier jusqu\'à l\'heure actuelle')
+    #plt.plot(formatted_timestamps, filtered_prices, label='Prix intraday')
+    #plt.xlabel('Heure')
+    #plt.ylabel('Prix de l\'action')
+    #plt.title(f'Prix de l\'action {symbol} hier jusqu\'à l\'heure actuelle')
 
-    plt.legend()
-    plt.xticks(rotation=45)
-    plt.tight_layout()
+    #plt.legend()
+    #plt.xticks(rotation=45)
+    #plt.tight_layout()
 
-    plt.show()
+    #plt.show()
+    return formatted_timestamps,filtered_prices
 
 def get_stock_symbols():
 
@@ -166,4 +167,3 @@ def nom_marque_to_symbol(nom_marque):
     return marques_actions[nom_marque]
     
 
-print(nom_marque_to_symbol("Apple Inc."))
