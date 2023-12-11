@@ -144,4 +144,3 @@ def plot_yesterday_stock(symbol):
 
     plt.show()
 
-plot_yesterday_stock(symbol)
