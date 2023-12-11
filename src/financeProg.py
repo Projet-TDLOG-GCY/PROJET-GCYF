@@ -66,20 +66,18 @@ def prix_de_cloture_passé(symbol, key):
         print('Échec de la requête. Vérifiez votre clé API ou le symbole de l\'action.')
 
 def prix_actuelle(symbol,key):
-    current_price_url = f'https://financialmodelingprep.com/api/v3/quote/{symbol}?apikey={key}'
+    #current_price_url = f'https://financialmodelingprep.com/api/v3/quote/{symbol}?apikey={key}'
+    current_price_url=f'https://financialmodelingprep.com/api/v3/stock/real-time-price/{symbol}?apikey={key}'
 
     response_current_price = requests.get(current_price_url)
-    if response_current_price.status_code == 200:
-        # Convertir la réponse en format JSON
-        data_current_price = response_current_price.json()
+    
+    data_current_price = response_current_price.json()
 
         
-
-        # Récupérer le prix actuel de l'action
-        current_price = data_current_price[0]['price']
-        return current_price
-    else:
-        print('Échec de la requête. Vérifiez votre clé API ou le symbole de l\'action.')
+    print(data_current_price)
+    # Récupérer le prix actuel de l'action
+    current_price = data_current_price["companiesPriceList"][0]['price']
+    return current_price
 
 
 

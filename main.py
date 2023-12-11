@@ -9,6 +9,9 @@ sys.path.append('/Users/clementdureuil/Downloads/2A/TDLOG/Projet TD LOG FINAL/PR
 
 import pandas as pd
 from src import financeProg
+from src.financeProg import plot_yesterday_stock
+
+
 
 
 from scipy.stats import norm
@@ -50,13 +53,13 @@ def index():
 
 @app.route('/stock_data')
 def stock_data():
-    # Code pour récupérer les données du cours de l'action (exemple fictif)
+    # Code pour récupérer les données du cours de l'action
+    L, V = plot_yesterday_stock('AAPL')
     stock_data = {
-        "labels": ["January", "February", "March", "April", "May", "June", "July"],
-        "values": [65, 59, 80, 81, 56, 55, 40]
+        "labels": L,
+        "values": V
     }
     return jsonify(stock_data)
-
 
 
 
