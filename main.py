@@ -1,16 +1,23 @@
-
-<<<<<<< HEAD
 from flask import Flask, render_template, request
-=======
-
-from flask import Flask, render_template, request, redirect, url_for
+from flask import redirect, url_for
 
 
->>>>>>> b91c0e44922bda2bf2761d76e4c62e2c7e06b51d
+# Import other necessary modules
+import sys
+sys.path.append('/Users/clementdureuil/Downloads/2A/TDLOG/Projet TD LOG FINAL/PROJET-GCYF/src')
+
+import pandas as pd
+from financeProg import prix_de_cloture_passé, symbol, key  # Adjust the function name
+
+
 from scipy.stats import norm
-import numpy as np
 
+import numpy as np
 import os
+
+
+app = Flask(__name__)
+
 
 
 app = Flask(__name__)
@@ -57,7 +64,35 @@ def american():
 def european():
     return render_template('european.html')
 
+def Black_Scholes(S0, K, r, T, sigma):
+    d1 = ( np.log(S0/K) + ( r + 0.5* sigma**2 ) * T ) / (sigma * np.sqrt(T) )
+    d2 = d1 - sigma * np.sqrt(T)
+    return S0 * norm.cdf(d1) - K * np.exp( -r * T ) * norm.cdf(d2)
 
+
+@app.route('/resultat_european', methods=['POST'])
+def resultat_european():
+    try:
+        # Validate numerical inputs
+        K = float(request.form["strike_K_eur"])
+        r = float(request.form["taux_r_eur"])
+        T = float(request.form["maturity_T_eur"])
+        S0 = float(request.form["spot_price_0_eur"])
+
+        stock_name=str(request.form["stock_symbol"])
+        
+        sigma = prix_de_cloture_passé(stock_name, key)
+        
+        resultat_european=Black_Scholes(S0, K, r, T, sigma)
+        return render_template("resultat_european.html", resultat_european=resultat_european)
+
+    except ValueError as e:
+        return render_template("error.html", error_message=str(e))
+
+
+##Pricing of an american option 
+
+    #Cox Ross method with a binomial tree
 
 def Cox_Ross(K,S0,r,T,num_periods,u,d):
 
@@ -78,6 +113,52 @@ def Cox_Ross(K,S0,r,T,num_periods,u,d):
     return C[0]
 
 
+# @app.route('/resultat_americaine', methods=['POST'])
+# def resultat_americaine():
+#     try:
+#         # Validate numerical inputs
+#         K = float(request.form["strike_K"])
+#         r = float(request.form["taux_r"])
+#         T = float(request.form["maturity_T"])
+#         S0 = float(request.form["spot_price_0"])
+#         num_periods = float(request.form["number_of_period"])
+#         u = float(request.form["up"])
+#         d = float(request.form["down"])
+        
+#         resultat_americaine=Cox_Ross(K,S0,r,T,num_periods,u,d)
+#         return render_template("resultat_americaine.html", resultat_americaine=resultat_americaine)
+
+#     except ValueError as e:
+#         return render_template("error.html", error_message=str(e))
+
+
+
+    #Monte Carlo method
+
+def monte_carlo_american_call(S0, K, r, sigma, T, paths):
+    dt = T / paths
+    option_prices = []
+
+    for i in range(paths):
+        prices = [S0]
+        for j in range(1, paths):
+            Z = np.random.normal(0, 1)
+            S_next = prices[-1] * np.exp((r - 0.5 * sigma**2) * dt + sigma * np.sqrt(dt) * Z)
+            prices.append(S_next)        
+
+        
+        # Determine exercise opportunities
+        payoffs = np.maximum(np.array(prices) - K, 0)
+
+        # Backward induction for early exercise
+        for j in range(paths - 2, 0, -1):
+            payoffs[j] = np.maximum(payoffs[j], np.exp(-r * dt) * (0.5 * payoffs[j + 1] + 0.5 * payoffs[j]))
+                    
+
+        option_prices.append(payoffs[0])
+
+    return np.mean(option_prices)
+
 @app.route('/resultat_americaine', methods=['POST'])
 def resultat_americaine():
     try:
@@ -86,58 +167,17 @@ def resultat_americaine():
         r = float(request.form["taux_r"])
         T = float(request.form["maturity_T"])
         S0 = float(request.form["spot_price_0"])
-        num_periods = float(request.form["number_of_period"])
-        u = float(request.form["up"])
-        d = float(request.form["down"])
+        num_periods = int(request.form["number_of_period"])
+        volatility=float(request.form["volatility_american"])
         
+
+        u=np.exp(volatility*np.sqrt(T))
+        d=1/u
         resultat_americaine=Cox_Ross(K,S0,r,T,num_periods,u,d)
+
         return render_template("resultat_americaine.html", resultat_americaine=resultat_americaine)
-
+            
     except ValueError as e:
         return render_template("error.html", error_message=str(e))
 
 
-def Black_Scholes(S0, K, r, T, sigma):
-    d1 = ( np.log(S0/K) + ( r + 0.5* sigma**2 ) * T ) / (sigma * np.sqrt(T) )
-    d2 = d1 - sigma * np.sqrt(T)
-<<<<<<< HEAD
-    return S0 * norm.cdf(d1) - K * np.exp( -r * T ) * norm.cdf(d2)
-=======
-    return S0 * norm.cdf(d1) - K * np.exp( -r * T ) * norm.cdf(d2)
-
-
-@app.route('/resultat_european', methods=['POST'])
-def resultat_european():
-    try:
-        # Validate numerical inputs
-        K = float(request.form["strike_K_eur"])
-        r = float(request.form["taux_r_eur"])
-        T = float(request.form["maturity_T_eur"])
-        S0 = float(request.form["spot_price_0_eur"])
-        
-        sigma = float(request.form["sigma_eur"])
-        
-        resultat_european=Black_Scholes(S0, K, r, T, sigma)
-        return render_template("resultat_european.html", resultat_european=resultat_european)
-
-    except ValueError as e:
-        return render_template("error.html", error_message=str(e))
-# Fonction pour effectuer le calcul
-# def effectuer_calcul(param1, param2, strike_K, taux_r):
-#     # Faites vos calculs ici
-#     # Exemple de calcul : addition des paramètres
-#     resultat = float(param1) + float(param2) + float(strike_K) + float(taux_r)
-#     return resultat
-
-
-# Route pour le traitement des données et l'affichage du résultat
-# @app.route('/resultat', methods=['POST'])
-# def calcul():
-#     param1 = request.form['param1']
-#     param2 = request.form['param2']
-#     strike_K = request.form['strike_K']
-#     taux_r = request.form['taux_r']
-
-#     resultat = effectuer_calcul(param1, param2, strike_K, taux_r)
-#     return render_template('resultat.html', resultat=resultat)
->>>>>>> b91c0e44922bda2bf2761d76e4c62e2c7e06b51d
