@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -7,30 +5,41 @@
   <title>Pricer</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclure Chart.js -->
-  <style>
-    /* Styles spécifiques pour les boutons d'options */
-    .choose-option {
-      text-align: center;
-      margin-top: 50px;
-    }
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </script>
+  <script>
+    function afficherPopup() {
+      var texteSaisi = document.getElementById("inputText").value.toLowerCase();
 
-    .choose-option button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      background-color: #2a303b;
-      color: white;
-      transition: background-color 0.3s ease;
-      margin: 0 10px;
+      fetch(`/stock_data/${texteSaisi}`)
+        .then(response => response.json())
+        .then(data => {
+          const ctx = document.getElementById('stockChart').getContext('2d');
+          const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Cours de l\'action',
+                data: data.values,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              // Configuration du graphique (titre, légende, axes, etc.)
+              // Vous pouvez personnaliser selon vos besoins
+            }
+          });
+          $('#myModal').modal('show');          
+        });
     }
-
-    .choose-option button:hover {
-      background-color: #1c1f25;
-    }
-  </style>
+    
+  </script>
+</head>
 
 <body>
   <div class="banner">
@@ -52,42 +61,36 @@
 
     <section class="messages-container" id="messages-container">
       <div class="message message-ai">
-        AI powered pricer for quantitative finance. 
+        AI powered pricer for quantitative finance.
       </div>
     </section>
 
-    <head>
-      <title>Graphique d'action</title>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclure Chart.js -->
-  </head>
-  <body>
-      <canvas id="stockChart" width="400" height="200"></canvas>
-  
-      <script>
-          // JavaScript pour récupérer les données et dessiner le graphique
-          fetch('/stock_data')
-              .then(response => response.json())
-              .then(data => {
-                  const ctx = document.getElementById('stockChart').getContext('2d');
-                  const myChart = new Chart(ctx, {
-                      type: 'line',
-                      data: {
-                          labels: data.labels,
-                          datasets: [{
-                              label: 'Cours de l\'action',
-                              data: data.values,
-                              borderColor: 'rgba(75, 192, 192, 1)',
-                              borderWidth: 1
-                          }]
-                      },
-                      options: {
-                          // Configuration du graphique (titre, légende, axes, etc.)
-                          // Vous pouvez personnaliser selon vos besoins
-                      }
-                  });
-              });
-      </script>
-  </body>
+    <!-- Barre de saisie de texte -->
+    <input type="text" id="inputText" placeholder="Saisissez le symbol de la marque qui vous intérèsse...">
+    <!-- Bouton pour afficher la pop-up en fonction du texte saisi -->
+    <button class="btn btn-primary" onclick="afficherPopup()">Valider</button>
+
+    <!-- Modal (Pop-up) -->
+    <div class="modal fade" id="myModal">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Contenu de la pop-up -->
+          <div class="modal fade" id="myModal">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <canvas id="stockChart" width="400" height="200"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Bouton pour fermer la pop-up -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="choose-option">
       <form action="/choix_option" method="post">
@@ -98,13 +101,6 @@
         </div>
       </form>
     </div>
-    
-  
-
-
-
-  </main>
-  <script src="{{ url_for('static', filename='prompt.js') }}"></script>
   </main>
   <script src="{{ url_for('static', filename='prompt.js') }}"></script>
 </body>

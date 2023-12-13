@@ -22,10 +22,6 @@ import os
 
 app = Flask(__name__)
 
-
-
-app = Flask(__name__)
-
 @app.route("/")
 def hello(name=None):
     return render_template("index.html", name=name)
@@ -51,10 +47,10 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/stock_data')
-def stock_data():
+@app.route('/stock_data/<symbol>')
+def stock_data(symbol):
     # Code pour récupérer les données du cours de l'action
-    L, V = plot_yesterday_stock('AAPL')
+    L, V = plot_yesterday_stock(symbol)
     stock_data = {
         "labels": L,
         "values": V
