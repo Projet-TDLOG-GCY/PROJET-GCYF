@@ -9,6 +9,7 @@ sys.path.append('/Users/clementdureuil/Downloads/2A/TDLOG/Projet TD LOG FINAL/PR
 
 import pandas as pd
 from src import financeProg
+from src.financeProg import fonction, fonction_2
 from src.financeProg import plot_yesterday_stock
 
 
@@ -47,13 +48,17 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/stock_data/<symbol>')
-def stock_data(symbol):
+@app.route('/stock_data/<symbol>/<Nom_Symbol>')
+def stock_data(symbol, Nom_Symbol):
+    if (Nom_Symbol== "Nom"):
+        Real_Symbol = fonction_2(symbol)
+    else:
+        Real_Symbol = symbol
     # Code pour récupérer les données du cours de l'action
-    L, V = plot_yesterday_stock(symbol)
+    L, V = fonction(Real_Symbol)
     stock_data = {
         "labels": L,
-        "values": V
+        "values": V,
     }
     return jsonify(stock_data)
 

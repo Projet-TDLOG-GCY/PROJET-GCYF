@@ -163,5 +163,22 @@ def get_stock_symbols():
 def nom_marque_to_symbol(nom_marque):
     marques_actions = get_stock_symbols()
     return marques_actions[nom_marque]
+
+def fonction(symbol):
+    if (symbol == "chat"):
+        L = [4, 5, 6]
+        V = [1, 3, 4]
+        rep = L, V
+        return rep
+    else:
+        L=[1, 1, 1]
+        V = [1, 1, 1]
+        rep = L, V
+        return rep
+
+def fonction_2(Symbol):
+    return "chat"
+
+        
     
 

@@ -11,14 +11,36 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </script>
   <script>
-    function afficherPopup() {
-      var texteSaisi = document.getElementById("inputText").value.toLowerCase();
 
-      fetch(`/stock_data/${texteSaisi}`)
+    var myChart; 
+    var ctx
+
+    function afficherPopup() {
+      var Nom_Symbol = "";
+      var texteSaisi = "";
+
+      // Vérifiez si inputText2 est rempli
+      var texteSaisi2 = document.getElementById("inputText2").value.trim()
+        if (texteSaisi2 !== "") {
+          // Si inputText2 est rempli, appliquez la fonction nom_marque_to_symbol
+          Nom_Symbol = "Nom";
+          texteSaisi = texteSaisi2;
+      } else {
+          // Sinon, utilisez la valeur de inputText
+          Nom_Symbol = "Symbol";
+          texteSaisi = document.getElementById("inputText").value.toLowerCase();
+}
+
+      fetch(`/stock_data/${texteSaisi}/${Nom_Symbol}`)
         .then(response => response.json())
         .then(data => {
-          const ctx = document.getElementById('stockChart').getContext('2d');
-          const myChart = new Chart(ctx, {
+
+          if (myChart) {
+          myChart.destroy();
+           }
+
+          ctx = document.getElementById('stockChart').getContext('2d');
+          myChart = new Chart(ctx, {
             type: 'line',
             data: {
               labels: data.labels,
@@ -34,11 +56,29 @@
               // Vous pouvez personnaliser selon vos besoins
             }
           });
-          $('#myModal').modal('show');          
+          $('#myModal').modal('show'); 
+        
         });
     }
     
   </script>
+    <style>
+  /* Ajoutez du CSS pour aligner les éléments côte à côte */
+  .input-container {
+  display: flex;
+  flex-direction: row; /* Utilisez "row" pour afficher les éléments côte à côte */
+  gap: 10px; /* Espace entre les éléments enfants */
+  }
+
+  /* Ajoutez du CSS pour ajuster la largeur et la hauteur des barres de saisie */
+  .input-container input {
+    width: 500px; /* Ajustez la largeur selon vos besoins */
+    height: 30px; /* Ajustez la hauteur selon vos besoins */
+    box-sizing: border-box; /* Pour inclure la bordure et le padding dans la largeur et la hauteur */
+  }
+
+    </style>
+
 </head>
 
 <body>
@@ -66,7 +106,11 @@
     </section>
 
     <!-- Barre de saisie de texte -->
-    <input type="text" id="inputText" placeholder="Saisissez le symbol de la marque qui vous intérèsse...">
+    <h4>Saisissez le symbole ou le nom de la marque qui vous intéresse : </h4>
+    <div class="input-container">
+      <input type="text" id="inputText" placeholder="SYMBOLE">
+      <input type="text" id="inputText2" placeholder="NOM">
+    </div>
     <!-- Bouton pour afficher la pop-up en fonction du texte saisi -->
     <button class="btn btn-primary" onclick="afficherPopup()">Valider</button>
 
@@ -75,22 +119,18 @@
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <!-- Contenu de la pop-up -->
-          <div class="modal fade" id="myModal">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-body">
-                  <canvas id="stockChart" width="400" height="200"></canvas>
-                </div>
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-body">
+                <canvas id="stockChart" width="400" height="200"></canvas>
+              </div>
+              <!-- Bouton pour fermer la pop-up -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
               </div>
             </div>
           </div>
-          <!-- Bouton pour fermer la pop-up -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-          </div>
         </div>
-      </div>
-    </div>
 
     <div class="choose-option">
       <form action="/choix_option" method="post">
