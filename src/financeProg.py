@@ -20,9 +20,9 @@ symbol = 'NVDA'
 
 
 
-def prix_de_cloture_passé(symbol, key):
+def prix_de_cloture_passé(symbol):
     # URL de l'API pour récupérer les données historiques des prix d'une action
-    url = f'https://financialmodelingprep.com/api/v3/historical-price-full/{symbol}?apikey={key}'
+    url = f'https://financialmodelingprep.com/api/v3/historical-price-full/{symbol}?apikey=84b2859fb03d27f28125c365b0b8967d'
 
     # Effectuer la requête GET vers l'API
     response = requests.get(url)
@@ -65,9 +65,9 @@ def prix_de_cloture_passé(symbol, key):
     else:
         print('Échec de la requête. Vérifiez votre clé API ou le symbole de l\'action.')
 
-def prix_actuelle(symbol,key):
+def prix_actuelle(symbol):
     #current_price_url = f'https://financialmodelingprep.com/api/v3/quote/{symbol}?apikey={key}'
-    current_price_url=f'https://financialmodelingprep.com/api/v3/stock/real-time-price/{symbol}?apikey={key}'
+    current_price_url=f'https://financialmodelingprep.com/api/v3/stock/real-time-price/{symbol}?apikey=84b2859fb03d27f28125c365b0b8967d'
 
     response_current_price = requests.get(current_price_url)
     
