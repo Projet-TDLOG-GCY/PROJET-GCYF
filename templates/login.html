@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
-  <title>Pricer</title>
+  <title>Login - Pricer</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
   <style>
@@ -37,14 +35,11 @@
     <!-- Menu horizontal pour les onglets -->
     <nav class="navigation">
       <ul>
-        <!-- index.html -->
+        <!-- Add navigation links specific to the login page if needed -->
         <li><a href="{{ url_for('register.signup') }}">Signup</a></li>
-
         <li><a href="{{ url_for('hello') }}">Pricer</a></li>
         <li><a href="{{ url_for('about_us') }}">About us</a></li>
-        
         <li><a href="{{ url_for('login') }}">Login</a></li>
-
       </ul>
       <!-- Bouton Dark Mode dans la bannière -->
       <button id="dark-mode-toggle">Activer/Désactiver le Mode Sombre</button>
@@ -53,36 +48,35 @@
 
   <main id="main-container" class="main-container">
     <header class="header">
-      <h1 class="header-title">Pricer</h1>
+      <h1 class="header-title">Login</h1>
     </header>
 
-    
+    <!-- Login form -->
+    <section class="login-container">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="flash-messages">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
 
+      <form class="login-form" method="post" action="{{ url_for('login') }}">
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id" required>
 
-    <section class="messages-container" id="messages-container">
-      <div class="message message-ai">
-        AI powered pricer for quantitative finance. 
-      </div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Login</button>
+      </form>
     </section>
 
-
-    <div class="choose-option">
-      <form action="/choix_option" method="post">
-        <p>Quel type d'option choisis-tu ?</p>
-        <div class="option-buttons">
-          <button type="submit" name="option" value="americaine">Option Américaine</button>
-          <button type="submit" name="option" value="europenne">Option Européenne</button>
-        </div>
-      </form>
-    </div>
-    
-  
-
-
-
+    <!-- Other content specific to the login page if needed -->
   </main>
-  <script src="{{ url_for('static', filename='prompt.js') }}"></script>
-  </main>
+
   <script src="{{ url_for('static', filename='prompt.js') }}"></script>
 </body>
 

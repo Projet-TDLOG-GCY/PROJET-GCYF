@@ -52,15 +52,15 @@ def prix_de_cloture_passé(symbol, key):
         # plt.show()
 
         daily_logvariation=[]
-        for i in range(len(closing_prices)-1):
+        for i in range(int(len(closing_prices)-1)):
             n=len(daily_logvariation)
             if closing_prices[i+1]-closing_prices[i]>1e-8:
                 daily_logvariation.append( np.log( closing_prices[i+1]/closing_prices[i] ) )
         logmoy=sum(daily_logvariation)/n
         square=[ (daily_logvariation[i] - logmoy)**2 for i in range(n) ]
         s=sum(square) / (n-1)
-        volatilty= np.sqrt(s)*np.sqrt(255) # on observe tous les jours et l'on suppose qu'il y a 255 jours de bourse sur un an 
-        print(volatilty)
+        volatilty= np.sqrt(s)*np.sqrt(255) # on observe tous les jours et l'on suppose qu'il y a 255 jours de bourse sur un an         
+    
         return volatilty
     else:
         print('Échec de la requête. Vérifiez votre clé API ou le symbole de l\'action.')
@@ -71,9 +71,7 @@ def prix_actuelle(symbol,key):
     response_current_price = requests.get(current_price_url)
     if response_current_price.status_code == 200:
         # Convertir la réponse en format JSON
-        data_current_price = response_current_price.json()
-
-        
+        data_current_price = response_current_price.json()       
 
         # Récupérer le prix actuel de l'action
         current_price = data_current_price[0]['price']
@@ -82,13 +80,13 @@ def prix_actuelle(symbol,key):
         print('Échec de la requête. Vérifiez votre clé API ou le symbole de l\'action.')
 
 print(prix_de_cloture_passé(symbol, key))
+print(prix_actuelle('AAPL',key))
 
 
 def plot_yesterday_stock(symbol):
     #le programme ne marche pas le dimanche, samedi car bourse fermer
     api_key= "UFXVJ7HAEGYV19TX"
     ts = TimeSeries(key=api_key, output_format='pandas')
-
 
     # Récupération des données intraday (par 5 minutes) pour la journée d'hier
     yesterday = datetime.now() - timedelta(days=1)
@@ -137,11 +135,8 @@ def plot_yesterday_stock(symbol):
     plt.xlabel('Heure')
     plt.ylabel('Prix de l\'action')
     plt.title(f'Prix de l\'action {symbol} hier jusqu\'à l\'heure actuelle')
-
     plt.legend()
     plt.xticks(rotation=45)
     plt.tight_layout()
-
     plt.show()
 
-plot_yesterday_stock(symbol)

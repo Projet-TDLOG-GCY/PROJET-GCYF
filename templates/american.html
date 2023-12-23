@@ -14,8 +14,13 @@
     <!-- Menu horizontal pour les onglets -->
     <nav class="navigation">
       <ul>
+        <li><a href="{{ url_for('register.signup') }}">Signup</a></li>
         <li><a href="{{ url_for('hello') }}">Pricer</a></li>
         <li><a href="{{ url_for('about_us') }}">About us</a></li>
+        
+        <!-- index.html -->
+        <li><a href="{{ url_for('login') }}"> Login </a></li>
+
       </ul>
       <!-- Bouton Dark Mode dans la bannière -->
       <button id="dark-mode-toggle">Activer/Désactiver le Mode Sombre</button>
@@ -23,9 +28,14 @@
   </div>
 
   <main id="main-container" class="main-container">
+
+    
     <header class="header">
       <h1 class="header-title">Pricer</h1>
     </header>
+
+   
+   
 
     <section class="messages-container" id="messages-container">
       <div class="message message-ai">
@@ -41,11 +51,13 @@
     <!-- Formulaire pour les paramètres -->
     <div class="form-container">
       <form id="price-form" class="rounded-form" action="/resultat_americaine" method="post">
-        <div class="form-group">
-          <label for="spot_price_0">Prix sport S0:</label>
-          <input type="text" id="spot_price_0" name="spot_price_0" required>
-        </div>
 
+        <div class="form-group">
+          <label for="stock_symbol_am">Nom de l'action (symbol):</label>
+          <input type="text" id="stock_symbol_am" name="stock_symbol_am" required>
+        </div>    
+
+        
         <div class="form-group">
           <label for="strike_K">Prix Strike K :</label>
           <input type="text" id="strike_K" name="strike_K" required>
@@ -56,22 +68,12 @@
           <input type="text" id="maturity_T" name="maturity_T" required>
         </div>
 
-        <div class="form-group">
-          <label for="number_of_period">Nombre de périodes :</label>
-          <input type="text" id="number_of_period" name="number_of_period" required>
-        </div>
-        
+       
 
         <div class="form-group">
           <label for="taux_r">Taux sans risque :</label>
           <input type="text" id="taux_r" name="taux_r" required>
-        </div>
-        
-
-        <div class="form-group">
-          <label for="up">volatility :</label>
-          <input type="text" id="volatility_american" name="volatility_american" required>
-        </div>
+        </div>       
 
         
 

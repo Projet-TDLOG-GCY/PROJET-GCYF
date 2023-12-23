@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -14,9 +12,11 @@
     <!-- Menu horizontal pour les onglets -->
     <nav class="navigation">
       <ul>
+        <li><a href="{{ url_for('register.signup') }}">Signup</a></li>
         <li><a href="{{ url_for('hello') }}">Pricer</a></li>
         <li><a href="{{ url_for('about_us') }}">About us</a></li>
-      </ul>
+       
+        <li><a href="{{ url_for('login') }}"> Login </a></li>
       <!-- Bouton Dark Mode dans la bannière -->
       <button id="dark-mode-toggle">Activer/Désactiver le Mode Sombre</button>
     </nav>
