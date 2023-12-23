@@ -22,20 +22,16 @@ app = Flask(__name__)
 
 from .register import register_bp
 from .models import db
-app = Flask(__name__)
 
-
-
-
-app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 db.init_app(app)
+migrate = Migrate(app, db)
+
+
 
 # Register the blueprint
 app.register_blueprint(register_bp)
@@ -44,14 +40,16 @@ app.register_blueprint(register_bp)
 
 @app.route('/signup', methods=['POST'])
 def signup():
-    username = request.form.get('username')
-    password = request.form.get('password')
+    user_id = request.form.get('email')
+    password = request.form.get('password1')
+
+    print(f'Received data: email={user_id}, password1={password}')
 
     # Hash the password before storing it in the database
     hashed_password = generate_password_hash(password, method='sha256')
 
     # Create a new user
-    new_user = User(username=username, password=hashed_password)
+    new_user = User(id=user_id, password=hashed_password)
 
     # Add the user to the database
     db.session.add(new_user)
@@ -62,7 +60,7 @@ def signup():
 
 
 @app.route("/login", methods=["GET", "POST"])
-def login():
+def login():    
     if request.method == "POST":
         user_id = request.form.get("id")
         password = request.form.get("password")
