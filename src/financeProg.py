@@ -121,7 +121,7 @@ def plot_yesterday_stock(symbol):
     for i, timestamp in enumerate(timestamps):
         if timestamp >= market_open_time and timestamp < yesterday.replace(hour=heure_int, minute=minutes_int, second=seconde_int):
             filtered_timestamps.append(timestamp)
-            filtered_prices.append(data['4. close'][i])
+            filtered_prices.append(data['4. close'].iloc[i])
 
     # Convertir les timestamps en format 'heure:minute'
     formatted_timestamps = [t.strftime('%H:%M') for t in filtered_timestamps]
@@ -163,6 +163,8 @@ def get_stock_symbols():
 def nom_marque_to_symbol(nom_marque):
     marques_actions = get_stock_symbols()
     return marques_actions[nom_marque]
+
+#fonction pour tester lorsqu'il y a eu plus de 25 tentatives
 
 def fonction(symbol):
     if (symbol == "chat"):
