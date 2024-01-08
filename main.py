@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from flask import redirect, url_for
+from flask import redirect, url_for, session
 from flask import jsonify
 
 
@@ -22,13 +22,75 @@ import os
 
 app = Flask(__name__)
 
-
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Chemin vers la base de données
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+db = SQLAlchemy(app)
 
-@app.route("/")
-def hello(name=None):
-    return render_template("index.html", name=name)
+# Modèle de l'utilisateur
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    balance = db.Column(db.Float, default=100.0)
+
+# Créer la base de données (s'il n'existe pas encore)
+with app.app_context():
+    db.create_all()
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Vérifier si l'utilisateur existe déjà
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            return "Cet utilisateur existe déjà !"
+        
+        # Créer un nouvel utilisateur
+        new_user = User(username=username, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        user = User.query.filter_by(username=username, password=password).first()
+        if user:
+            session['user_id'] = user.id
+            return redirect(url_for('index'))
+        
+        return "Identifiant ou mot de passe incorrect."
+
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return redirect(url_for('login'))
+
+
+@app.route('/')
+def index():
+    if 'user_id' in session:
+        # L'utilisateur est connecté, afficher la page d'accueil
+        return render_template('index.html')
+    else:
+        return redirect(url_for('login'))
+
 
 @app.route("/pricer")
 def pricer():
@@ -45,10 +107,6 @@ def upload():
     file = request.files["file"]
     file.save(os.path.join(os.path.expanduser("~/Desktop/hackaton flask"), file.filename))
     return {"success": True}
-
-@app.route("/")
-def index():
-    return render_template("index.html")
 
 
 @app.route('/stock_data')
@@ -195,5 +253,4 @@ def resultat_americaine():
             
     except ValueError as e:
         return render_template("error.html", error_message=str(e))
-
 

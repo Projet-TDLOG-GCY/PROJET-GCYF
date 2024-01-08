@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Connexion</h1>
+    <form action="/login" method="post">
+        <input type="text" name="username" placeholder="Nom d'utilisateur" required><br>
+        <input type="password" name="password" placeholder="Mot de passe" required><br>
+        <input type="submit" value="Se connecter">
+    </form>
+</body>
+</html>
