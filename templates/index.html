@@ -4,9 +4,9 @@
 <html lang="fr">
 
 <head>
-  <title>Pricer</title>
+  <title> class="title">Pricer</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+<!--<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclure Chart.js -->
   <style>
     /* Styles spécifiques pour les boutons d'options */
@@ -31,7 +31,7 @@
       background-color: #1c1f25;
     }
   </style>
-
+<head>
 <body class="fade-in">
   <div class="banner">
     <!-- Menu horizontal pour les onglets -->
@@ -40,8 +40,6 @@
         <li><a href="{{ url_for('hello') }}">Pricer</a></li>
         <li><a href="{{ url_for('about_us') }}">About us</a></li>
       </ul>
-      <!-- Bouton Dark Mode dans la bannière -->
-      <button id="dark-mode-toggle">Activer/Désactiver le Mode Sombre</button>
     </nav>
   </div>
 
@@ -51,7 +49,7 @@
     </header>
 
     <section class="messages-container" id="messages-container">
-      <div class="message message-ai">
+      <div class="message">
         AI powered pricer for quantitative finance. 
       </div>
     </section>
@@ -62,7 +60,7 @@
   </head>
   <body>
       <canvas id="stockChart" width="400" height="200"></canvas>
-  
+  <!--
       <script>
           // JavaScript pour récupérer les données et dessiner le graphique
           fetch('/stock_data')
@@ -76,7 +74,7 @@
                           datasets: [{
                               label: 'Cours de l\'action',
                               data: data.values,
-                              borderColor: 'rgba(75, 192, 192, 1)',
+                              borderColor: 'rgba(187, 194, 227, 1)',
                               borderWidth: 1
                           }]
                       },
@@ -86,7 +84,7 @@
                       }
                   });
               });
-      </script>
+      </script> -->
   </body>
 
     <div class="choose-option">

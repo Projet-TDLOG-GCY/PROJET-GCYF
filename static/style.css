@@ -13,62 +13,33 @@
   box-sizing: border-box;
 }
 
-.dark-mode {
-  background-color: #121112;
-  color: #ffffff;
-  --secondary-color: #130e33;
-  --main-background-color: #121112;
-  --border-color: #2a303b;
-  ;
-  /* Autres styles pour le mode sombre */
+
+
+
+@font-face {
+  font-family: 'Serial Limerick';
+  src: url('Limerick-Serial Regular.ttf') format('truetype');
+  /* Ajoutez d'autres formats de police au besoin */
+  font-weight: normal;
+  font-style: normal;
 }
-
-/* Styles pour la bannière et le menu horizontal */
-
-/* Styles pour le bouton Dark Mode */
-#dark-mode-toggle {
-  position: absolute;
-  top: 50%;
-  /* Centrer verticalement */
-  right: 10px;
-  /* Ajuster la distance depuis la droite */
-  transform: translateY(-50%);
-  /* Centrer verticalement */
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #2a303b;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 999;
-  /* Assure que le bouton est au-dessus des autres éléments */
-}
-
-#dark-mode-toggle:hover {
-  background-color: #1c1f25;
-  /* Couleur au survol */
-}
-
-
-
 
 body {
-
-  background-color: #ffffff;
-  color: #333;
   background-color: var(--body-background-color);
+  color: #bbc2e3;
   padding: 0;
   margin: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Serial Limerick', sans-serif; /* Utilisation uniquement de Serial Limerick sans de secours */
   font-size: 16px;
-  /* Ajustez la taille de la police selon vos besoins */
-
+  background-image: url('nice_background.jpg'); 
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* ... autres styles ... */
 }
 
-/* Ajoutez ces styles pour la bannière */
+
 .banner {
-  background-color: #2a303b;
+  background-color: #030a40;
   color: rgb(186, 176, 176);
   text-align: center;
   padding: 10px;
@@ -98,14 +69,7 @@ body {
 }
 
 
-/* Styles pour la bannière et le menu horizontal */
-.banner {
-  position: relative;
-  background-color: #2a303b;
-  color: white;
-  text-align: center;
-  padding: 10px;
-}
+
 
 .navigation ul {
   padding: 0;
@@ -153,17 +117,13 @@ body {
 .main-container {
   max-width: var(--max-body-width);
   min-height: 100vh;
-  background-color: var(--main-background-color);
-  color: var(--main-color);
+  /*background-color: var(--main-background-color);*/
+  /*color: var(--main-color);*/
   padding: 50px;
   margin: 0 auto;
 }
 
-.main-container.dark-mode {
-  background-color: #121112;
-  color: #ffffff;
-  /* Autres styles pour le mode sombre */
-}
+
 
 .header {
   text-align: center;
@@ -171,6 +131,7 @@ body {
 
 .header-title {
   margin-top: 0;
+  font-size: 50px;
 }
 
 .messages-container {
@@ -181,10 +142,14 @@ body {
 }
 
 .message {
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
+  border-color: #cacbe6; /* Couleur de la bordure */
+  border-width: 3px; /* Largeur de la bordure */
+  border-style: solid; /* Style de la bordure */
+  border-radius: 500px;
   padding: 10px 15px;
+  font-size: 20px;
 }
+
 
 .message-human {
   background-color: var(--secondary-color);
@@ -332,33 +297,6 @@ input[type="text"] {
   width: 300px;
 }
 
-.dark-mode .rounded-result {
-  background-color: #333;
-  /* Couleur de fond pour le résultat dans le thème sombre */
-  color: #fff;
-  /* Couleur du texte dans le résultat du thème sombre */
-  /* Autres styles spécifiques au thème sombre pour le résultat */
-}
-
-/* Styles pour le thème sombre */
-.dark-mode .rounded-form {
-  background-color: #333;
-  /* Couleur de fond pour le formulaire dans le thème sombre */
-  color: #fff;
-  /* Couleur du texte dans le thème sombre */
-  /* Autres styles spécifiques au thème sombre */
-}
-
-.dark-mode input[type="text"] {
-  background-color: #555;
-  /* Couleur de fond des champs de saisie dans le thème sombre */
-  color: #fff;
-  /* Couleur du texte dans les champs de saisie du thème sombre */
-  /* Autres styles spécifiques au thème sombre pour les champs de saisie */
-}
-
-/* Autres styles pour le thème sombre */
-/* ... */
 
 /* Ajoutez ceci à votre fichier style.css */
 
@@ -386,34 +324,38 @@ input[type="text"] {
   transform: scale(1.05); /* Effet d'agrandissement au survol */
 }
 
+/* CSS pour le fondu de l'arrière-plan */
 .fade-in {
-  animation: fadeInAnimation 1.5s ease-in-out forwards;
+  position: relative;
+  overflow: hidden;
+  background-color: #000; /* Couleur de fond noire */
 }
 
-@keyframes fadeInAnimation {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+.fade-in::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('nice_background.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0; /* Démarre avec une opacité nulle (image invisible) */
+  z-index: -1;
+  animation: fadeInBackground 6s ease-in-out forwards; /* Ajustez la durée selon vos besoins */
+}
+
+@keyframes fadeInBackground {
+  0% {
+    opacity: 0.25; /* Commence totalement transparent */
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  100% {
+    opacity: 1; /* Devient totalement opaque pour montrer l'image */
   }
 }
 
 
-.slide-in {
-  animation: slideInAnimation 1s ease-in-out forwards;
-}
-
-@keyframes slideInAnimation {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
 
 .scale-in {
   animation: scaleInAnimation 0.5s ease-in-out forwards;
