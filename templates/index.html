@@ -39,6 +39,7 @@
       <ul>
         <li><a href="{{ url_for('index') }}">Pricer</a></li>
         <li><a href="{{ url_for('about_us') }}">About us</a></li>
+        <a href="/logout">Déconnexion</a>
       </ul>
     </nav>
   </div>
@@ -51,10 +52,9 @@
     <section class="messages-container" id="messages-container">
       <div class="message">
         AI powered pricer for quantitative finance. 
-        <p>Bienvenue, {{ username }} ! Votre solde actuel est de {{ balance }} euros.</p>
       </div>
     </section>
-
+    <p>Bonjour, {{ username }} ! Votre solde actuel est de {{ balance }} euros.</p>
     <head>
       <title>Graphique d'action</title>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclure Chart.js -->
