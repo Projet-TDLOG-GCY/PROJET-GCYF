@@ -1,4 +1,4 @@
-from .financeProg import prix_actuelle
+from financeProg import *
 
 class Porte_feuille:
     def __init__(self, argent):
@@ -62,7 +62,7 @@ class Porte_feuille:
         print(f"Argent disponible : {self.__argent}€")
 
 #test
-mon_portefeuille = Porte_feuille(1000)
+#mon_portefeuille = Porte_feuille(1000)
 
 # Achat d'actions
 #mon_portefeuille.acheter_action('AAPL', 10)
