@@ -16,7 +16,9 @@ import pandas as pd
 
 key = "84b2859fb03d27f28125c365b0b8967d"
 
-symbol = 'NVDA'
+key_yentl = "238e6abfb856d6a972ed6aca3ef75418"
+
+key_collin = "7OIVHIIG66QMLOLT"
 
 
 
@@ -83,7 +85,7 @@ def prix_actuelle(symbol,key):
 
 def plot_yesterday_stock(symbol):
     #le programme ne marche pas le dimanche, samedi car bourse fermer
-    api_key= "UFXVJ7HAEGYV19TX"
+    api_key=key_collin #"UFXVJ7HAEGYV19TX"
     ts = TimeSeries(key=api_key, output_format='pandas')
 
 
@@ -159,6 +161,10 @@ def get_stock_symbols():
         if marche=="NASDAQ":
             marques_actions[marque] = symbol
     return marques_actions
+
+print(get_stock_symbols())
+
+
 
 def nom_marque_to_symbol(nom_marque):
     marques_actions = get_stock_symbols()

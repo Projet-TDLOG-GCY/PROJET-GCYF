@@ -105,6 +105,37 @@
       </div>
     </section>
 
+    <h4>Acheter ou vendre des actions</h4>
+
+    <boutton action="/ajouter-argent" method="post">
+      <input type="number" name="montant" placeholder="Montant en euros">
+      <input type="submit" value="Ajouter de l'argent">
+    </button>
+    
+    <!-- Formulaire pour acheter des actions -->
+    <button action="/acheter" method="post">
+      <input type="text" name="symbol" placeholder="Symbole de l'action">
+      <input type="number" name="nombre" placeholder="Nombre d'actions">
+      <input type="submit" value="Acheter des actions">
+    </button>
+    
+    <!-- Formulaire pour vendre des actions -->
+    <button action="/vendre" method="post">
+      <input type="text" name="symbol" placeholder="Symbole de l'action">
+      <input type="number" name="nombre" placeholder="Nombre d'actions">
+      <input type="submit" value="Vendre des actions">
+    </button>
+
+    <div class="choose-option">
+      <form action="/choix_option" method="post">
+        <h4>Acheter des options, américaine ou Européenne</h4>
+        <div class="option-buttons">
+          <button type="submit" name="option" value="americaine">Option Américaine</button>
+          <button type="submit" name="option" value="europenne">Option Européenne</button>
+        </div>
+      </form>
+    </div>
+
     <!-- Barre de saisie de texte -->
     <h4>Saisissez le symbole ou le nom de la marque qui vous intéresse : </h4>
     <div class="input-container">
@@ -131,18 +162,10 @@
             </div>
           </div>
         </div>
-
-    <div class="choose-option">
-      <form action="/choix_option" method="post">
-        <p>Quel type d'option choisis-tu ?</p>
-        <div class="option-buttons">
-          <button type="submit" name="option" value="americaine">Option Américaine</button>
-          <button type="submit" name="option" value="europenne">Option Européenne</button>
-        </div>
-      </form>
-    </div>
   </main>
   <script src="{{ url_for('static', filename='prompt.js') }}"></script>
 </body>
+
+
 
 </html>

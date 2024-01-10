@@ -173,6 +173,7 @@ body {
   margin-top: 0;
 }
 
+
 .messages-container {
   display: flex;
   flex-direction: column;
@@ -386,3 +387,52 @@ input[type="text"] {
 .option-buttons button:hover {
   background-color: #1c1f25;
 }
+
+body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        input[type=number], input[type=text] {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        input[type=submit], button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover, button:hover {
+            background-color: #45a049;
+        }
+
+        .option-buttons button {
+            width: 49%;
+            margin-right: 2%;
+        }
+
+        .option-buttons button:last-child {
+            margin-right: 0;
+        }
+-----------------------------------------
+
+

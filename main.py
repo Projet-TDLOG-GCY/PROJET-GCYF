@@ -14,7 +14,6 @@ from src.financeProg import plot_yesterday_stock, nom_marque_to_symbol
 
 
 
-
 from scipy.stats import norm
 
 import numpy as np
@@ -198,3 +197,22 @@ def resultat_americaine():
         return render_template("error.html", error_message=str(e))
 
 
+@app.route('/ajouter-argent', methods=['POST'])
+def ajouter_argent():
+    montant = request.form['montant']
+    mon_portefeuille.ajouter_argent(float(montant))
+    return render_template('index.html', message="Argent ajouté avec succès!")
+
+@app.route('/acheter', methods=['POST'])
+def acheter_action():
+    symbol = request.form['symbol']
+    nombre = int(request.form['nombre'])
+    mon_portefeuille.acheter_action(symbol, nombre)
+    return render_template('index.html', message="Achat réalisé avec succès!")
+
+@app.route('/vendre', methods=['POST'])
+def vendre_action():
+    symbol = request.form['symbol']
+    nombre = int(request.form['nombre'])
+    mon_portefeuille.vendre_action(symbol, nombre)
+    return render_template('index.html', message="Vente réalisée avec succès!")
