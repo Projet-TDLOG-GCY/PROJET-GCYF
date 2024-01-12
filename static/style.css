@@ -36,6 +36,57 @@ body {
   background-repeat: no-repeat;
   /* ... autres styles ... */
 }
+/* Add these styles to your existing style.css */
+
+/* Center the login form */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Adjust as needed */
+}
+
+.rounded-form {
+  width: 300px; /* Adjust width as needed */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+/* Center the register form */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Adjust as needed */
+}
+
+.rounded-form-reg {
+  width: 300px; /* Adjust width as needed */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+
+.button-primary {
+  padding: 10px 20px;
+  background-color: #2a303b;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  position: relative;
+  top: 15px;
+  }
+  
+}
+
+.button-primary:hover {
+  background-color: #1c1f25;
+}
 
 
 .banner {
@@ -173,6 +224,14 @@ body {
 .hidden {
   display: none;
 }
+
+/* Ajoutez ces styles pour la classe login-input */
+
+/* Autres styles CSS */
+
+
+
+
 
 /* Loader code taken from https://loading.io/css/ */
 .loader {

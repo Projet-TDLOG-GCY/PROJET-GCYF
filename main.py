@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from flask import redirect, url_for, session
 from flask import jsonify
 
-
+import pandas as pd
 # Import other necessary modules
 import sys
 sys.path.append('/Users/clementdureuil/Downloads/2A/TDLOG/Projet TD LOG FINAL/PROJET-GCYF/src')
@@ -86,11 +86,13 @@ def logout():
 @app.route('/')
 def index():
     if 'user_id' in session:
-        # L'utilisateur est connecté, afficher la page d'accueil
-        return render_template('index.html')
+        user = User.query.get(session['user_id'])
+        if user:
+            return render_template('index.html', username=user.username, balance=user.balance)
+        else:
+            return "Utilisateur introuvable."
     else:
         return redirect(url_for('login'))
-
 
 @app.route("/pricer")
 def pricer():
