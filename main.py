@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash
 from flask import redirect, url_for, session
 from flask import jsonify
-
+import json
 
 # Import other necessary modules
 import sys
@@ -9,36 +9,153 @@ sys.path.append('/Users/clementdureuil/Downloads/2A/TDLOG/Projet TD LOG FINAL/PR
 
 import pandas as pd
 from src import financeProg
-from src.financeProg import plot_yesterday_stock
-
-
-
-
+from src.financeProg import *
 from scipy.stats import norm
-
 import numpy as np
 import os
 
 
 app = Flask(__name__)
+from src.portefeuille import Porte_feuille
 
 from flask_sqlalchemy import SQLAlchemy
+
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Chemin vers la base de données
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
 db = SQLAlchemy(app)
 
+migrate = Migrate(app, db) 
+
 # Modèle de l'utilisateur
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-    balance = db.Column(db.Float, default=100.0)
+
 
 # Créer la base de données (s'il n'existe pas encore)
 with app.app_context():
     db.create_all()
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    balance = db.Column(db.Float, default=500.0)
+    portfolio_value = db.Column(db.Float, default=0.0)
+    portfolio_stocks = db.Column(db.String, default="")
+    stock_portfolio = db.Column(db.JSON, default={})
+
+
+    
+
+@app.route('/buy_stock', methods=['POST'])
+def buy_stock():
+    if 'user_id' in session:
+        user_id = session['user_id']
+        print(user_id)
+        user = User.query.get(user_id)
+        number_of_stocks = int(request.form.get('stock_number'))
+
+        # Get the stock name and validate it (you may add additional validation)
+        stock_name = request.form.get('stock_name')
+        if not stock_name:
+            return "Invalid stock name."
+
+        # Get the current price of the stock using the prix_actuelle function
+        stock_price = prix_actuelle(stock_name)
+
+        # Check if the user has enough balance to buy the stock
+        if user.balance >= number_of_stocks * stock_price:
+            # Deduct the stock price from the user's balance
+            user.balance -= number_of_stocks * stock_price
+            print('portfolio=',user.stock_portfolio)
+
+            print('condition : ', stock_name in user.stock_portfolio)
+            
+            print('number_of_stocks = ' , number_of_stocks)
+
+            db.session.commit()
+
+            
+            # Update the user's portfolio
+            if stock_name in user.stock_portfolio:
+                print('portfolio=',user.stock_portfolio)
+                user.stock_portfolio[stock_name] += number_of_stocks
+                print('portfolio=',user.stock_portfolio)
+                
+            else:
+                print('portfolio=',user.stock_portfolio)
+                new_stock_data = {stock_name:{'quantity': number_of_stocks}}
+                user.stock_portfolio.update(new_stock_data)
+                print('portfolio=',user.stock_portfolio)
+                
+
+            # Update the user's portfolio in the database   
+
+            
+            
+            
+
+            
+
+            print('portfolio=',user.stock_portfolio)
+
+            flash(f"Achat réussi! Tu as acheté {number_of_stocks} actions de {stock_name} cotées {stock_price}€ pour un total de {number_of_stocks * stock_price}€ ")
+            return render_template('index.html', username=user.username, balance=user.balance, stock_portfolio = user.stock_portfolio, real_user=user)
+        else:
+            flash(f"Solde insuffisant pour acheter cette action.")
+            # return render_template('index.html', username=user.username, balance=user.balance)
+            return render_template('index.html',username=user.username, balance=user.balance, stock_portfolio = user.stock_portfolio, real_user=user)
+    return redirect(url_for('login'))
+
+
+
+
+
+@app.route('/add_money', methods=['POST'])
+def add_money():
+    if 'user_id' in session:
+        user_id = session['user_id']
+        user = User.query.get(user_id)
+
+        # Get the amount to add and validate it (you may add additional validation)
+        amount_to_add = request.form.get('amount')
+        if not amount_to_add:
+            return "Invalid amount."
+
+        # Add the amount to the user's balance
+        user.balance += float(amount_to_add)
+
+        # Commit changes to the database
+        db.session.commit()
+
+        return f"Montant ajouté avec succès! Nouveau solde: {user.balance} euros."
+
+    return redirect(url_for('login'))
+
+
+
+@app.route('/')
+def index():
+    if 'user_id' in session:
+        # Retrieve the user's information from the database
+        user_id = session['user_id']
+        user = User.query.get(user_id)
+        
+        if user:
+            portfolio_value = user.portfolio_value
+            
+        else : 
+
+            flash("User not found.")
+            return redirect(url_for('login'))        
+
+        # Render the template with the portfolio value
+        return render_template('index.html', username=user.username, balance=user.balance, portfolio_value=portfolio_value, stock_portfolio=user.stock_portfolio, real_user=user)
+    else:
+        return redirect(url_for('login'))
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -53,13 +170,15 @@ def register():
             return "Cet utilisateur existe déjà !"
         
         # Créer un nouvel utilisateur
-        new_user = User(username=username, password=password)
+        new_user = User(username=username, password=password,balance=500, portfolio_value=0.0, portfolio_stocks="APPL")
         db.session.add(new_user)
         db.session.commit()
         
         return redirect(url_for('login'))
 
     return render_template('register.html')
+
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -83,13 +202,9 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/')
-def index():
-    if 'user_id' in session:
-        # L'utilisateur est connecté, afficher la page d'accueil
-        return render_template('index.html')
-    else:
-        return redirect(url_for('login'))
+
+# ... (existing code)
+
 
 
 @app.route("/pricer")
@@ -138,119 +253,52 @@ def american():
 def european():
     return render_template('european.html')
 
-def Black_Scholes(S0, K, r, T, sigma):
-    d1 = ( np.log(S0/K) + ( r + 0.5* sigma**2 ) * T ) / (sigma * np.sqrt(T) )
-    d2 = d1 - sigma * np.sqrt(T)
-    return S0 * norm.cdf(d1) - K * np.exp( -r * T ) * norm.cdf(d2)
 
 
-@app.route('/resultat_european', methods=['POST'])
+from formule import Black_Scholes, american_call_option_price, monte_carlo_american_call
+from src.financeProg import prix_de_cloture_passé, symbol, key, prix_actuelle
+
+
+@app.route("/resultat_european", methods=["POST"])
 def resultat_european():
-    try:
-        # Validate numerical inputs
+    try:        
         K = float(request.form["strike_K_eur"])
         r = float(request.form["taux_r_eur"])
-        T = float(request.form["maturity_T_eur"])
-        S0 = float(request.form["spot_price_0_eur"])
+        T = float(request.form["maturity_T_eur"])  
+        stock_name = str(request.form["stock_symbol"])
 
-        stock_name=str(request.form["stock_symbol"])
-        
-        sigma = prix_de_cloture_passé(stock_name, key)
-        
-        resultat_european=Black_Scholes(S0, K, r, T, sigma)
-        return render_template("resultat_european.html", resultat_european=resultat_european)
+        S0 = prix_actuelle(stock_name)
+        sigma = prix_de_cloture_passé(stock_name)
+
+        resultat_european = Black_Scholes(S0, K, r, T, sigma)
+
+        return render_template(
+            "resultat_european.html", resultat_european=resultat_european
+        )
 
     except ValueError as e:
         return render_template("error.html", error_message=str(e))
 
 
-##Pricing of an american option 
-
-    #Cox Ross method with a binomial tree
-
-def Cox_Ross(K,S0,r,T,num_periods,u,d):
-
-    dt = T / num_periods
-    q = (np.exp(r * dt) - d) / (u - d)
-    disc = np.exp(-r * dt)
-
-    # Initialization of the price at maturity
-    S = S0 * d**(np.arange(num_periods, -1, -1)) * u**(np.arange(0, num_periods + 1, 1))
-
-    # Payoff of the option
-    C = np.maximum(0, K - S)
-
-    for i in np.arange(num_periods - 1, -1, -1):
-        S = S0 * d**(np.arange(int(i), -1, -1)) * u**(np.arange(0, int(i) + 1, 1))
-        C_new = disc * (q * C[1:int(i) + 2] + (1 - q) * C[0:int(i) + 1])
-        C = np.maximum(C_new, K - S)
-    return C[0]
-
-
-# @app.route('/resultat_americaine', methods=['POST'])
-# def resultat_americaine():
-#     try:
-#         # Validate numerical inputs
-#         K = float(request.form["strike_K"])
-#         r = float(request.form["taux_r"])
-#         T = float(request.form["maturity_T"])
-#         S0 = float(request.form["spot_price_0"])
-#         num_periods = float(request.form["number_of_period"])
-#         u = float(request.form["up"])
-#         d = float(request.form["down"])
-        
-#         resultat_americaine=Cox_Ross(K,S0,r,T,num_periods,u,d)
-#         return render_template("resultat_americaine.html", resultat_americaine=resultat_americaine)
-
-#     except ValueError as e:
-#         return render_template("error.html", error_message=str(e))
-
-
-
-    #Monte Carlo method
-
-def monte_carlo_american_call(S0, K, r, sigma, T, paths):
-    dt = T / paths
-    option_prices = []
-
-    for i in range(paths):
-        prices = [S0]
-        for j in range(1, paths):
-            Z = np.random.normal(0, 1)
-            S_next = prices[-1] * np.exp((r - 0.5 * sigma**2) * dt + sigma * np.sqrt(dt) * Z)
-            prices.append(S_next)        
-
-        
-        # Determine exercise opportunities
-        payoffs = np.maximum(np.array(prices) - K, 0)
-
-        # Backward induction for early exercise
-        for j in range(paths - 2, 0, -1):
-            payoffs[j] = np.maximum(payoffs[j], np.exp(-r * dt) * (0.5 * payoffs[j + 1] + 0.5 * payoffs[j]))
-                    
-
-        option_prices.append(payoffs[0])
-
-    return np.mean(option_prices)
-
-@app.route('/resultat_americaine', methods=['POST'])
+@app.route("/resultat_americaine", methods=["POST"])
 def resultat_americaine():
-    try:
-        # Validate numerical inputs
+    try:      
         K = float(request.form["strike_K"])
         r = float(request.form["taux_r"])
-        T = float(request.form["maturity_T"])
-        S0 = float(request.form["spot_price_0"])
-        num_periods = int(request.form["number_of_period"])
-        volatility=float(request.form["volatility_american"])
+        T = float(request.form["maturity_T"])       
         
+        stock_name = str(request.form["stock_symbol_am"])
 
-        u=np.exp(volatility*np.sqrt(T))
-        d=1/u
-        resultat_americaine=Cox_Ross(K,S0,r,T,num_periods,u,d)
+        S0=prix_actuelle(stock_name)
+        sigma = prix_de_cloture_passé(stock_name)              
+        resultat_americaine = american_call_option_price(S0, K, r, T, sigma, 300)
 
-        return render_template("resultat_americaine.html", resultat_americaine=resultat_americaine)
-            
+        return render_template(
+            "resultat_americaine.html", resultat_americaine=resultat_americaine
+        )
     except ValueError as e:
         return render_template("error.html", error_message=str(e))
 
+
+if __name__ == '__main__':
+    app.run(debug=True)

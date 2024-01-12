@@ -1,14 +1,24 @@
 from financeProg import *
 
+
 class Porte_feuille:
-    def __init__(self, argent):
+    def __init__(self,user, argent):
         self.action_detenu={}#dictionnaire avec l'action en clé et le nbre d'action détenus
         self.action_achat={}#dictionnaire de l'argent investi dans une action mise a jour avec la vente de l'action
         self.__argent_investi=argent # argent mis dans le prote feuille au total
         self.__argent=argent # argent disponible liquidité
-
+        self.user = user
+       
+ 
     def get_argent(self):
         return self.__argent
+
+    def update_portfolio_in_db(self):
+        from main import db
+        # Update the user's portfolio information in the database
+        self.user.update_portfolio(self)
+        db.session.commit() 
+
     
 
     def acheter_action(self,symbol, nombre):
@@ -23,6 +33,8 @@ class Porte_feuille:
         else:
             self.action_detenu[symbol] = nombre
             self.action_achat[symbol] = prix_actuelle(symbol)*nombre
+        
+        self.update_portfolio_in_db()
 
     def vendre_action(self, symbol, nombre):
         if symbol in self.action_detenu:
@@ -32,11 +44,14 @@ class Porte_feuille:
             self.action_achat[symbol] -= prix_actuelle(symbol)*nombre
             self.action_detenu[symbol]-=nombre
 
+            self.update_portfolio_in_db()
+        
+
     def valorisation(self):
         #renvoi la valeur du portefeuille
         valo=0
-        for element in self.action:
-            valo+=prix_actuelle(element)*self.action[element]
+        for element in self.action_detenu:
+            valo+=prix_actuelle(element)*self.action_detenu[element]
         return valo
     
     def ajouter_argent(self, monnaie):
@@ -60,6 +75,15 @@ class Porte_feuille:
         for action, quantite in self.action_detenu.items():
             print(f"{action}: {quantite}")
         print(f"Argent disponible : {self.__argent}€")
+
+
+    ##sert pour afficher la composition du portefeuille
+    def get_owned_stocks(self):
+        return list(self.action_detenu.keys())
+    
+    ##ajout pour lier à la database
+    
+     
 
 #test
 #mon_portefeuille = Porte_feuille(1000)

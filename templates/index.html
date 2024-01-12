@@ -53,16 +53,60 @@
       <div class="message">
         AI powered pricer for quantitative finance. 
       </div>
+
+
     </section>
     <p>Bonjour, {{ username }} ! Votre solde actuel est de {{ balance }} euros.</p>
+    <p>Stocks Owned:</p>
+    
     <head>
       <title>Graphique d'action</title>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclure Chart.js -->
   </head>
   <body>
+
+    <!-- buy stocks -->
+    <div class="buy-stock">
+      <form action="/buy_stock" method="post">
+        <label for="stock_name">Nom de l'action:</label>
+        <input type="text" id="stock_name" name="stock_name" required>
+  
+        <label for="stock_number">Nombre d'actions:</label>
+        <input type="number" id="stock_number" name="stock_number" required>
+  
+        <button type="submit" name="buy_button">Acheter</button>
+      </form>
+    </div>
+
+    
+   
+
+  <!-- add some money -->
+  <div class="add-money">
+    <form action="/add_money" method="post">
+        <label for="amount">Montant à ajouter:</label>
+        <input type="number" id="amount" name="amount" required min="1">
+        
+        <button type="submit" name="add_money_button">Ajouter de l'argent</button>
+    </form>
+  </div>
+
+  </div>
       <canvas id="stockChart" width="400" height="200"></canvas>
-  <!--
-      <script>
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  
+      <!-- <script>
           // JavaScript pour récupérer les données et dessiner le graphique
           fetch('/stock_data')
               .then(response => response.json())
@@ -85,7 +129,20 @@
                       }
                   });
               });
-      </script> -->
+      </script>  -->
+
+  <div class="user-portfolio">
+    <h2>User's Portfolio</h2>
+    <ul>
+        
+      {% for stock_name, quantity in stock_portfolio.items() %}
+        <li>{{ stock_name }}: {{ quantity }} actions</li>
+      {% endfor %}
+        
+    </ul>
+  </div>
+
+  
   </body>
 
     <div class="choose-option">
