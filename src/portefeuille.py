@@ -6,7 +6,7 @@ class Porte_feuille:
         self.action_achat={}#dictionnaire de l'argent investi dans une action mise a jour avec la vente de l'action
         self.__argent_investi=argent # argent mis dans le prote feuille au total
         self.__argent=argent # argent disponible liquidité
-
+ 
     def get_argent(self):
         return self.__argent
     

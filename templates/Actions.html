@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>Actions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </script>
+  <script>
+
+    var myChart; 
+    var ctx
+
+    function afficherPopup() {
+      var Nom_Symbol = "";
+      var texteSaisi = "";
+
+      // Vérifiez si inputText2 est rempli
+      var texteSaisi2 = document.getElementById("inputText2").value.trim()
+        if (texteSaisi2 !== "") {
+          // Si inputText2 est rempli, appliquez la fonction nom_marque_to_symbol
+          Nom_Symbol = "Nom";
+          texteSaisi = texteSaisi2;
+      } else {
+          // Sinon, utilisez la valeur de inputText
+          Nom_Symbol = "Symbol";
+          texteSaisi = document.getElementById("inputText").value.toLowerCase();
+}
+
+      fetch(`/stock_data/${texteSaisi}/${Nom_Symbol}`)
+        .then(response => response.json())
+        .then(data => {
+
+          if (myChart) {
+          myChart.destroy();
+           }
+
+          ctx = document.getElementById('stockChart').getContext('2d');
+          myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Cours de l\'action',
+                data: data.values,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              // Configuration du graphique (titre, légende, axes, etc.)
+              // Vous pouvez personnaliser selon vos besoins
+            }
+          });
+          $('#myModal').modal('show'); 
+        
+        });
+    }
+    
+  </script>
+    <style>
+  /* Ajoutez du CSS pour aligner les éléments côte à côte */
+  .input-container {
+  display: flex;
+  flex-direction: row; /* Utilisez "row" pour afficher les éléments côte à côte */
+  gap: 10px; /* Espace entre les éléments enfants */
+  }
+
+  /* Ajoutez du CSS pour ajuster la largeur et la hauteur des barres de saisie */
+  .input-container input {
+    width: 500px; /* Ajustez la largeur selon vos besoins */
+    height: 30px; /* Ajustez la hauteur selon vos besoins */
+    box-sizing: border-box; /* Pour inclure la bordure et le padding dans la largeur et la hauteur */
+  }
+
+    </style>
+
+
+
+<body>
+    <div class="banner">
+        <!-- Menu horizontal pour les onglets -->
+        <nav class="navigation">
+            <ul>
+                <li><a href="{{ url_for('index') }}"> Mon Compte</a></li>
+                <li><a href="{{ url_for('actions') }}"> Actions</a></li>
+                <li><a href="{{ url_for('american') }}"> Options américaines</a></li>
+                <li><a href="{{ url_for('european') }}"> Options européennes</a></li>
+                <li><a href="{{ url_for('about_us') }}"> About us</a></li>
+                <a href="/logout">Déconnexion</a>
+            </ul>
+        </nav>
+    </div>
+
+  <main id="main-container" class="main-container">
+    <header class="header">
+      <h1 class="header-title">Marché d'actions</h1>
+    </header>
+
+    <h4>Acheter ou vendre des actions</h4>
+    
+    <!-- Formulaire pour acheter des actions -->
+    <button action="/acheter" method="post">
+      <input type="text" name="symbol" placeholder="Symbole de l'action">
+      <input type="number" name="nombre" placeholder="Nombre d'actions">
+      <input type="submit" value="Acheter des actions">
+    </button>
+    
+    <!-- Formulaire pour vendre des actions -->
+    <button action="/vendre" method="post">
+      <input type="text" name="symbol" placeholder="Symbole de l'action">
+      <input type="number" name="nombre" placeholder="Nombre d'actions">
+      <input type="submit" value="Vendre des actions">
+    </button>
+
+    <!-- Barre de saisie de texte -->
+    <h4>Saisissez le symbole ou le nom de l'actions qui vous intéresse : </h4>
+<div class="input-container">
+  <input list="stockSuggestions" type="text" id="inputText" placeholder="SYMBOLE">
+  <input list="nomsSuggestions" type="text" id="inputText2" placeholder="NOM">
+  <datalist id="stockSuggestions"></datalist>
+  <datalist id="nomsSuggestions"></datalist>
+</div>
+<!-- Bouton pour afficher la pop-up en fonction du texte saisi -->
+<button class="btn btn-primary" onclick="afficherPopup()">Valider</button>
+    <script>
+      function getStockSuggestions(input) {
+        fetch(`/get_stock_suggestions?input=${input}`)
+          .then(response => response.json())
+          .then(suggestions => {
+            const suggestionsContainer = document.getElementById('suggestions-container');
+            suggestionsContainer.innerHTML = "";
+    
+            // Créer un menu déroulant avec les suggestions
+            const select = document.createElement("select");
+            for (const suggestion of suggestions) {
+              const option = document.createElement("option");
+              option.value = suggestion;
+              option.text = suggestion;
+              select.appendChild(option);
+            }
+    
+            // Ajouter le menu déroulant aux suggestionsContainer
+            suggestionsContainer.appendChild(select);
+          });
+      }
+    </script>
+    <!-- Modal (Pop-up) -->
+    <div class="modal fade" id="myModal">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Contenu de la pop-up -->
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-body">
+                <canvas id="stockChart" width="400" height="200"></canvas>
+              </div>
+              <!-- Bouton pour fermer la pop-up -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+  </main>
+  <script src="{{ url_for('static', filename='prompt.js') }}"></script>
+</body>
+
+
+</html>

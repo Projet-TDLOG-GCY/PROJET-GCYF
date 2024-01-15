@@ -94,22 +94,16 @@ def index():
     else:
         return redirect(url_for('login'))
 
-@app.route("/pricer")
-def pricer():
-    return render_template("pricer.html")
+
 
 @app.route("/about_us")
 def about_us():
     return render_template("about_us.html")
 
 
-
-@app.route("/upload", methods=["POST"])
-def upload():
-    file = request.files["file"]
-    file.save(os.path.join(os.path.expanduser("~/Desktop/hackaton flask"), file.filename))
-    return {"success": True}
-
+@app.route("/actions")
+def actions():
+    return render_template("actions.html")
 
 @app.route('/stock_data/<symbol>/<Nom_Symbol>')
 def stock_data(symbol, Nom_Symbol):
@@ -159,24 +153,6 @@ def Black_Scholes(S0, K, r, T, sigma):
     return S0 * norm.cdf(d1) - K * np.exp( -r * T ) * norm.cdf(d2)
 
 
-@app.route('/resultat_european', methods=['POST'])
-def resultat_european():
-    try:
-        # Validate numerical inputs
-        K = float(request.form["strike_K_eur"])
-        r = float(request.form["taux_r_eur"])
-        T = float(request.form["maturity_T_eur"])
-        S0 = float(request.form["spot_price_0_eur"])
-
-        stock_name=str(request.form["stock_symbol"])
-        
-        sigma = prix_de_cloture_passé(stock_name, key)
-        
-        resultat_european=Black_Scholes(S0, K, r, T, sigma)
-        return render_template("resultat_european.html", resultat_european=resultat_european)
-
-    except ValueError as e:
-        return render_template("error.html", error_message=str(e))
 
 
 ##Pricing of an american option 
@@ -250,6 +226,7 @@ def monte_carlo_american_call(S0, K, r, sigma, T, paths):
 
 
 
+"""
 @app.route('/ajouter-argent', methods=['POST'])
 def ajouter_argent():
     montant = request.form['montant']
@@ -269,7 +246,7 @@ def vendre_action():
     nombre = int(request.form['nombre'])
     mon_portefeuille.vendre_action(symbol, nombre)
     return render_template('index.html', message="Vente réalisée avec succès!")
-
+"""
       
 file_path = os.path.join(os.path.dirname(__file__), 'nouveau_actions.txt')
 
