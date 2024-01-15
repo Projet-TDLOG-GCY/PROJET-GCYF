@@ -59,11 +59,13 @@ def buy_stock():
 
         # Get the stock name and validate it (you may add additional validation)
         stock_name = request.form.get('stock_name')
+        print(stock_name)
         if not stock_name:
             return "Invalid stock name."
 
         # Get the current price of the stock using the prix_actuelle function
         stock_price = prix_actuelle(stock_name)
+        print('stock_price = ',stock_price)
 
         # Check if the user has enough balance to buy the stock
         if user.balance >= number_of_stocks * stock_price:
@@ -74,7 +76,7 @@ def buy_stock():
             print('condition : ', stock_name in user.stock_portfolio)
             
             print('number_of_stocks = ' , number_of_stocks)
-
+            
             
 
             
@@ -86,14 +88,15 @@ def buy_stock():
                 
             else:
                 print('portfolio=',user.stock_portfolio)
-                new_stock_data = {stock_name:{'quantity': number_of_stocks}}
-                user.stock_portfolio.update(new_stock_data)
+                user.stock_portfolio[stock_name] = number_of_stocks
+                # new_stock_data = {stock_name:{'quantity': number_of_stocks}}
+                # user.stock_portfolio.update(new_stock_data)
                 print('portfolio=',user.stock_portfolio)
-                
+            db.session.commit()  
 
             # Update the user's portfolio in the database   
 
-            db.session.commit()
+            
             
             
 

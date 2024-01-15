@@ -76,9 +76,12 @@ def prix_actuelle(symbol):
         
     print(data_current_price)
     # Récupérer le prix actuel de l'action
-    current_price = data_current_price["companiesPriceList"][0]['price']
-    return current_price
+    print(data_current_price["companiesPriceList"])
+    #current_price = data_current_price["companiesPriceList"][0]['price']
 
+    return 100
+
+print(prix_actuelle('APPL'))
 
 
 def plot_yesterday_stock(symbol):
@@ -142,23 +145,23 @@ def plot_yesterday_stock(symbol):
     #plt.show()
     return formatted_timestamps,filtered_prices
 
-def get_stock_symbols():
+# def get_stock_symbols():
 
-    # Endpoint pour obtenir une liste de symboles boursiers
-    endpoint = f'https://financialmodelingprep.com/api/v3/stock/list?apikey=84b2859fb03d27f28125c365b0b8967d'
+#     # Endpoint pour obtenir une liste de symboles boursiers
+#     endpoint = f'https://financialmodelingprep.com/api/v3/stock/list?apikey=84b2859fb03d27f28125c365b0b8967d'
 
-    response = requests.get(endpoint)
-    data = response.json()
+#     response = requests.get(endpoint)
+#     data = response.json()
     
-    # Création du dictionnaire marque-action
-    marques_actions = {}
-    for company in data:
-        marque = company['name']
-        marche=company["exchangeShortName"] 
-        symbol = company['symbol']
-        if marche=="NASDAQ":
-            marques_actions[marque] = symbol
-    return marques_actions
+#     # Création du dictionnaire marque-action
+#     marques_actions = {}
+#     for company in data:
+#         marque = company['name']
+#         marche=company["exchangeShortName"] 
+#         symbol = company['symbol']
+#         if marche=="NASDAQ":
+#             marques_actions[marque] = symbol
+#     return marques_actions
 
 def nom_marque_to_symbol(nom_marque):
     marques_actions = get_stock_symbols()
