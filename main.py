@@ -75,7 +75,7 @@ def buy_stock():
             
             print('number_of_stocks = ' , number_of_stocks)
 
-            db.session.commit()
+            
 
             
             # Update the user's portfolio
@@ -93,7 +93,7 @@ def buy_stock():
 
             # Update the user's portfolio in the database   
 
-            
+            db.session.commit()
             
             
 
