@@ -69,12 +69,24 @@
     <div class="buy-stock">
       <form action="/buy_stock" method="post">
         <label for="stock_name">Nom de l'action:</label>
-        <input type="text" id="stock_name" name="stock_name" required>
+        <input type="text" id="stock_name_buy" name="stock_name_buy" required>
   
         <label for="stock_number">Nombre d'actions:</label>
-        <input type="number" id="stock_number" name="stock_number" required>
+        <input type="number" id="stock_number_buy" name="stock_number_buy" required>
   
         <button type="submit" name="buy_button">Acheter</button>
+      </form>
+    </div>
+
+    <div class="sell-stock">
+      <form action="/sell_stock" method="post">
+        <label for="stock_name">Nom de l'action:</label>
+        <input type="text" id="stock_name_sell" name="stock_name_sell" required>
+  
+        <label for="stock_number">Nombre d'actions:</label>
+        <input type="number" id="stock_number_sell" name="stock_number_sell" required>
+  
+        <button type="submit" name="buy_button">Vendre</button>
       </form>
     </div>
 
@@ -106,7 +118,7 @@
   </div>
 
   
-      <!-- <script>
+      <script>
           // JavaScript pour récupérer les données et dessiner le graphique
           fetch('/stock_data')
               .then(response => response.json())
@@ -129,7 +141,7 @@
                       }
                   });
               });
-      </script>  -->
+      </script> 
 
   <div class="user-portfolio">
     <h2>User's Portfolio</h2>

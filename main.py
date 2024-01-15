@@ -51,11 +51,11 @@ def buy_stock():
         user_id = session['user_id']
         print(user_id)
         user = User.query.get(user_id)
-        number_of_stocks = int(request.form.get('stock_number'))
+        number_of_stocks = int(request.form.get('stock_number_buy'))
 
         new_stock_portfolio = user.stock_portfolio.copy()
         # Get the stock name and validate it (you may add additional validation)
-        stock_name = request.form.get('stock_name')
+        stock_name = request.form.get('stock_name_buy')
         print(stock_name)
         if not stock_name:
             return "Invalid stock name."
@@ -90,62 +90,46 @@ def buy_stock():
             return render_template('index.html', username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
     return redirect(url_for('login'))
 
+@app.route('/sell_stock', methods=['POST'])
+def sell_stock():
+    if 'user_id' in session:
+        user_id = session['user_id']
+        print(user_id)
+        user = User.query.get(user_id)
+        number_of_stocks = int(request.form.get('stock_number_sell'))
+        new_stock_portfolio = user.stock_portfolio.copy()
+        # Get the stock name and validate it (you may add additional validation)
+        stock_name = request.form.get('stock_name_sell')
+        print(stock_name)
+        if not stock_name:
+            return "Invalid stock name."
 
-# @app.route('/buy_stock', methods=['POST'])
-# def buy_stock():
-#     if 'user_id' in session:
-#         user_id = session['user_id']
-#         print(user_id)
-#         user = User.query.get(user_id)
-#         number_of_stocks = int(request.form.get('stock_number'))
+        # Get the current price of the stock using the prix_actuelle function
+        stock_price = prix_actuelle(stock_name)
+        print('stock_price = ', stock_price)
 
-#         # Get the stock name and validate it (you may add additional validation)
-#         stock_name = request.form.get('stock_name')
-#         print(stock_name)
-#         if not stock_name:
-#             return "Invalid stock name."
+        if stock_name in user.stock_portfolio and new_stock_portfolio[stock_name]>=number_of_stocks:
+            user.balance += number_of_stocks * stock_price
+            print('user.balance after selling:', user.balance)
+            user = User.query.get(user_id)
+            #actualise les number of stocks
+            new_stock_portfolio[stock_name] -= number_of_stocks
 
-#         # Get the current price of the stock using the prix_actuelle function
-#         stock_price = prix_actuelle(stock_name)
-#         print('stock_price = ',stock_price)
-#         db.session.commit()
-#         # Check if the user has enough balance to buy the stock
-#         if user.balance >= number_of_stocks * stock_price:
-#             # Deduct the stock price from the user's balance
-#             user.balance -= number_of_stocks * stock_price
-#             print('portfolio=',user.stock_portfolio)
+            #on cactualise la db
+            user.stock_portfolio = new_stock_portfolio    
+            # Commit changes to the database after making all updates
+            db.session.commit()
 
-#             print('condition : ', stock_name in user.stock_portfolio)
-            
-#             print('number_of_stocks = ' , number_of_stocks)
-            
-#             print(user.balance)
+            print('user.stock_portfolio after purchase:', user.stock_portfolio)
 
-#             # db.session.commit()
-            
-#             # Update the user's portfolio
-#             if stock_name in user.stock_portfolio:
-#                 print('portfolio=',user.stock_portfolio)
-#                 user.stock_portfolio[stock_name] += number_of_stocks
-#                 print('portfolio=',user.stock_portfolio)
-                
-#             else:
-#                 print('portfolio=',user.stock_portfolio)
-#                 user.stock_portfolio[stock_name] = number_of_stocks
-#                 # new_stock_data = {stock_name:{'quantity': number_of_stocks}}
-#                 # user.stock_portfolio.update(new_stock_data)
-#                 print('portfolio=',user.stock_portfolio)
+            flash(f"Vente réussie! Tu as vendu {number_of_stocks} actions de {stock_name} cotées {stock_price}€ pour un total de {number_of_stocks * stock_price}€ ")
+            return render_template('index.html', username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
+        
+        else:
+            flash(f"Nombre d'actions dans le portefeuille insuffisant pour vendre ce nombre d'actions.")
+            return render_template('index.html', username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
+    return redirect(url_for('login'))
 
-#             # db.session.commit()  
-#             print('portfolio=',user.stock_portfolio)
-
-#             flash(f"Achat réussi! Tu as acheté {number_of_stocks} actions de {stock_name} cotées {stock_price}€ pour un total de {number_of_stocks * stock_price}€ ")
-#             return render_template('index.html', username=user.username, balance=user.balance, stock_portfolio = user.stock_portfolio, real_user=user)
-#         else:
-#             flash(f"Solde insuffisant pour acheter cette action.")
-#             # return render_template('index.html', username=user.username, balance=user.balance)
-#             return render_template('index.html',username=user.username, balance=user.balance, stock_portfolio = user.stock_portfolio, real_user=user)
-#     return redirect(url_for('login'))
 
 
 
@@ -185,7 +169,6 @@ def index():
             portfolio_value = user.stock_portfolio
             
         else : 
-
             flash("User not found.")
             return redirect(url_for('login'))        
 
@@ -208,7 +191,7 @@ def register():
             return "Cet utilisateur existe déjà !"
         
         # Créer un nouvel utilisateur
-        new_user = User(username=username, password=password,balance=500, portfolio_value=0.0, portfolio_stocks="APPL")
+        new_user = User(username=username, password=password, balance=500)
         db.session.add(new_user)
         db.session.commit()
         
