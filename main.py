@@ -41,13 +41,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    balance = db.Column(db.Float, default=500.0)
-    portfolio_value = db.Column(db.Float, default=0.0)
-    portfolio_stocks = db.Column(db.String, default="")
+    balance = db.Column(db.Float, default=500.0)   
     stock_portfolio = db.Column(db.JSON, default={})
 
-
-    
 
 @app.route('/buy_stock', methods=['POST'])
 def buy_stock():
@@ -57,6 +53,7 @@ def buy_stock():
         user = User.query.get(user_id)
         number_of_stocks = int(request.form.get('stock_number'))
 
+        new_stock_portfolio = user.stock_portfolio.copy()
         # Get the stock name and validate it (you may add additional validation)
         stock_name = request.form.get('stock_name')
         print(stock_name)
@@ -65,52 +62,90 @@ def buy_stock():
 
         # Get the current price of the stock using the prix_actuelle function
         stock_price = prix_actuelle(stock_name)
-        print('stock_price = ',stock_price)
+        print('stock_price = ', stock_price)
 
         # Check if the user has enough balance to buy the stock
         if user.balance >= number_of_stocks * stock_price:
             # Deduct the stock price from the user's balance
             user.balance -= number_of_stocks * stock_price
-            print('portfolio=',user.stock_portfolio)
+            print('user.balance after purchase:', user.balance)
 
-            print('condition : ', stock_name in user.stock_portfolio)
-            
-            print('number_of_stocks = ' , number_of_stocks)
-            
-            
-
-            
+            user = User.query.get(user_id)
             # Update the user's portfolio
             if stock_name in user.stock_portfolio:
-                print('portfolio=',user.stock_portfolio)
-                user.stock_portfolio[stock_name] += number_of_stocks
-                print('portfolio=',user.stock_portfolio)
-                
+                new_stock_portfolio[stock_name] += number_of_stocks
             else:
-                print('portfolio=',user.stock_portfolio)
-                user.stock_portfolio[stock_name] = number_of_stocks
-                # new_stock_data = {stock_name:{'quantity': number_of_stocks}}
-                # user.stock_portfolio.update(new_stock_data)
-                print('portfolio=',user.stock_portfolio)
-            db.session.commit()  
+                new_stock_portfolio[stock_name] = number_of_stocks
 
-            # Update the user's portfolio in the database   
+            user.stock_portfolio = new_stock_portfolio    
+            # Commit changes to the database after making all updates
+            db.session.commit()
 
-            
-            
-            
-
-            
-
-            print('portfolio=',user.stock_portfolio)
+            print('user.stock_portfolio after purchase:', user.stock_portfolio)
 
             flash(f"Achat réussi! Tu as acheté {number_of_stocks} actions de {stock_name} cotées {stock_price}€ pour un total de {number_of_stocks * stock_price}€ ")
-            return render_template('index.html', username=user.username, balance=user.balance, stock_portfolio = user.stock_portfolio, real_user=user)
+            return render_template('index.html', username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
         else:
             flash(f"Solde insuffisant pour acheter cette action.")
-            # return render_template('index.html', username=user.username, balance=user.balance)
-            return render_template('index.html',username=user.username, balance=user.balance, stock_portfolio = user.stock_portfolio, real_user=user)
+            return render_template('index.html', username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
     return redirect(url_for('login'))
+
+
+# @app.route('/buy_stock', methods=['POST'])
+# def buy_stock():
+#     if 'user_id' in session:
+#         user_id = session['user_id']
+#         print(user_id)
+#         user = User.query.get(user_id)
+#         number_of_stocks = int(request.form.get('stock_number'))
+
+#         # Get the stock name and validate it (you may add additional validation)
+#         stock_name = request.form.get('stock_name')
+#         print(stock_name)
+#         if not stock_name:
+#             return "Invalid stock name."
+
+#         # Get the current price of the stock using the prix_actuelle function
+#         stock_price = prix_actuelle(stock_name)
+#         print('stock_price = ',stock_price)
+#         db.session.commit()
+#         # Check if the user has enough balance to buy the stock
+#         if user.balance >= number_of_stocks * stock_price:
+#             # Deduct the stock price from the user's balance
+#             user.balance -= number_of_stocks * stock_price
+#             print('portfolio=',user.stock_portfolio)
+
+#             print('condition : ', stock_name in user.stock_portfolio)
+            
+#             print('number_of_stocks = ' , number_of_stocks)
+            
+#             print(user.balance)
+
+#             # db.session.commit()
+            
+#             # Update the user's portfolio
+#             if stock_name in user.stock_portfolio:
+#                 print('portfolio=',user.stock_portfolio)
+#                 user.stock_portfolio[stock_name] += number_of_stocks
+#                 print('portfolio=',user.stock_portfolio)
+                
+#             else:
+#                 print('portfolio=',user.stock_portfolio)
+#                 user.stock_portfolio[stock_name] = number_of_stocks
+#                 # new_stock_data = {stock_name:{'quantity': number_of_stocks}}
+#                 # user.stock_portfolio.update(new_stock_data)
+#                 print('portfolio=',user.stock_portfolio)
+
+#             # db.session.commit()  
+#             print('portfolio=',user.stock_portfolio)
+
+#             flash(f"Achat réussi! Tu as acheté {number_of_stocks} actions de {stock_name} cotées {stock_price}€ pour un total de {number_of_stocks * stock_price}€ ")
+#             return render_template('index.html', username=user.username, balance=user.balance, stock_portfolio = user.stock_portfolio, real_user=user)
+#         else:
+#             flash(f"Solde insuffisant pour acheter cette action.")
+#             # return render_template('index.html', username=user.username, balance=user.balance)
+#             return render_template('index.html',username=user.username, balance=user.balance, stock_portfolio = user.stock_portfolio, real_user=user)
+#     return redirect(url_for('login'))
 
 
 
@@ -147,7 +182,7 @@ def index():
         user = User.query.get(user_id)
         
         if user:
-            portfolio_value = user.portfolio_value
+            portfolio_value = user.stock_portfolio
             
         else : 
 
