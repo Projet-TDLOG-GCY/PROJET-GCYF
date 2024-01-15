@@ -4,8 +4,16 @@ from flask import jsonify
 
 import pandas as pd
 # Import other necessary modules
+import os
 import sys
-sys.path.append('/Users/clementdureuil/Downloads/2A/TDLOG/Projet TD LOG FINAL/PROJET-GCYF/src')
+# Obtenez le chemin du dossier courant
+chemin_courant = os.path.dirname(os.path.abspath(__file__))
+
+# Construisez le chemin relatif vers le dossier 'src'
+chemin_src = os.path.join(chemin_courant, 'PROJET-GCYF', 'src')
+
+# Ajoutez le chemin à sys.path
+sys.path.append(chemin_src)
 
 import pandas as pd
 from src import financeProg
