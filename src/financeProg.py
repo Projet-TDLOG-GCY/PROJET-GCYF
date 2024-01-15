@@ -14,7 +14,7 @@ import pandas as pd
 # import yfinance as yf
 
 
-key = "84b2859fb03d27f28125c365b0b8967d"
+key = "238e6abfb856d6a972ed6aca3ef75418"
 
 symbol = 'NVDA'
 
@@ -65,23 +65,41 @@ def prix_de_cloture_passé(symbol):
     else:
         print('Échec de la requête. Vérifiez votre clé API ou le symbole de l\'action.')
 
-def prix_actuelle(symbol):
-    #current_price_url = f'https://financialmodelingprep.com/api/v3/quote/{symbol}?apikey={key}'
-    current_price_url=f'https://financialmodelingprep.com/api/v3/stock/real-time-price/{symbol}?apikey=84b2859fb03d27f28125c365b0b8967d'
+# def prix_actuelle(symbol):
+#     #current_price_url = f'https://financialmodelingprep.com/api/v3/quote/{symbol}?apikey={key}'
+#     current_price_url=f'https://financialmodelingprep.com/api/v3/stock/real-time-price/{symbol}?apikey=84b2859fb03d27f28125c365b0b8967d'
 
-    response_current_price = requests.get(current_price_url)
+#     response_current_price = requests.get(current_price_url)
     
-    data_current_price = response_current_price.json()
+#     data_current_price = response_current_price.json()
 
         
-    print(data_current_price)
-    # Récupérer le prix actuel de l'action
-    print(data_current_price["companiesPriceList"])
-    #current_price = data_current_price["companiesPriceList"][0]['price']
+#     print(data_current_price)
+#     # Récupérer le prix actuel de l'action
+#     print(data_current_price["companiesPriceList"])
+#     #current_price = data_current_price["companiesPriceList"][0]['price']
 
-    return 100
+#     return 100
 
-print(prix_actuelle('APPL'))
+def prix_actuelle(symbol):
+    api_key = "238e6abfb856d6a972ed6aca3ef75418"
+    current_price_url = f'https://financialmodelingprep.com/api/v3/quote/{symbol}?apikey={api_key}'
+    
+    try:
+        response_current_price = requests.get(current_price_url)
+        response_current_price.raise_for_status()  # Vérifier les erreurs HTTP
+        
+        data_current_price = response_current_price.json()
+        print(data_current_price)
+        # Récupérer le prix actuel de l'action
+        current_price = data_current_price[0]['price']
+        return current_price
+    
+    except requests.exceptions.RequestException as e:
+        print(f"Erreur lors de la requête API : {e}")
+        return None
+
+print(prix_actuelle('AAPL'))
 
 
 def plot_yesterday_stock(symbol):
