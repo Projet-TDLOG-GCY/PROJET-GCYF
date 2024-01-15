@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 <!--<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclure Chart.js -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <style>
     /* Styles spécifiques pour les boutons d'options */
     .choose-option {
@@ -32,12 +35,31 @@
     }
   </style>
 <head>
+  <style>
+    /* Ajoutez du CSS pour aligner les éléments côte à côte */
+    .input-container {
+    display: flex;
+    flex-direction: row; /* Utilisez "row" pour afficher les éléments côte à côte */
+    gap: 10px; /* Espace entre les éléments enfants */
+    }
+  
+    /* Ajoutez du CSS pour ajuster la largeur et la hauteur des barres de saisie */
+    .input-container input {
+      width: 500px; /* Ajustez la largeur selon vos besoins */
+      height: 30px; /* Ajustez la hauteur selon vos besoins */
+      box-sizing: border-box; /* Pour inclure la bordure et le padding dans la largeur et la hauteur */
+    }
+  
+      </style>
 <body class="fade-in">
   <div class="banner">
     <!-- Menu horizontal pour les onglets -->
     <nav class="navigation">
       <ul>
-        <li><a href="{{ url_for('index') }}">Pricer</a></li>
+        <li><a href="{{ url_for('index') }}">Mon Compte</a></li>
+        <li><a href="{{ url_for('actions') }}"> Actions</a></li>
+        <li><a href="{{ url_for('american') }}"> Options américaines</a></li>
+        <li><a href="{{ url_for('european') }}"> Options européennes</a></li>
         <li><a href="{{ url_for('about_us') }}">About us</a></li>
         <a href="/logout">Déconnexion</a>
       </ul>
@@ -61,51 +83,60 @@
   </head>
   <body>
       <canvas id="stockChart" width="400" height="200"></canvas>
-  <!--
-      <script>
-          // JavaScript pour récupérer les données et dessiner le graphique
-          fetch('/stock_data')
-              .then(response => response.json())
-              .then(data => {
-                  const ctx = document.getElementById('stockChart').getContext('2d');
-                  const myChart = new Chart(ctx, {
-                      type: 'line',
-                      data: {
-                          labels: data.labels,
-                          datasets: [{
-                              label: 'Cours de l\'action',
-                              data: data.values,
-                              borderColor: 'rgba(187, 194, 227, 1)',
-                              borderWidth: 1
-                          }]
-                      },
-                      options: {
-                          // Configuration du graphique (titre, légende, axes, etc.)
-                          // Vous pouvez personnaliser selon vos besoins
-                      }
-                  });
-              });
-      </script> -->
+
   </body>
 
-    <div class="choose-option">
-      <form action="/choix_option" method="post">
-        <p>Quel type d'option choisis-tu ?</p>
-        <div class="option-buttons">
-          <button type="submit" name="option" value="americaine">Option Américaine</button>
-          <button type="submit" name="option" value="europenne">Option Européenne</button>
-        </div>
-      </form>
-    </div>
+
+  <main id="main-container" class="main-container">
+    <head>
+      <title>Yentl Collin</title>
+      <style>
+          .portfolio {
+              background-color: #fff;
+              padding: 20px;
+              margin-top: 20px;
+          }
+          .portfolio h2, .portfolio h3 {
+              color: #333;
+          }
+          .portfolio-item {
+              border-bottom: 1px solid #eee;
+              padding: 10px;
+          }
+      </style>
+  </head>
+      <div class="container">
+          <div class="portfolio">
+              <h1>Yentl Collin </h2>
+              <h2>Mon Portefeuille</h3>
+              <div class="portfolio-item">
+                  <h3>Solde : $[solde]</h3>
+              </div>
+
+              <boutton action="/ajouter-argent" method="post">
+                <input type="number" name="montant" placeholder="Montant en euros">
+                <input type="submit" value="Ajouter de l'argent">
+              </button>
+
+              <div class="portfolio-item">
+                  <h3>Actions</h3>
+                  <!-- Ici, répétez cet élément pour chaque type d'action possédé -->
+                  <p>Type d'action : [Type] - Nombre : [Nombre] - Valorisation : $[Valorisation]</p>
+              </div>
+              <div class="portfolio-item">
+                  <h3>Valorisation Totale du Portefeuille : $[Valorisation Totale]</h3>
+              </div>
+          </div>
+      </div>
+
     
+  </main>
+
+
+
   
-
-
-
-  </main>
   <script src="{{ url_for('static', filename='prompt.js') }}"></script>
-  </main>
-  <script src="{{ url_for('static', filename='prompt.js') }}"></script>
+
 </body>
 
 </html>

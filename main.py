@@ -111,30 +111,43 @@ def upload():
     return {"success": True}
 
 
-@app.route('/stock_data')
-def stock_data():
+@app.route('/stock_data/<symbol>/<Nom_Symbol>')
+def stock_data(symbol, Nom_Symbol):
+    if (Nom_Symbol== "Nom"):
+        Real_Symbol = nom_marque_to_symbol(symbol)
+    else:
+        Real_Symbol = symbol
     # Code pour récupérer les données du cours de l'action
-    L, V = plot_yesterday_stock('AAPL')
+    L, V = plot_yesterday_stock(Real_Symbol)
     stock_data = {
         "labels": L,
-        "values": V
+        "values": V,
     }
     return jsonify(stock_data)
 
 
 
-@app.route('/choix_option', methods=['POST'])
-def choix_option():
-    option = request.form['option']
-
-    if option == 'americaine':
-        return redirect(url_for('american'))
-    elif option == 'europenne':
-        return redirect(url_for('european'))
-
 @app.route('/american')
 def american():
     return render_template('american.html')
+
+@app.route('/prix_americain/<maturity>')
+def prix_americain(maturity):
+    resultat_americaine = 0  # Initialisez à None pour gérer l'affichage conditionnel dans le template
+
+    # Validate and process form data
+    K = 4#float(request.form["strike_K"])
+    r = 3#float(request.form["taux_r"])
+    T = 0#float(maturity)
+    S0 = 4#float(request.form["spot_price_0"])
+    num_periods = 2#int(request.form["number_of_period"])
+    volatility = 3#float(request.form["volatility_american"])
+
+    u = 2#np.exp(volatility * np.sqrt(T))
+    d = 1 / u
+    resultat_americaine = maturity #Cox_Ross(K, S0, r, T, num_periods, u, d)
+    
+    return jsonify(resultat_americaine=resultat_americaine)
 
 @app.route('/european')
 def european():
@@ -235,24 +248,56 @@ def monte_carlo_american_call(S0, K, r, sigma, T, paths):
 
     return np.mean(option_prices)
 
-@app.route('/resultat_americaine', methods=['POST'])
-def resultat_americaine():
-    try:
-        # Validate numerical inputs
-        K = float(request.form["strike_K"])
-        r = float(request.form["taux_r"])
-        T = float(request.form["maturity_T"])
-        S0 = float(request.form["spot_price_0"])
-        num_periods = int(request.form["number_of_period"])
-        volatility=float(request.form["volatility_american"])
-        
 
-        u=np.exp(volatility*np.sqrt(T))
-        d=1/u
-        resultat_americaine=Cox_Ross(K,S0,r,T,num_periods,u,d)
 
-        return render_template("resultat_americaine.html", resultat_americaine=resultat_americaine)
-            
-    except ValueError as e:
-        return render_template("error.html", error_message=str(e))
+@app.route('/ajouter-argent', methods=['POST'])
+def ajouter_argent():
+    montant = request.form['montant']
+    mon_portefeuille.ajouter_argent(float(montant))
+    return render_template('index.html', message="Argent ajouté avec succès!")
 
+@app.route('/acheter', methods=['POST'])
+def acheter_action():
+    symbol = request.form['symbol']
+    nombre = int(request.form['nombre'])
+    mon_portefeuille.acheter_action(symbol, nombre)
+    return render_template('index.html', message="Achat réalisé avec succès!")
+
+@app.route('/vendre', methods=['POST'])
+def vendre_action():
+    symbol = request.form['symbol']
+    nombre = int(request.form['nombre'])
+    mon_portefeuille.vendre_action(symbol, nombre)
+    return render_template('index.html', message="Vente réalisée avec succès!")
+
+      
+file_path = os.path.join(os.path.dirname(__file__), 'nouveau_actions.txt')
+
+with open(file_path, 'r') as file:
+    stocks_data = [line.strip().split(': ') for line in file]
+
+stocks = [stocks_data[i][1] for i in range(len(stocks_data))]
+noms=[stocks_data[i][0] for i in range(len(stocks_data))]
+
+@app.route('/get_stock_suggestions')
+def get_stock_suggestions():
+    input_prefix = request.args.get('input', '').lower()
+
+    # Filter stocks based on input prefix
+    suggestion = []
+    for i in stocks:
+        if i.lower().startswith(input_prefix):
+            suggestion.append(i)
+    return jsonify(suggestion)
+
+
+@app.route('/get_stock_suggestions_noms')
+def get_stock_suggestions_noms():
+    input_prefix = request.args.get('input', '').lower()
+
+    # Filter stocks based on input prefix
+    suggestion = []
+    for i in noms:
+        if i.lower().startswith(input_prefix):
+            suggestion.append(i)
+    return jsonify(suggestion)

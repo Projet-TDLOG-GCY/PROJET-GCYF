@@ -12,11 +12,13 @@
         <!-- Menu horizontal pour les onglets -->
         <nav class="navigation">
             <ul>
-                <li><a href="{{ url_for('index') }}"> Pricer</a></li>
+                <li><a href="{{ url_for('hello') }}"> Mon Compte</a></li>
+                <li><a href="{{ url_for('actions') }}"> Actions</a></li>
+                <li><a href="{{ url_for('american') }}"> Options américaines</a></li>
+                <li><a href="{{ url_for('european') }}"> Options européennes</a></li>
                 <li><a href="{{ url_for('about_us') }}"> About us</a></li>
             </ul>
         </nav>
-        <button id="dark-mode-toggle">Activer/Désactiver le Mode Sombreee</button>
     </div>
 
     <main id="main-container" class="main-container">
@@ -26,7 +28,7 @@
 
         <!-- Contenu de la page "About Us" -->
         <div class="about-us-content">
-            <p>Nous sommes une équipe d'étudiants surdoués d'IMI, composé de Yentl, Gaspard, Clément (et Florian).</p>
+            <p>Nous sommes une équipe d'étudiants surdoués d'IMI, composé de Yentl, Gaspard, Clément.</p>
         </div>
     </main>
 

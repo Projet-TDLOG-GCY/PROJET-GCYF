@@ -16,7 +16,9 @@ import pandas as pd
 
 key = "84b2859fb03d27f28125c365b0b8967d"
 
-symbol = 'NVDA'
+key_yentl = "238e6abfb856d6a972ed6aca3ef75418"
+
+key_collin = "7OIVHIIG66QMLOLT"
 
 
 
@@ -83,7 +85,7 @@ def prix_actuelle(symbol):
 
 def plot_yesterday_stock(symbol):
     #le programme ne marche pas le dimanche, samedi car bourse fermer
-    api_key= "UFXVJ7HAEGYV19TX"
+    api_key=key_collin #"UFXVJ7HAEGYV19TX"
     ts = TimeSeries(key=api_key, output_format='pandas')
 
 
@@ -121,7 +123,7 @@ def plot_yesterday_stock(symbol):
     for i, timestamp in enumerate(timestamps):
         if timestamp >= market_open_time and timestamp < yesterday.replace(hour=heure_int, minute=minutes_int, second=seconde_int):
             filtered_timestamps.append(timestamp)
-            filtered_prices.append(data['4. close'][i])
+            filtered_prices.append(data['4. close'].iloc[i])
 
     # Convertir les timestamps en format 'heure:minute'
     formatted_timestamps = [t.strftime('%H:%M') for t in filtered_timestamps]
@@ -163,5 +165,23 @@ def get_stock_symbols():
 def nom_marque_to_symbol(nom_marque):
     marques_actions = get_stock_symbols()
     return marques_actions[nom_marque]
-    
 
+#fonction pour tester lorsqu'il y a eu plus de 25 tentatives
+
+def fonction(symbol):
+    if (symbol == "chat"):
+        L = [4, 5, 6]
+        V = [1, 3, 4]
+        rep = L, V
+        return rep
+    else:
+        L=[1, 1, 1]
+        V = [1, 1, 1]
+        rep = L, V
+        return rep
+
+def fonction_2(Symbol):
+    return "chat"
+
+        
+    
