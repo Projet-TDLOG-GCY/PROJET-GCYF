@@ -443,7 +443,7 @@ def american():
     if 'user_id' in session:
         user_id = session['user_id']
         user = User.query.get(user_id)
-    return render_template('american.html', username=user.username, balance=user.balance, american_option_portfolio=user.american_option_portfolio, real_user=user))
+    return render_template('american.html', username=user.username, balance=user.balance, american_option_portfolio=user.american_option_portfolio, real_user=user)
 
 @app.route('/european')
 def european():
