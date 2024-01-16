@@ -121,44 +121,20 @@
     <h4>Acheter ou vendre des actions</h4>
     
     <!-- Formulaire pour acheter des actions -->
-    <div class="sell_european_option">
-      <form action="/sell_european_option" method="post">
-        <label for="option_name_sell_eur">Nom de l'action:</label>
-        <input type="text" id="option_name_sell_eur" name="option_name_sell_eur" required>
+    <div class="buy-stock">
+      <form action="/buy_stock" method="post">
+        <label for="stock_name">Nom de l'action:</label>
+        <input type="text" id="stock_name_buy" name="stock_name_buy" required>
   
-        <label for="number_of_option_sell_eur">Nombre d'options:</label>
-        <input type="number" id="number_of_option_sell_eur" name="number_of_option_sell_eur" required>
-
-        <label for="Maturité">Maturité:</label>
-        <input type="number" id="K_sell_eur" name="K_sell_eur" required>
-
-        <label for="échéance">échéance:</label>
-        <input type="number" id="T_sell_eur" name="T_sell_eur" required>      
+        <label for="stock_number">Nombre d'actions:</label>
+        <input type="number" id="stock_number_buy" name="stock_number_buy" required>
   
-        <button type="submit" name="buy_button">Vendre</button>
+        <button type="submit" name="buy_button">Acheter</button>
       </form>
     </div>
-
-    <div class="buy_european_option">
-        <form action="/buy_european_option" method="post">
-          <label for="option_name_sell_eur">Nom de l'action:</label>
-          <input type="text" id="option_name_buy_eur" name="option_name_buy_eur" required>
-    
-          <label for="number_of_option_sell_eur">Nombre d'options:</label>
-          <input type="number" id="number_of_option_buy_eur" name="number_of_option_buy_eur" required>
-  
-          <label for="Maturité">Maturité:</label>
-          <input type="number" id="K_buy_eur" name="K_buy_eur" required>
-  
-          <label for="échéance">échéance:</label>
-          <input type="number" id="T_buy_eur" name="T_buy_eur" required>      
-    
-          <button type="submit" name="buy_button">Acheter</button>
-        </form>
-      </div>
     
     <!-- Formulaire pour vendre des actions -->
-    <!-- <div class="sell-stock">
+    <div class="sell-stock">
       <form action="/sell_stock" method="post">
         <label for="stock_name">Nom de l'action:</label>
         <input type="text" id="stock_name_sell" name="stock_name_sell" required>
@@ -168,21 +144,21 @@
   
         <button type="submit" name="buy_button">Vendre</button>
       </form>
-    </div> -->
+    </div>
     <!-- Barre de saisie de texte -->
-    <!-- <h4>Saisissez le symbole ou le nom de l'actions qui vous intéresse : </h4>
+    <h4>Saisissez le symbole ou le nom de l'actions qui vous intéresse : </h4>
 <div class="input-container">
   <input list="stockSuggestions" type="text" id="inputText" placeholder="SYMBOLE">
   <input list="nomsSuggestions" type="text" id="inputText2" placeholder="NOM">
   <datalist id="stockSuggestions"></datalist>
   <datalist id="nomsSuggestions"></datalist>
-</div> -->
+</div>
 
 <div class="user-portfolio">
   <h2>User's Portfolio</h2>
   <ul>      
-    {% for stock_name, quantity in european_option_portfolio.items() %}
-      <li>{{ stock_name }}: {{ quantity }} options</li>
+    {% for stock_name, quantity in stock_portfolio.items() %}
+      <li>{{ stock_name }}: {{ quantity }} actions</li>
     {% endfor %}      
   </ul>
 </div>

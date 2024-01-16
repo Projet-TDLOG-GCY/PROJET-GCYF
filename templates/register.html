@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,5 +12,31 @@
         <input type="password" name="password" placeholder="Mot de passe" required><br>
         <input type="submit" value="S'inscrire">
     </form>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="register-container">
+        <form action="/register" method="post">
+            <h1 class="text-center">Inscription</h1>
+
+            <label for="username">Nom d'utilisateur</label>
+            <input type="text" id="username" name="username" class="login-input" required>
+
+            <label for="password">Mot de passe</label>
+            <input type="text" id="password" name="password" class="login-input" required>
+
+            <button type="submit" class="button-primary">S'inscrire</button>
+            <a href="{{ url_for('login') }}" class="button-primary" >Se connecter</a>
+        </form>
+    </div>
 </body>
 </html>

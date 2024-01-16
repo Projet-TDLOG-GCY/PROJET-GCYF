@@ -99,6 +99,8 @@ def prix_actuelle(symbol):
         print(f"Erreur lors de la requête API : {e}")
         return None
 
+print(prix_actuelle('AAPL'))
+
 
 
 

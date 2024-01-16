@@ -12,11 +12,16 @@
         <!-- Menu horizontal pour les onglets -->
         <nav class="navigation">
             <ul>
-                <li><a href="{{ url_for('index') }}"> Pricer</a></li>
+                <li><a href="{{ url_for('index') }}"> Mon Compte</a></li>
+                <li><a href="{{ url_for('actions') }}"> Actions</a></li>
+                <li><a href="{{ url_for('american') }}"> Options américaines</a></li>
+                <li><a href="{{ url_for('european') }}"> Options européennes</a></li>
                 <li><a href="{{ url_for('about_us') }}"> About us</a></li>
+                <a href="/logout">Déconnexion</a>
+            
             </ul>
         </nav>
-        <button id="dark-mode-toggle">Activer/Désactiver le Mode Sombreee</button>
+    
     </div>
 
     <main id="main-container" class="main-container">

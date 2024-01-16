@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <title>Connexion</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Add additional CSS styles for the password toggle */
+        .password-toggle {
+            position: relative;
+        }
+        .password-toggle input[type="password"] {
+            padding-right: 30px;
+        }
+        .password-toggle .toggle-btn {
+            position: absolute;
+            top: 50%;
+            right: 5px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <h1>Connexion</h1>
@@ -14,3 +30,7 @@
     </form>
 </body>
 </html>
+
+
+
+

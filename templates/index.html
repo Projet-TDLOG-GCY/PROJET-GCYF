@@ -37,11 +37,14 @@
     <!-- Menu horizontal pour les onglets -->
     <nav class="navigation">
       <ul>
-        <li><a href="{{ url_for('index') }}">Pricer</a></li>
-        <li><a href="{{ url_for('about_us') }}">About us</a></li>
+        <li><a href="{{ url_for('index') }}"> Mon Compte</a></li>
+        <li><a href="{{ url_for('actions') }}"> Actions</a></li>
+        <li><a href="{{ url_for('american') }}"> Options américaines</a></li>
+        <li><a href="{{ url_for('european') }}"> Options européennes</a></li>
+        <li><a href="{{ url_for('about_us') }}"> About us</a></li>
         <a href="/logout">Déconnexion</a>
       </ul>
-    </nav>
+    </nav>  
   </div>
 
   <main id="main-container" class="main-container">
@@ -53,11 +56,9 @@
       <div class="message">
         AI powered pricer for quantitative finance. 
       </div>
-
-
     </section>
     <p>Bonjour, {{ username }} ! Votre solde actuel est de {{ balance }} euros.</p>
-    <p>Stocks Owned:</p>
+    
     
     <head>
       <title>Graphique d'action</title>
@@ -66,7 +67,7 @@
   <body>
 
     <!-- buy stocks -->
-    <div class="buy-stock">
+    <!-- <div class="buy-stock">
       <form action="/buy_stock" method="post">
         <label for="stock_name">Nom de l'action:</label>
         <input type="text" id="stock_name_buy" name="stock_name_buy" required>
@@ -76,9 +77,9 @@
   
         <button type="submit" name="buy_button">Acheter</button>
       </form>
-    </div>
+    </div> -->
 
-    <div class="sell-stock">
+    <!-- <div class="sell-stock">
       <form action="/sell_stock" method="post">
         <label for="stock_name">Nom de l'action:</label>
         <input type="text" id="stock_name_sell" name="stock_name_sell" required>
@@ -88,7 +89,7 @@
   
         <button type="submit" name="buy_button">Vendre</button>
       </form>
-    </div>
+    </div> -->
 
     
    
