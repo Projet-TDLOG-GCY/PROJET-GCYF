@@ -44,7 +44,7 @@ class User(db.Model):
     balance = db.Column(db.Float, default=500.0)   
     stock_portfolio = db.Column(db.JSON, default={})
     european_option_portfolio = db.Column(db.JSON, default={'option_name':'AAPL', 'number_of_option_eur':2})
-    american_option_portfolio = db.Column(db.JSON, default={})
+    american_option_portfolio = db.Column(db.JSON, default={'AAPL':0})
 
 
 @app.route('/buy_stock', methods=['POST'])

@@ -178,25 +178,8 @@
   <datalist id="nomsSuggestions"></datalist>
 </div> -->
 
-<div class="user-portfolio">
-  <h2>User's Portfolio</h2>
-  <ul>      
-    {% for stock_name, quantity in american_option_portfolio.items() %}
-      <li>{{ stock_name }}: {{ quantity }} options</li>
-    {% endfor %}      
-  </ul>
-</div>
 
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-  <ul class="flash-messages">
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}
-{% endwith %}
-</div>
+
 
 
 <!-- Bouton pour afficher la pop-up en fonction du texte saisi -->
