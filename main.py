@@ -5,7 +5,7 @@ import json
 
 # Import other necessary modules
 import sys
-sys.path.append('/Users/clementdureuil/Downloads/2A/TDLOG/Projet TD LOG FINAL/PROJET-GCYF/src')
+sys.path.append('/Users/gaspardbeaudouin/Desktop/2A/Projet_TDLOG/PROJET_GCYF/src')
 
 import pandas as pd
 from src import financeProg
@@ -443,7 +443,7 @@ def american():
     if 'user_id' in session:
         user_id = session['user_id']
         user = User.query.get(user_id)
-    return render_template('american.html', username=user.username, balance=user.balance, american_option_portfolio=user.american_option_portfolio, real_user=user))
+    return render_template('american.html', username=user.username, balance=user.balance, american_option_portfolio=user.american_option_portfolio, real_user=user)
 
 @app.route('/european')
 def european():
