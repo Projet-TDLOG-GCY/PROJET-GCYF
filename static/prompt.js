@@ -92,4 +92,47 @@ darkModeButton.addEventListener('click', toggleDarkMode);
 
 
 
+// les suggestions 
+function getStockSuggestions(input) {
+  fetch(`/get_stock_suggestions?input=${input}`)
+    .then(response => response.json())
+    .then(suggestions => {
+      const datalist = document.getElementById('stockSuggestions');
+      datalist.innerHTML = "";
 
+      for (const suggestion of suggestions.slice(0, 5)) {
+        const option = document.createElement("option");
+        option.value = suggestion;
+        datalist.appendChild(option);
+      }
+    });
+}
+
+function getStockSuggestionsNoms(input){
+  fetch(`/get_stock_suggestions_noms?input=${input}`)
+    .then(response => response.json())
+    .then(suggestions => {
+      const datalist = document.getElementById('nomsSuggestions');
+      datalist.innerHTML = "";
+
+      for (const suggestion of suggestions.slice(0, 5)) {
+        const option = document.createElement("option");
+        option.value = suggestion;
+        datalist.appendChild(option);
+      }
+    });
+
+}
+
+const inputText = document.getElementById("inputText");
+const inputText2 = document.getElementById("inputText2");
+
+inputText.addEventListener('input', function() {
+  const inputValue = inputText.value;
+  getStockSuggestions(inputValue);
+});
+
+inputText2.addEventListener('input', function() {
+  const inputValue = inputText2.value;
+  getStockSuggestionsNoms(inputValue);
+});
