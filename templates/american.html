@@ -140,8 +140,8 @@
     </div>
 
     <div class="buy_american_option">
-        <form action="/buy_european_option" method="post">
-          <label for="option_name_sell_am">Nom de l'action:</label>
+        <form action="/buy_american_option" method="post">
+          <label for="option_name_buy_am">Nom de l'action:</label>
           <input type="text" id="option_name_buy_eur" name="option_name_buy_am" required>
     
           <label for="number_of_option_sell_am">Nombre d'options:</label>
@@ -157,6 +157,26 @@
         </form>
       </div>
     
+
+    <div class="user-portfolio">
+        <h2>User's Portfolio</h2>
+        <ul>      
+          {% for stock_name, quantity in american_option_portfolio.items() %}
+            <li>{{ stock_name }}: {{ quantity }} options</li>
+          {% endfor %}      
+        </ul>
+    </div>
+      
+    {% with messages = get_flashed_messages() %}
+     {% if messages %}
+        <ul class="flash-messages">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+     {% endif %}
+    {% endwith %}
+      </div>
     <!-- Formulaire pour vendre des actions -->
     <!-- <div class="sell-stock">
       <form action="/sell_stock" method="post">
@@ -177,8 +197,6 @@
   <datalist id="stockSuggestions"></datalist>
   <datalist id="nomsSuggestions"></datalist>
 </div> -->
-
-
 
 
 

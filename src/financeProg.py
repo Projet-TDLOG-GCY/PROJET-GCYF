@@ -14,7 +14,9 @@ import pandas as pd
 # import yfinance as yf
 
 
-key = "238e6abfb856d6a972ed6aca3ef75418"
+# key = "238e6abfb856d6a972ed6aca3ef75418"
+key = '84b2859fb03d27f28125c365b0b8967d'
+
 
 symbol = 'NVDA'
 
@@ -82,7 +84,7 @@ def prix_de_cloture_passé(symbol):
 #     return 100
 
 def prix_actuelle(symbol):
-    api_key = "238e6abfb856d6a972ed6aca3ef75418"
+    api_key = "84b2859fb03d27f28125c365b0b8967d"
     current_price_url = f'https://financialmodelingprep.com/api/v3/quote/{symbol}?apikey={api_key}'
     
     try:
@@ -99,7 +101,7 @@ def prix_actuelle(symbol):
         print(f"Erreur lors de la requête API : {e}")
         return None
 
-print(prix_actuelle('AAPL'))
+print('prix actuelle =',prix_actuelle('AAPL'))
 
 
 
@@ -165,23 +167,23 @@ def plot_yesterday_stock(symbol):
     #plt.show()
     return formatted_timestamps,filtered_prices
 
-# def get_stock_symbols():
+def get_stock_symbols():
 
-#     # Endpoint pour obtenir une liste de symboles boursiers
-#     endpoint = f'https://financialmodelingprep.com/api/v3/stock/list?apikey=84b2859fb03d27f28125c365b0b8967d'
+    # Endpoint pour obtenir une liste de symboles boursiers
+    endpoint = f'https://financialmodelingprep.com/api/v3/stock/list?apikey=84b2859fb03d27f28125c365b0b8967d'
 
-#     response = requests.get(endpoint)
-#     data = response.json()
+    response = requests.get(endpoint)
+    data = response.json()
     
-#     # Création du dictionnaire marque-action
-#     marques_actions = {}
-#     for company in data:
-#         marque = company['name']
-#         marche=company["exchangeShortName"] 
-#         symbol = company['symbol']
-#         if marche=="NASDAQ":
-#             marques_actions[marque] = symbol
-#     return marques_actions
+    # Création du dictionnaire marque-action
+    marques_actions = {}
+    for company in data:
+        marque = company['name']
+        marche=company["exchangeShortName"] 
+        symbol = company['symbol']
+        if marche=="NASDAQ":
+            marques_actions[marque] = symbol
+    return marques_actions
 
 def nom_marque_to_symbol(nom_marque):
     marques_actions = get_stock_symbols()

@@ -52,3 +52,6 @@ def american_call_option_price(S, K, r, T, sigma, n):
             call_option_prices[j] = np.maximum(intrinsic_value, option_value)
 
     return call_option_prices[0]
+
+
+print(american_call_option_price(100, 110,0.05, 1, 0.1, 100))
