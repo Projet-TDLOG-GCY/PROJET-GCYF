@@ -53,6 +53,7 @@ body {
 /* Ajoutez ces styles spécifiques pour la page "About us" */
 .about-us-content {
   background-color: #8ecaf2;
+  color: #ffffff;
   /* Couleur d'arrière-plan pour la page "About Us" */
   padding: 8px;
   margin: 80px;
@@ -287,11 +288,13 @@ body {
   margin-bottom: 15px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  color: black; /* Ajoutez cette ligne pour changer la couleur du texte à noir */
 }
 
 #calculate-price {
