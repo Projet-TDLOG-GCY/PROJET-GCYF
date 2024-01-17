@@ -497,6 +497,36 @@ def resultat_americaine():
     except ValueError as e:
         return render_template("error.html", error_message=str(e))
 
+file_path = os.path.join(os.path.dirname(__file__), 'nouveau_actions.txt')
+
+with open(file_path, 'r') as file:
+    stocks_data = [line.strip().split(': ') for line in file]
+
+stocks = [stocks_data[i][1] for i in range(len(stocks_data))]
+noms=[stocks_data[i][0] for i in range(len(stocks_data))]
+
+@app.route('/get_stock_suggestions')
+def get_stock_suggestions():
+    input_prefix = request.args.get('input', '').lower()
+
+    # Filter stocks based on input prefix
+    suggestion = []
+    for i in stocks:
+        if i.lower().startswith(input_prefix):
+            suggestion.append(i)
+    return jsonify(suggestion)
+
+
+@app.route('/get_stock_suggestions_noms')
+def get_stock_suggestions_noms():
+    input_prefix = request.args.get('input', '').lower()
+
+    # Filter stocks based on input prefix
+    suggestion = []
+    for i in noms:
+        if i.lower().startswith(input_prefix):
+            suggestion.append(i)
+    return jsonify(suggestion)
 
 if __name__ == '__main__':
     app.run(debug=True)
