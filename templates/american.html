@@ -1,3 +1,8 @@
+
+
+</html>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -67,21 +72,74 @@
     
   </script>
     <style>
-  /* Ajoutez du CSS pour aligner les éléments côte à côte */
-  .input-container {
-  display: flex;
-  flex-direction: row; /* Utilisez "row" pour afficher les éléments côte à côte */
-  gap: 10px; /* Espace entre les éléments enfants */
-  }
+      /* Ajoutez du CSS pour aligner les éléments côte à côte */
+      .input-container {
+      display: flex;
+      flex-direction: row; /* Utilisez "row" pour afficher les éléments côte à côte */
+      gap: 10px; /* Espace entre les éléments enfants */
+      }
+    
+      /* Ajoutez du CSS pour ajuster la largeur et la hauteur des barres de saisie */
+      .input-container input {
+        width: 500px; /* Ajustez la largeur selon vos besoins */
+        height: 30px; /* Ajustez la hauteur selon vos besoins */
+        box-sizing: border-box; /* Pour inclure la bordure et le padding dans la largeur et la hauteur */
+      }
+    
+    
+    
+    input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    }
+    
+    button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+    
+    a.button-primary {
+    display: block;
+    background-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-top: 200px;
+    }
+    
+    a.button-primary:hover,
+    button:hover {
+    opacity: 0.8;
+    }
 
-  /* Ajoutez du CSS pour ajuster la largeur et la hauteur des barres de saisie */
-  .input-container input {
-    width: 500px; /* Ajustez la largeur selon vos besoins */
-    height: 30px; /* Ajustez la hauteur selon vos besoins */
-    box-sizing: border-box; /* Pour inclure la bordure et le padding dans la largeur et la hauteur */
-  }
+    .user-portfolio table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
 
-    </style>
+.user-portfolio th, .user-portfolio td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.user-portfolio th {
+    background-color: #2a303b;
+    color: white;
+}
+
+        </style>
+    
 
 
 
@@ -129,10 +187,10 @@
         <label for="number_of_option_sell_eur">Nombre d'options:</label>
         <input type="number" id="number_of_option_sell_am" name="number_of_option_sell_am" required>
 
-        <label for="Maturité">Maturité:</label>
+        <label for="Maturité">Prix d'exercice de l'option:</label>
         <input type="number" id="K_sell_am" name="K_sell_am" required>
 
-        <label for="échéance">échéance:</label>
+        <label for="échéance">date d'échéance:</label>
         <input type="number" id="T_sell_am" name="T_sell_am" required>      
   
         <button type="submit" name="buy_button">Vendre</button>
@@ -142,41 +200,22 @@
     <div class="buy_american_option">
         <form action="/buy_american_option" method="post">
           <label for="option_name_buy_am">Nom de l'action:</label>
-          <input type="text" id="option_name_buy_eur" name="option_name_buy_am" required>
+          <input type="text" id="option_name_buy_amr" name="option_name_buy_am" required>
     
           <label for="number_of_option_sell_am">Nombre d'options:</label>
           <input type="number" id="number_of_option_buy_am" name="number_of_option_buy_am" required>
   
-          <label for="Maturité">Maturité:</label>
+          <label for="Maturité">Prix d'exercice de l'option:</label>
           <input type="number" id="K_buy_am" name="K_buy_am" required>
   
-          <label for="échéance">échéance:</label>
+          <label for="échéance">date d'échéance:</label>
           <input type="number" id="T_buy_am" name="T_buy_am" required>      
     
           <button type="submit" name="buy_button">Acheter</button>
         </form>
       </div>
     
-
-    <div class="user-portfolio">
-        <h2>User's Portfolio</h2>
-        <ul>      
-          {% for stock_name, quantity in american_option_portfolio.items() %}
-            <li>{{ stock_name }}: {{ quantity }} options</li>
-          {% endfor %}      
-        </ul>
-    </div>
-      
-    {% with messages = get_flashed_messages() %}
-     {% if messages %}
-        <ul class="flash-messages">
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-     {% endif %}
-    {% endwith %}
-      </div>
+    
     <!-- Formulaire pour vendre des actions -->
     <!-- <div class="sell-stock">
       <form action="/sell_stock" method="post">
@@ -197,6 +236,41 @@
   <datalist id="stockSuggestions"></datalist>
   <datalist id="nomsSuggestions"></datalist>
 </div> -->
+
+<div class="user-portfolio">
+  <h2>User's Portfolio</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Option Name</th>
+        <th>Quantity</th>
+        <th>Maturity</th>
+        <th>Expiration</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for stock_name, quantity in american_option_portfolio.items()  %}
+        <tr>
+          <td>{{ stock_name }}</td>
+          <td>{{ quantity }}</td>
+          
+        </tr>
+      {% endfor %}
+    </tbody>
+
+    
+    <!-- <tbody>
+      {% for option_name, option_data in american_option_portfolio.items() %}
+        <tr>
+          <td>{{ option_name }}</td>
+          <td>{{ option_data['quantity'] }}</td>
+          <td>{{ option_data['maturity'] }}</td>
+          <td>{{ option_data['expiration'] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody> -->
+  </table>
+</div>
 
 
 

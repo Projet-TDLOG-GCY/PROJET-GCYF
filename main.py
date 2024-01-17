@@ -320,6 +320,7 @@ def sell_ammerican_option():
         # Get the current price of the stock using the prix_actuelle function
          
         sport_price= prix_actuelle(option_name)
+
         option_price= american_call_option_price(sport_price,K,0.05,T,sigma,100)
         
         print('option_price = ', option_price)
@@ -329,7 +330,7 @@ def sell_ammerican_option():
 
         user = User.query.get(user_id)
         # Update the user's portfolio
-        if option_name in user.european_option_portfolio and new_american_option_portfolio[option_name]>=number_of_option_am:
+        if option_name in user.american_option_portfolio and new_american_option_portfolio[option_name]>=number_of_option_am:
             user.balance += number_of_option_am * option_price
             print('user.balance after selling:', user.balance)
             user = User.query.get(user_id)
@@ -337,7 +338,7 @@ def sell_ammerican_option():
             new_american_option_portfolio[option_name] -= number_of_option_am
 
             #on cactualise la db
-            user.european_option_portfolio = new_american_option_portfolio    
+            user.american_option_portfolio = new_american_option_portfolio    
             # Commit changes to the database after making all updates
             db.session.commit()
 

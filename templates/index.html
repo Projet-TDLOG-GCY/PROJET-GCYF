@@ -30,6 +30,24 @@
     .choose-option button:hover {
       background-color: #1c1f25;
     }
+
+    .user-portfolio table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.user-portfolio th, .user-portfolio td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.user-portfolio th {
+    background-color: #2a303b;
+    color: white;
+}
+
   </style>
 <head>
 <body class="fade-in">
@@ -118,6 +136,7 @@
     {% endwith %}
   </div>
 
+ 
   
       <script>
           // JavaScript pour récupérer les données et dessiner le graphique
@@ -144,7 +163,7 @@
               });
       </script> 
 
-  <div class="user-portfolio">
+  <!-- <div class="user-portfolio">
     <h2>User's Portfolio</h2>
     <ul>
         
@@ -153,8 +172,24 @@
       {% endfor %}
         
     </ul>
-  </div>
-
+  </div> -->
+  <div class="user-portfolio">
+    <h2>User's Portfolio</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Stock Name</th>
+          <th>Quantity</th>          
+        </tr>
+      </thead>
+      <tbody>
+        {% for stock_name, quantity in stock_portfolio.items()  %}
+          <tr>
+            <td>{{ stock_name }}</td>
+            <td>{{ quantity }}</td>            
+          </tr>
+        {% endfor %}
+      </tbody>
   
   </body>   
   
