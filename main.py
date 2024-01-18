@@ -5,7 +5,7 @@ import json
 
 # Import other necessary modules
 import sys
-sys.path.append('/Users/clementdureuil/Downloads/2A/TDLOG/Projet TD LOG FINAL/PROJET-GCYF/src')
+sys.path.append('/Users/florianarfeuille/Documents/Pont/S3/TDlog/projet/PROJET-GCYF/src')
 
 import pandas as pd
 from src import financeProg
@@ -422,6 +422,8 @@ def add_money():
         user_id = session['user_id']
         user = User.query.get(user_id)
 
+        
+
         # Get the amount to add and validate it (you may add additional validation)
         amount_to_add = request.form.get('amount')
         if not amount_to_add:
@@ -433,8 +435,27 @@ def add_money():
         # Commit changes to the database
         db.session.commit()
 
+        list_valeur_par_action = {}
+        tot_portfolio = 0
+        if user:
+            portfolio_value = user.stock_portfolio
+            for cle, valeur in portfolio_value.items():
+                if type(cle)==str:
+                    try:
+                        prix = prix_actuelle(str(cle))
+                        list_valeur_par_action[cle] = prix*portfolio_value[cle]
+                        tot_portfolio += prix
+                    
+                    except ValueError:
+                        flash("cle not a str in index_route") 
+                        return redirect(url_for('login'))             
+        else : 
+            flash("User not found.")
+            return redirect(url_for('login'))  
+
+
         flash(f"Montant ajouté avec succès! Nouveau solde: {user.balance} euros.")
-        return render_template('index.html', username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
+        return render_template('index.html',list_valeur_par_action = list_valeur_par_action, tot_portfolio = tot_portfolio, username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
 
     return redirect(url_for('login'))
 
@@ -446,15 +467,28 @@ def index():
         user_id = session['user_id']
         user = User.query.get(user_id)
         
+        list_valeur_par_action = {}
+        tot_portfolio = 0
         if user:
             portfolio_value = user.stock_portfolio
-            
+            for cle, valeur in portfolio_value.items():
+                if type(cle)==str:
+                    try:
+                        prix = prix_actuelle(str(cle))
+                        list_valeur_par_action[cle] = prix*portfolio_value[cle]
+                        tot_portfolio += prix
+                    
+                    except ValueError:
+                        flash("cle not a str in index_route") 
+                        return redirect(url_for('login'))             
         else : 
             flash("User not found.")
-            return redirect(url_for('login'))        
+            return redirect(url_for('login'))  
+
+              
 
         # Render the template with the portfolio value
-        return render_template('index.html', username=user.username, balance=user.balance, portfolio_value=portfolio_value, stock_portfolio=user.stock_portfolio, real_user=user)
+        return render_template('index.html',list_valeur_par_action = list_valeur_par_action, tot_portfolio = tot_portfolio,username=user.username, balance=user.balance, portfolio_value=portfolio_value, stock_portfolio=user.stock_portfolio, real_user=user)
     else:
         return redirect(url_for('login'))
 
@@ -611,5 +645,36 @@ def resultat_americaine():
         return render_template("error.html", error_message=str(e))
 
 
-if __name__ == '__main__':
+file_path = 'nouveau_actions.txt'
+
+with open(file_path, 'r') as file:
+    stocks_data = [line.strip().split(': ') for line in file]
+
+stocks = [stocks_data[i][1] for i in range(len(stocks_data))]
+noms=[stocks_data[i][0] for i in range(len(stocks_data))]
+
+@app.route('/get_stock_suggestions')
+def get_stock_suggestions():
+    input_prefix = request.args.get('input', '').lower()
+
+    # Filter stocks based on input prefix
+    suggestion = []
+    for i in stocks:
+        if i.lower().startswith(input_prefix):
+            suggestion.append(i)
+    return jsonify(suggestion)
+
+
+@app.route('/get_stock_suggestions_noms')
+def get_stock_suggestions_noms():
+    input_prefix = request.args.get('input', '').lower()
+
+    # Filter stocks based on input prefix
+    suggestion = []
+    for i in noms:
+        if i.lower().startswith(input_prefix):
+            suggestion.append(i)
+    return jsonify(suggestion)
+
+if __name__ == '_main_':
     app.run(debug=True)

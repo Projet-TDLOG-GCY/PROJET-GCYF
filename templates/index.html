@@ -1,55 +1,74 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
-  <title> class="title">Pricer</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-<!--<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclure Chart.js -->
-  <style>
-    /* Styles spécifiques pour les boutons d'options */
-    .choose-option {
-      text-align: center;
-      margin-top: 50px;
-    }
+    <title class="title">Pricer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <!--<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclure Chart.js -->
+    <style>
+        /* Styles spécifiques pour les boutons d'options */
+        .choose-option {
+            text-align: center;
+            margin-top: 50px;
+        }
 
-    .choose-option button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      background-color: #2a303b;
-      color: white;
-      transition: background-color 0.3s ease;
-      margin: 0 10px;
-    }
+        .choose-option button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #2a303b;
+            color: white;
+            transition: background-color 0.3s ease;
+            margin: 0 10px;
+        }
 
-    .choose-option button:hover {
-      background-color: #1c1f25;
-    }
+        .choose-option button:hover {
+            background-color: #1c1f25;
+        }
 
-    .user-portfolio table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
+        .user-portfolio table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-.user-portfolio th, .user-portfolio td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
+        .user-portfolio th,
+        .user-portfolio td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
 
-.user-portfolio th {
-    background-color: #2a303b;
-    color: white;
-}
+        .user-portfolio th {
+            background-color: #2a303b;
+            color: white;
+        }
 
-  </style>
-<head>
+        .user-summary h2 {
+            margin-top: 30px;
+        }
+
+        .user-summary table:last-child {
+            margin-top: 10px;
+        }
+
+        .user-summary table:last-child th,
+        .user-summary table:last-child td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .user-summary table:last-child th {
+            background-color: #2a303b;
+            color: white;
+        }
+    </style>
+</head>
+
 <body class="fade-in">
   <div class="banner">
     <!-- Menu horizontal pour les onglets -->
@@ -179,20 +198,38 @@
       <thead>
         <tr>
           <th>Stock Name</th>
-          <th>Quantity</th>          
+          <th>Quantity</th>
+          <th>Total Amount</th>
         </tr>
       </thead>
       <tbody>
-        {% for stock_name, quantity in stock_portfolio.items()  %}
+        {% for stock_name, quantity in stock_portfolio.items() %}
           <tr>
             <td>{{ stock_name }}</td>
-            <td>{{ quantity }}</td>            
+            <td>{{ quantity }}</td>
+            <td>{{ list_valeur_par_action[stock_name] }}</td>
           </tr>
         {% endfor %}
       </tbody>
-  
-  </body>   
-  
+    </table>
+  </div>
+
+  <div class="user-summary">
+  <h2>Portfolio Summary</h2>
+  <table>
+    
+    <tbody>
+      <tr>
+        <td>Money</td>
+        <td>{{ balance }}</td>
+      </tr>
+      <tr>
+        <td>Total Amount of Stocks</td>
+        <td>{{ tot_portfolio }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 
 
