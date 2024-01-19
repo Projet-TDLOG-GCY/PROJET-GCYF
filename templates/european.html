@@ -181,9 +181,14 @@
 <div class="user-portfolio">
   <h2>User's Portfolio</h2>
   <ul>      
-    {% for stock_name, quantity in european_option_portfolio.items() %}
-      <li>{{ stock_name }}: {{ quantity }} options</li>
-    {% endfor %}      
+    {% for stock_name, data in european_option_portfolio.items() %}
+        {% for K, T_data in data.items() %}
+            {% for T, quantity in T_data.items() %}
+                <li>{{ stock_name }}: K={{ K }}, T={{ T }}, Quantity={{ quantity }} options</li>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+   
   </ul>
 </div>
 

@@ -155,6 +155,36 @@ opacity: 0.8;
 
     <p>Bonjour, {{ username }} ! Votre solde actuel est de {{ balance }} euros.</p>
     
+<!-- Barre de saisie de texte -->
+<h4>Saisissez le symbole ou le nom de l'actions qui vous intéresse : </h4>
+<div class="input-container">
+  <input list="stockSuggestions" type="text" id="inputText" placeholder="SYMBOLE">
+  <input list="nomsSuggestions" type="text" id="inputText2" placeholder="NOM">
+  <datalist id="stockSuggestions"></datalist>
+  <datalist id="nomsSuggestions"></datalist>
+</div>
+<!-- Bouton pour afficher la pop-up en fonction du texte saisi -->
+<button class="btn btn-primary" onclick="afficherPopup()">Valider</button>
+
+<!-- Modal (Pop-up) -->
+<div class="modal fade" id="myModal" style="display: none;">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Contenu de la pop-up -->
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <canvas id="stockChart" width="400" height="200"></canvas>
+          </div>
+          <!-- Bouton pour fermer la pop-up -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
     <h4>Acheter ou vendre des actions</h4>
     
@@ -162,8 +192,10 @@ opacity: 0.8;
     <div class="buy-stock">
       <form action="/buy_stock" method="post">
         <label for="stock_name">Nom de l'action:</label>
-        <input type="text" id="stock_name_buy" name="stock_name_buy" required>
-  
+        <!-- <input list="nomsSuggestions" type="text" id="stock_name_buy" name="stock_name_buy" required> -->
+        <input  list="buyStockSuggestions" type="text" id="stock_name_buy" name="stock_name_buy" required>
+        <datalist id="buyStockSuggestions"></datalist>
+
         <label for="stock_number">Nombre d'actions:</label>
         <input type="number" id="stock_number_buy" name="stock_number_buy" required>
   
@@ -176,21 +208,14 @@ opacity: 0.8;
       <form action="/sell_stock" method="post">
         <label for="stock_name">Nom de l'action:</label>
         <input type="text" id="stock_name_sell" name="stock_name_sell" required>
-  
+
         <label for="stock_number">Nombre d'actions:</label>
         <input type="number" id="stock_number_sell" name="stock_number_sell" required>
   
         <button type="submit" name="buy_button">Vendre</button>
       </form>
     </div>
-    <!-- Barre de saisie de texte -->
-    <h4>Saisissez le symbole ou le nom de l'actions qui vous intéresse : </h4>
-<div class="input-container">
-  <input list="stockSuggestions" type="text" id="inputText" placeholder="SYMBOLE" autocomplete="off">
-  <input list="nomsSuggestions" type="text" id="inputText2" placeholder="NOM" autocomplete="off">
-  <datalist id="stockSuggestions"></datalist>
-  <datalist id="nomsSuggestions"></datalist>
-</div>
+    
 
 <div class="user-portfolio">
   <h2>User's Portfolio</h2>

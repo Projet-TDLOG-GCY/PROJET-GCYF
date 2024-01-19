@@ -243,20 +243,39 @@
     <thead>
       <tr>
         <th>Option Name</th>
-        <th>Quantity</th>
+        
         <th>Maturity</th>
         <th>Expiration</th>
+        <th>Quantity</th>
+
       </tr>
     </thead>
     <tbody>
-      {% for stock_name, quantity in american_option_portfolio.items()  %}
+      {% for stock_name, data in american_option_portfolio.items()  %}
+      {% for K, T_data in data.items() %}
+        {% for T, quantity in T_data.items() %}
         <tr>
           <td>{{ stock_name }}</td>
+          <td>{{ K }}</td>
+          <td>{{ T }}</td>
           <td>{{ quantity }}</td>
-          
         </tr>
-      {% endfor %}
+        {% endfor %}
+    {% endfor %}
+    {% endfor %}
     </tbody>
+
+    {% with messages = get_flashed_messages() %}
+{% if messages %}
+  <ul class="flash-messages">
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+</div>
+
 
     
     <!-- <tbody>

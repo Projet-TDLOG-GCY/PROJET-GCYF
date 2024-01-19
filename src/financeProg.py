@@ -62,7 +62,7 @@ def prix_de_cloture_passé(symbol):
         square=[ (daily_logvariation[i] - logmoy)**2 for i in range(n) ]
         s=sum(square) / (n-1)
         volatilty= np.sqrt(s)*np.sqrt(255) # on observe tous les jours et l'on suppose qu'il y a 255 jours de bourse sur un an 
-        print(volatilty)
+        #print(volatilty)
         return volatilty
     else:
         print('Échec de la requête. Vérifiez votre clé API ou le symbole de l\'action.')
@@ -92,7 +92,7 @@ def prix_actuelle(symbol):
         response_current_price.raise_for_status()  # Vérifier les erreurs HTTP
         
         data_current_price = response_current_price.json()
-        print(data_current_price)
+        #print(data_current_price)
         # Récupérer le prix actuel de l'action
         current_price = data_current_price[0]['price']
         return current_price
@@ -101,7 +101,7 @@ def prix_actuelle(symbol):
         print(f"Erreur lors de la requête API : {e}")
         return None
 
-print('prix actuelle =',prix_actuelle('AAPL'))
+#print('prix actuelle =',prix_actuelle('AAPL'))
 
 
 
