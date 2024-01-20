@@ -386,6 +386,7 @@ def buy_american_option():
 
         if number_of_option_am_str is not None:
             try:
+
                 number_of_option_am = int(number_of_option_am_str)
 
                 sport_price = prix_actuelle(option_name)
@@ -644,25 +645,21 @@ def resultat_european():
         return render_template("error.html", error_message=str(e))
 
 
-@app.route("/resultat_americaine", methods=["POST"])
-def resultat_americaine():
-    try:      
-        K = float(request.form["strike_K"])
-        r = float(request.form["taux_r"])
-        T = float(request.form["maturity_T"])       
-        
-        stock_name = str(request.form["stock_symbol_am"])
+@app.route('/prix_americain/<Echeance>/<Nom>/<Prix>')    
+def resultat_americaine(Echeance, Nom, Prix):
+    
+    K = Prix
+    r = 0.05
+    T = Echeance      
+    
+    stock_name = Nom
 
-        S0=prix_actuelle(stock_name)
-        sigma = prix_de_cloture_passé(stock_name)              
-        resultat_americaine = american_call_option_price(S0, K, r, T, sigma, 300)
+    S0=prix_actuelle(stock_name)
+    print('S0 =' ,S0)   
+    sigma = prix_de_cloture_passé(stock_name)              
+    resultat_americaine = american_call_option_price(S0, K, r, T, sigma, 300)
 
-        return render_template(
-            "resultat_americaine.html", resultat_americaine=resultat_americaine
-        )
-    except ValueError as e:
-        return render_template("error.html", error_message=str(e))
-
+    return jsonify(resultat_americaine=resultat_americaine)
 
 file_path = 'nouveau_actions.txt'
 
@@ -688,6 +685,17 @@ def get_stock_suggestions():
 
 @app.route('/get_stock_suggestions_noms')
 def get_stock_suggestions_noms():
+    input_prefix = request.args.get('input', '').lower()
+
+    # Filter stocks based on input prefix
+    suggestion = []
+    for i in noms:
+        if i.lower().startswith(input_prefix):
+            suggestion.append(i)
+    return jsonify(suggestion)
+
+@app.route('/get_stock_suggestions_noms_buy')
+def get_stock_suggestions_noms_buy():
     input_prefix = request.args.get('input', '').lower()
 
     # Filter stocks based on input prefix

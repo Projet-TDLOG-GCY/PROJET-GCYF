@@ -48,7 +48,7 @@ function getStockSuggestionsNoms(input){
 
 }
 function getBuySuggestionsNoms(input){
-  fetch(`/get_stock_suggestions_noms?input=${input}`)
+  fetch(`/get_stock_suggestions_noms_buy?input=${input}`)
     .then(response => response.json())
     .then(suggestions => {
       const datalist = document.getElementById('buyStockSuggestions');
@@ -72,12 +72,17 @@ inputText.addEventListener('input', function() {
   getStockSuggestions(inputValue);
 });
 
-
+stock_name_buy.addEventListener('input', function() {
+  const inputValue = stock_name_buy.value;
+  getBuySuggestionsNoms(inputValue);
+});
 
 inputText2.addEventListener('input', function() {
   const inputValue = inputText2.value;
   getStockSuggestionsNoms(inputValue);
 });
+
+
 
 inputText2.addEventListener('blur', function () {
   const inputValue = inputText2.value;
@@ -98,10 +103,6 @@ inputText.addEventListener('blur', function () {
   }
 });
 
-stock_name_buy.addEventListener('input', function() {
-  const inputValue = inputText2.value;
-  getBuySuggestionsNoms(inputValue);
-});
 
 stock_name_buy.addEventListener('blur', function () {
   const inputValue = stock_name_buy.value;

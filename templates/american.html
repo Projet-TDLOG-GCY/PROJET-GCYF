@@ -18,59 +18,23 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </script>
   <script>
+    function calculatePrice() {
+        var Nom = document.getElementById('option_name_buy_amr').value;
+        var Prix = document.getElementById('K_buy_am').value;
+        var Echeance = document.getElementById('T_buy_am').value;
 
-    var myChart; 
-    var ctx
+        
 
-    function afficherPopup() {
-      var Nom_Symbol = "";
-      var texteSaisi = "";
-
-      // Vérifiez si inputText2 est rempli
-      var texteSaisi2 = document.getElementById("inputText2").value.trim()
-        if (texteSaisi2 !== "") {
-          // Si inputText2 est rempli, appliquez la fonction nom_marque_to_symbol
-          Nom_Symbol = "Nom";
-          texteSaisi = texteSaisi2;
-      } else {
-          // Sinon, utilisez la valeur de inputText
-          Nom_Symbol = "Symbol";
-          texteSaisi = document.getElementById("inputText").value.toLowerCase();
-}
-
-      fetch(`/stock_data/${texteSaisi}/${Nom_Symbol}`)
+        fetch(`/prix_americain/${Echeance}/${Nom}/${Prix}`)
         .then(response => response.json())
         .then(data => {
-
-          if (myChart) {
-          myChart.destroy();
-           }
-
-          ctx = document.getElementById('stockChart').getContext('2d');
-          myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: data.labels,
-              datasets: [{
-                label: 'Cours de l\'action',
-                data: data.values,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-              }]
-            },
-            options: {
-              // Configuration du graphique (titre, légende, axes, etc.)
-              // Vous pouvez personnaliser selon vos besoins
-            }
-          });
-          $('#myModal').modal('show'); 
-        
-        });
+            document.getElementById('price').innerText = 'Prix: ' + data.resultat_americaine;
+        })
+        .catch(error => console.error('Error:', error));
     }
-    
-  </script>
+    </script>
+  
     <style>
       /* Ajoutez du CSS pour aligner les éléments côte à côte */
       .input-container {
@@ -182,7 +146,7 @@
     <div class="sell_american_option">
       <form action="/sell_american_option" method="post">
         <label for="option_name_sell_eur">Nom de l'action:</label>
-        <input type="text" id="option_name_sell_am" name="option_name_sell_am" required>
+        <input type="text" id   ="option_name_sell_am" name="option_name_sell_am" required>
   
         <label for="number_of_option_sell_eur">Nombre d'options:</label>
         <input type="number" id="number_of_option_sell_am" name="number_of_option_sell_am" required>
@@ -201,15 +165,18 @@
         <form action="/buy_american_option" method="post">
           <label for="option_name_buy_am">Nom de l'action:</label>
           <input type="text" id="option_name_buy_amr" name="option_name_buy_am" required>
-    
-          <label for="number_of_option_sell_am">Nombre d'options:</label>
-          <input type="number" id="number_of_option_buy_am" name="number_of_option_buy_am" required>
   
           <label for="Maturité">Prix d'exercice de l'option:</label>
           <input type="number" id="K_buy_am" name="K_buy_am" required>
   
           <label for="échéance">date d'échéance:</label>
-          <input type="number" id="T_buy_am" name="T_buy_am" required>      
+          <input type="number" id="T_buy_am" name="T_buy_am" required>
+          
+          <button type="button" onclick="calculatePrice()">Calculer le Prix</button>
+            <span id="price"></span><br><br>
+
+    <label for="number_of_option_sell_am">Nombre d'options:</label>
+    <input type="number" id="number_of_option_buy_am" name="number_of_option_buy_am" required>
     
           <button type="submit" name="buy_button">Acheter</button>
         </form>
@@ -292,49 +259,6 @@
 </div>
 
 
-
-<!-- Bouton pour afficher la pop-up en fonction du texte saisi -->
-<button class="btn btn-primary" onclick="afficherPopup()">Valider</button>
-    <script>
-      function getStockSuggestions(input) {
-        fetch(`/get_stock_suggestions?input=${input}`)
-          .then(response => response.json())
-          .then(suggestions => {
-            const suggestionsContainer = document.getElementById('suggestions-container');
-            suggestionsContainer.innerHTML = "";
-    
-            // Créer un menu déroulant avec les suggestions
-            const select = document.createElement("select");
-            for (const suggestion of suggestions) {
-              const option = document.createElement("option");
-              option.value = suggestion;
-              option.text = suggestion;
-              select.appendChild(option);
-            }
-    
-            // Ajouter le menu déroulant aux suggestionsContainer
-            suggestionsContainer.appendChild(select);
-          });
-      }
-    </script>
-    <!-- Modal (Pop-up) -->
-    <div class="modal fade" id="myModal">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <!-- Contenu de la pop-up -->
-          <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-body">
-                <canvas id="stockChart" width="400" height="200"></canvas>
-              </div>
-              <!-- Bouton pour fermer la pop-up -->
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-              </div>
-            </div>
-          </div>
-        </div>
-  </main>
   <script src="{{ url_for('static', filename='prompt.js') }}"></script>
 </body>
 
