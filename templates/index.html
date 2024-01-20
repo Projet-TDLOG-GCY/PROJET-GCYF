@@ -7,65 +7,110 @@
     <!--<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclure Chart.js -->
     <style>
-        /* Styles spécifiques pour les boutons d'options */
-        .choose-option {
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        .choose-option button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #2a303b;
-            color: white;
-            transition: background-color 0.3s ease;
-            margin: 0 10px;
-        }
-
-        .choose-option button:hover {
-            background-color: #1c1f25;
-        }
-
-        .user-portfolio table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .user-portfolio th,
-        .user-portfolio td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .user-portfolio th {
-            background-color: #2a303b;
-            color: white;
-        }
-
-        .user-summary h2 {
-            margin-top: 30px;
-        }
-
-        .user-summary table:last-child {
-            margin-top: 10px;
-        }
-
-        .user-summary table:last-child th,
-        .user-summary table:last-child td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .user-summary table:last-child th {
-            background-color: #2a303b;
-            color: white;
-        }
+      /* Styles spécifiques pour les boutons d'options */
+      .choose-option {
+        text-align: center;
+        margin-top: 50px;
+      }
+  
+      .choose-option button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #2a303b;
+        color: white;
+        transition: background-color 0.3s ease;
+        margin: 0 10px;
+      }
+  
+      .choose-option button:hover {
+        background-color: #1c1f25;
+      }
+      
+      body {
+  
+              /*background-color: #f5f5f5;*/
+              margin: 0;
+              padding: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              height: 100vh;
+          }
+  
+          .login-container {
+              /*background-color: #fff;*/
+              border-radius: 8px;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              padding: 20px;
+              width: 300px;
+              text-align: center;
+          }
+  
+          h1 {
+              color: #ffffff;
+              margin-bottom: 20px;
+          }
+  
+          label {
+              display: block;
+              margin-bottom: 8px;
+              text-align: left;
+              color: #ffffff;©
+          }
+  
+          input {
+              width: 100%;
+              padding: 8px;
+              margin-bottom: 16px;
+              box-sizing: border-box;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+          }
+  
+          button {
+              background-color: #4caf50;
+              color: #fff;
+              padding: 10px 15px;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+          }
+  
+          a.button-primary {
+              display: block;
+              background-color: #3498db;
+              color: #fff;
+              text-decoration: none;
+              padding: 10px 15px;
+              border-radius: 4px;
+              margin-top: 10px;
+          }
+  
+          a.button-primary:hover,
+          button:hover {
+              opacity: 0.8;
+          }
+  
+          .user-portfolio table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+  }
+  
+  .user-portfolio th, .user-portfolio td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+  }
+  
+  .user-portfolio th {
+      background-color: #2a303b;
+      color: white;
+  }
+  
     </style>
 </head>
 
@@ -137,7 +182,7 @@
         <label for="amount">Montant à ajouter:</label>
         <input type="number" id="amount" name="amount" required min="1">
         
-        <button type="submit" name="add_money_button">Ajouter de l'argent</button>
+        <button type="submit" class="button-primary" name="add_money_button">Ajouter de l'argent</button>
     </form>
   </div>
 

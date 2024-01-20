@@ -4,8 +4,16 @@ from flask import jsonify
 import json
 
 # Import other necessary modules
+import os
 import sys
-sys.path.append('/Users/clementdureuil/Downloads/2A/TDLOG/Projet TD LOG FINAL/PROJET-GCYF/src')
+#sys.path.append('/Users/clementdureuil/Downloads/2A/TDLOG/Projet TD LOG FINAL/PROJET-GCYF/src')
+#sys.path.append('/Users/gaspardbeaudouin/Desktop/2A/Projet_TDLOG/PROJET_GCYF/src')
+
+# Obtenez le chemin absolu du répertoire du script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Ajoutez le chemin relatif au répertoire du script
+sys.path.append(os.path.join(script_dir, 'src'))
 
 import pandas as pd
 from src import financeProg

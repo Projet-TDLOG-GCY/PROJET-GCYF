@@ -67,21 +67,72 @@
     
   </script>
     <style>
-  /* Ajoutez du CSS pour aligner les éléments côte à côte */
-  .input-container {
-  display: flex;
-  flex-direction: row; /* Utilisez "row" pour afficher les éléments côte à côte */
-  gap: 10px; /* Espace entre les éléments enfants */
-  }
+      /* Ajoutez du CSS pour aligner les éléments côte à côte */
+      .input-container {
+      display: flex;
+      flex-direction: row; /* Utilisez "row" pour afficher les éléments côte à côte */
+      gap: 10px; /* Espace entre les éléments enfants */
+      }
+    
+      /* Ajoutez du CSS pour ajuster la largeur et la hauteur des barres de saisie */
+      .input-container input {
+        width: 500px; /* Ajustez la largeur selon vos besoins */
+        height: 30px; /* Ajustez la hauteur selon vos besoins */
+        box-sizing: border-box; /* Pour inclure la bordure et le padding dans la largeur et la hauteur */
+      }
+    
+    
+    
+    input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    }
+    
+    button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+    
+    a.button-primary {
+    display: block;
+    background-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-top: 200px;
+    }
+    
+    a.button-primary:hover,
+    button:hover {
+    opacity: 0.8;
+    }
+    .user-portfolio table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 20px;
+}
 
-  /* Ajoutez du CSS pour ajuster la largeur et la hauteur des barres de saisie */
-  .input-container input {
-    width: 500px; /* Ajustez la largeur selon vos besoins */
-    height: 30px; /* Ajustez la hauteur selon vos besoins */
-    box-sizing: border-box; /* Pour inclure la bordure et le padding dans la largeur et la hauteur */
-  }
+.user-portfolio th, .user-portfolio td {
+border: 1px solid #ddd;
+padding: 8px;
+text-align: left;
+}
 
-    </style>
+.user-portfolio th {
+background-color: #2a303b;
+color: white;
+}
+
+        </style>
 
 
 
@@ -135,7 +186,7 @@
         <label for="échéance">échéance:</label>
         <input type="number" id="T_sell_eur" name="T_sell_eur" required>      
   
-        <button type="submit" name="buy_button">Vendre</button>
+        <button type="submit" class="button-primary" name="buy_button">Vendre</button>
       </form>
     </div>
 
