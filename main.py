@@ -592,11 +592,11 @@ def upload():
 @app.route('/stock_data/<symbol>/<Nom_Symbol>')
 def stock_data(symbol, Nom_Symbol):
     if (Nom_Symbol== "Nom"):
-        Real_Symbol = nom_marque_to_symbol(symbol)
+        Real_Symbol = fonction_2(symbol)
     else:
         Real_Symbol = symbol
     # Code pour récupérer les données du cours de l'action
-    L, V = plot_yesterday_stock(Real_Symbol)
+    L, V = fonction(Real_Symbol)
     stock_data = {
         "labels": L,
         "values": V,
@@ -656,9 +656,9 @@ def resultat_european():
 @app.route('/prix_americain/<Echeance>/<Nom>/<Prix>')    
 def resultat_americaine(Echeance, Nom, Prix):
     
-    K = Prix
+    K = int(Prix)
     r = 0.05
-    T = Echeance      
+    T = int(Echeance)      
     
     stock_name = Nom
 
@@ -666,6 +666,8 @@ def resultat_americaine(Echeance, Nom, Prix):
     print('S0 =' ,S0)   
     sigma = prix_de_cloture_passé(stock_name)              
     resultat_americaine = american_call_option_price(S0, K, r, T, sigma, 300)
+    print("resultat")
+    print(resultat_americaine)
 
     return jsonify(resultat_americaine=resultat_americaine)
 

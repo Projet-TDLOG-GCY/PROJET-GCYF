@@ -153,7 +153,7 @@ opacity: 0.8;
     </section>
 
 
-    <p>Bonjour, {{ username }} ! Votre solde actuel est de {{ balance }} euros.</p>
+<p>Bonjour, {{ username }} ! Votre solde actuel est de {{ balance }} euros.</p>
     
 <!-- Barre de saisie de texte -->
 <h4>Saisissez le symbole ou le nom de l'actions qui vous intéresse : </h4>
@@ -237,48 +237,6 @@ opacity: 0.8;
 {% endwith %}
 </div>
 
-
-<!-- Bouton pour afficher la pop-up en fonction du texte saisi -->
-<button class="btn btn-primary" onclick="afficherPopup()">Valider</button>
-    <script>
-      function getStockSuggestions(input) {
-        fetch(`/get_stock_suggestions?input=${input}`)
-          .then(response => response.json())
-          .then(suggestions => {
-            const suggestionsContainer = document.getElementById('suggestions-container');
-            suggestionsContainer.innerHTML = "";
-    
-            // Créer un menu déroulant avec les suggestions
-            const select = document.createElement("select");
-            for (const suggestion of suggestions) {
-              const option = document.createElement("option");
-              option.value = suggestion;
-              option.text = suggestion;
-              select.appendChild(option);
-            }
-    
-            // Ajouter le menu déroulant aux suggestionsContainer
-            suggestionsContainer.appendChild(select);
-          });
-      }
-    </script>
-    <!-- Modal (Pop-up) -->
-    <div class="modal fade" id="myModal">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <!-- Contenu de la pop-up -->
-          <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-body">
-                <canvas id="stockChart" width="400" height="200"></canvas>
-              </div>
-              <!-- Bouton pour fermer la pop-up -->
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-              </div>
-            </div>
-          </div>
-        </div>
   </main>
   <script src="{{ url_for('static', filename='prompt.js') }}"></script>
 </body>

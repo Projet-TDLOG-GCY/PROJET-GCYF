@@ -190,3 +190,20 @@ def nom_marque_to_symbol(nom_marque):
     return marques_actions[nom_marque]
     
 
+#fonction pour tester lorsqu'il y a eu plus de 25 tentatives
+
+def fonction(symbol):
+    if (symbol == "chat"):
+        L = [4, 5, 6]
+        V = [1, 3, 4]
+        rep = L, V
+        return rep
+    else:
+        L=[1, 1, 1]
+        V = [1, 1, 1]
+        rep = L, V
+        return rep
+
+def fonction_2(Symbol):
+    return "chat"
+

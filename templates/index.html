@@ -199,34 +199,6 @@
       {% endif %}
     {% endwith %}
   </div>
-
- 
-  
-      <script>
-          // JavaScript pour récupérer les données et dessiner le graphique
-          fetch('/stock_data')
-              .then(response => response.json())
-              .then(data => {
-                  const ctx = document.getElementById('stockChart').getContext('2d');
-                  const myChart = new Chart(ctx, {
-                      type: 'line',
-                      data: {
-                          labels: data.labels,
-                          datasets: [{
-                              label: 'Cours de l\'action',
-                              data: data.values,
-                              borderColor: 'rgba(187, 194, 227, 1)',
-                              borderWidth: 1
-                          }]
-                      },
-                      options: {
-                          // Configuration du graphique (titre, légende, axes, etc.)
-                          // Vous pouvez personnaliser selon vos besoins
-                      }
-                  });
-              });
-      </script> 
-
   <!-- <div class="user-portfolio">
     <h2>User's Portfolio</h2>
     <ul>
