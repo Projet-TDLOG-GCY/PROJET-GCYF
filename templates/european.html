@@ -14,15 +14,27 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
-    function calculatePrice_eur() {
+    function calculatePrice_buy_eur() {
         var Nom = document.getElementById('option_name_buy_eur').value;
         var Prix = document.getElementById('K_buy_eur').value;
         var Echeance = document.getElementById('T_buy_eur').value;  
 
-        fetch(`/prix_européen/${Echeance}/${Nom}/${Prix}`)
+        fetch(`/prix_européen_buy/${Echeance}/${Nom}/${Prix}`)
         .then(response => response.json())
         .then(data => {
-            document.getElementById('price').innerText = 'Prix: ' + data.resultat_americaine;
+            document.getElementById('price_buy').innerText = 'Prix: ' + data.resultat_euro;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    function calculatePrice_sell_eur() {
+        var Nom = document.getElementById('option_name_sell_eur').value;
+        var Prix = document.getElementById('K_sell_eur').value;
+        var Echeance = document.getElementById('T_sell_eur').value;  
+
+        fetch(`/prix_européen_sell/${Echeance}/${Nom}/${Prix}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('price_sell').innerText = 'Prix: ' + data.resultat_euro;
         })
         .catch(error => console.error('Error:', error));
     }
@@ -131,8 +143,34 @@ color: white;
     
 
     <h4>Acheter ou vendre des Options européennes</h4>
+
+    <h4>ACHAT</h4>
+
+    <div class="buy_european_option">
+      <form action="/buy_european_option" method="post">
+        <label for="option_name_sell_eur">Nom de l'option:</label>
+        <input type="text" id="option_name_buy_eur" name="option_name_buy_eur" required>
+
+        <label for="Maturité">Maturité:</label>
+        <input type="number" id="K_buy_eur" name="K_buy_eur" required>
+
+        <label for="échéance">échéance:</label>
+        <input type="number" id="T_buy_eur" name="T_buy_eur" required>
+        
+        <button type="button" onclick="calculatePrice_buy_eur()">Calculer le Prix</button>
+        <span id="price_buy"></span><br><br>
+
+        <label for="number_of_option_sell_eur">Nombre d'options:</label>
+        <input type="number" id="number_of_option_buy_eur" name="number_of_option_buy_eur" required>
+  
+        <button type="submit" name="buy_button">Acheter</button>
+      </form>
+    </div>
     
     <!-- Formulaire pour acheter des actions -->
+
+    <h4>VENTE</h4>
+
     <div class="sell_european_option">
       <form action="/sell_european_option" method="post">
         <label for="option_name_sell_eur">Nom de l'option:</label>
@@ -144,8 +182,8 @@ color: white;
         <label for="échéance">échéance:</label>
         <input type="number" id="T_sell_eur" name="T_sell_eur" required>
         
-        <button type="button" onclick="calculatePrice_eur()">Calculer le Prix</button>
-        <span id="price"></span><br><br>
+        <button type="button" onclick="calculatePrice_sell_eur()">Calculer le Prix</button>
+        <span id="price_sell"></span><br><br>
 
         <label for="number_of_option_sell_eur">Nombre d'options:</label>
         <input type="number" id="number_of_option_sell_eur" name="number_of_option_sell_eur" required>
@@ -154,26 +192,7 @@ color: white;
       </form>
     </div>
 
-    <div class="buy_european_option">
-        <form action="/buy_european_option" method="post">
-          <label for="option_name_sell_eur">Nom de l'option:</label>
-          <input type="text" id="option_name_buy_eur" name="option_name_buy_eur" required>
-  
-          <label for="Maturité">Maturité:</label>
-          <input type="number" id="K_buy_eur" name="K_buy_eur" required>
-  
-          <label for="échéance">échéance:</label>
-          <input type="number" id="T_buy_eur" name="T_buy_eur" required>
-          
-          <button type="button" onclick="calculatePrice_eur()">Calculer le Prix</button>
-          <span id="price"></span><br><br>
 
-          <label for="number_of_option_sell_eur">Nombre d'options:</label>
-          <input type="number" id="number_of_option_buy_eur" name="number_of_option_buy_eur" required>
-    
-          <button type="submit" name="buy_button">Acheter</button>
-        </form>
-      </div>
     
     <!-- Formulaire pour vendre des actions -->
     <!-- <div class="sell-stock">

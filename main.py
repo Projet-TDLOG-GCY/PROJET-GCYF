@@ -632,29 +632,9 @@ from formule import Black_Scholes, american_call_option_price, monte_carlo_ameri
 from src.financeProg import prix_de_cloture_passé, symbol, key, prix_actuelle
 
 
-@app.route("/resultat_european", methods=["POST"])
-def resultat_european():
-    try:        
-        K = float(request.form["strike_K_eur"])
-        r = float(request.form["taux_r_eur"])
-        T = float(request.form["maturity_T_eur"])  
-        stock_name = str(request.form["stock_symbol"])
 
-        S0 = prix_actuelle(stock_name)
-        sigma = prix_de_cloture_passé(stock_name)
-
-        resultat_european = Black_Scholes(S0, K, r, T, sigma)
-
-        return render_template(
-            "resultat_european.html", resultat_european=resultat_european
-        )
-
-    except ValueError as e:
-        return render_template("error.html", error_message=str(e))
-
-
-@app.route('/prix_americain/<Echeance>/<Nom>/<Prix>')    
-def resultat_americaine(Echeance, Nom, Prix):
+@app.route('/prix_americain_buy/<Echeance>/<Nom>/<Prix>')    
+def resultat_americaine_buy(Echeance, Nom, Prix):
     
     K = int(Prix)
     r = 0.05
@@ -671,8 +651,44 @@ def resultat_americaine(Echeance, Nom, Prix):
 
     return jsonify(resultat_americaine=resultat_americaine)
 
-@app.route('/prix_européen/<Echeance>/<Nom>/<Prix>')    
-def resultat_europeen(Echeance, Nom, Prix):
+@app.route('/prix_americain_sell/<Echeance>/<Nom>/<Prix>')    
+def resultat_americaine_sell(Echeance, Nom, Prix):
+    
+    K = int(Prix)
+    r = 0.05
+    T = int(Echeance)      
+    
+    stock_name = Nom
+
+    S0=prix_actuelle(stock_name)
+    print('S0 =' ,S0)   
+    sigma = prix_de_cloture_passé(stock_name)            
+    resultat_americaine = round(american_call_option_price(S0, K, r, T, sigma, 300), 1)
+    print("resultat")
+    print(resultat_americaine)
+
+    return jsonify(resultat_americaine=resultat_americaine)
+
+@app.route('/prix_européen_buy/<Echeance>/<Nom>/<Prix>')    
+def resultat_europeen_buy(Echeance, Nom, Prix):
+    
+    K = int(Prix)
+    r = 0.05
+    T = int(Echeance)      
+    
+    stock_name = Nom
+
+    S0=prix_actuelle(stock_name)
+    print('S0 =' ,S0)   
+    sigma = prix_de_cloture_passé(stock_name)           
+    resultat_euro = round(Black_Scholes(S0, K, r, T, sigma), 1)
+    print("resultat")
+    print(resultat_euro)
+
+    return jsonify(resultat_euro=resultat_euro)
+
+@app.route('/prix_européen_sell/<Echeance>/<Nom>/<Prix>')    
+def resultat_europeen_sell(Echeance, Nom, Prix):
     
     K = int(Prix)
     r = 0.05
@@ -683,7 +699,7 @@ def resultat_europeen(Echeance, Nom, Prix):
     S0=prix_actuelle(stock_name)
     print('S0 =' ,S0)   
     sigma = prix_de_cloture_passé(stock_name)              
-    resultat_euro = round(american_call_option_price(S0, K, r, T, sigma, 300), 1)
+    resultat_euro = round(Black_Scholes(S0, K, r, T, sigma), 1)
     print("resultat")
     print(resultat_euro)
 
