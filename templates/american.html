@@ -7,7 +7,7 @@
 <html lang="fr">
 
 <head>
-    <title>Actions</title>
+    <title>Options_am</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
@@ -19,8 +19,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
-    function calculatePrice() {
-        var Nom = document.getElementById('option_name_buy_amr').value;
+    function calculatePrice_buy_am() {
+        var Nom = document.getElementById('option_name_buy_am').value;
         var Prix = document.getElementById('K_buy_am').value;
         var Echeance = document.getElementById('T_buy_am').value;
 
@@ -29,7 +29,7 @@
         fetch(`/prix_americain/${Echeance}/${Nom}/${Prix}`)
         .then(response => response.json())
         .then(data => {
-            document.getElementById('price').innerText = 'Prix: ' + data.resultat_americaine;
+            document.getElementById('price_buy').innerText = 'Prix: ' + data.resultat_americaine;
         })
         .catch(error => console.error('Error:', error));
     }
@@ -128,7 +128,7 @@
 
   <main id="main-container" class="main-container">
     <header class="header">
-      <h1 class="header-title">Marché d'actions</h1>
+      <h1 class="header-title">Marché d'options américaines</h1>
     </header>
     <section class="messages-container" id="messages-container">
       <div class="message">
@@ -140,22 +140,25 @@
     <p>Bonjour, {{ username }} ! Votre solde actuel est de {{ balance }} euros.</p>
     
 
-    <h4>Acheter ou vendre des actions</h4>
+    <h4>Acheter ou vendre des options américaines</h4>
     
     <!-- Formulaire pour acheter des actions -->
     <div class="sell_american_option">
       <form action="/sell_american_option" method="post">
-        <label for="option_name_sell_eur">Nom de l'action:</label>
+        <label for="option_name_sell_eur">Nom de l'option:</label>
         <input type="text" id   ="option_name_sell_am" name="option_name_sell_am" required>
   
-        <label for="number_of_option_sell_eur">Nombre d'options:</label>
-        <input type="number" id="number_of_option_sell_am" name="number_of_option_sell_am" required>
-
         <label for="Maturité">Prix d'exercice de l'option:</label>
         <input type="number" id="K_sell_am" name="K_sell_am" required>
 
         <label for="échéance">date d'échéance:</label>
-        <input type="number" id="T_sell_am" name="T_sell_am" required>      
+        <input type="number" id="T_sell_am" name="T_sell_am" required>
+        
+        <button type="button" onclick="calculatePrice_am()">Calculer le Prix</button>
+        <span id="price"></span><br><br>
+
+        <label for="number_of_option_sell_eur">Nombre d'options:</label>
+        <input type="number" id="number_of_option_sell_am" name="number_of_option_sell_am" required>
   
         <button type="submit" name="buy_button">Vendre</button>
       </form>
@@ -163,8 +166,8 @@
 
     <div class="buy_american_option">
         <form action="/buy_american_option" method="post">
-          <label for="option_name_buy_am">Nom de l'action:</label>
-          <input type="text" id="option_name_buy_amr" name="option_name_buy_am" required>
+          <label for="option_name_buy_am">Nom de l'option:</label>
+          <input type="text" id="option_name_buy_am" name="option_name_buy_am" required>
   
           <label for="Maturité">Prix d'exercice de l'option:</label>
           <input type="number" id="K_buy_am" name="K_buy_am" required>
@@ -172,8 +175,8 @@
           <label for="échéance">date d'échéance:</label>
           <input type="number" id="T_buy_am" name="T_buy_am" required>
           
-          <button type="button" onclick="calculatePrice()">Calculer le Prix</button>
-            <span id="price"></span><br><br>
+          <button type="button" onclick="calculatePrice_buy_am()">Calculer le Prix</button>
+            <span id="price_buy"></span><br><br>
 
     <label for="number_of_option_sell_am">Nombre d'options:</label>
     <input type="number" id="number_of_option_buy_am" name="number_of_option_buy_am" required>

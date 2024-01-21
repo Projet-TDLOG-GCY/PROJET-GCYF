@@ -665,11 +665,29 @@ def resultat_americaine(Echeance, Nom, Prix):
     S0=prix_actuelle(stock_name)
     print('S0 =' ,S0)   
     sigma = prix_de_cloture_passé(stock_name)              
-    resultat_americaine = american_call_option_price(S0, K, r, T, sigma, 300)
+    resultat_americaine = round(american_call_option_price(S0, K, r, T, sigma, 300), 1)
     print("resultat")
     print(resultat_americaine)
 
     return jsonify(resultat_americaine=resultat_americaine)
+
+@app.route('/prix_européen/<Echeance>/<Nom>/<Prix>')    
+def resultat_europeen(Echeance, Nom, Prix):
+    
+    K = int(Prix)
+    r = 0.05
+    T = int(Echeance)      
+    
+    stock_name = Nom
+
+    S0=prix_actuelle(stock_name)
+    print('S0 =' ,S0)   
+    sigma = prix_de_cloture_passé(stock_name)              
+    resultat_euro = round(american_call_option_price(S0, K, r, T, sigma, 300), 1)
+    print("resultat")
+    print(resultat_euro)
+
+    return jsonify(resultat_euro=resultat_euro)
 
 file_path = 'nouveau_actions.txt'
 

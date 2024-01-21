@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <head>
-    <title>Actions</title>
+    <title>Option_euro</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
@@ -13,59 +13,20 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </script>
   <script>
+    function calculatePrice_eur() {
+        var Nom = document.getElementById('option_name_buy_eur').value;
+        var Prix = document.getElementById('K_buy_eur').value;
+        var Echeance = document.getElementById('T_buy_eur').value;  
 
-    var myChart; 
-    var ctx
-
-    function afficherPopup() {
-      var Nom_Symbol = "";
-      var texteSaisi = "";
-
-      // Vérifiez si inputText2 est rempli
-      var texteSaisi2 = document.getElementById("inputText2").value.trim()
-        if (texteSaisi2 !== "") {
-          // Si inputText2 est rempli, appliquez la fonction nom_marque_to_symbol
-          Nom_Symbol = "Nom";
-          texteSaisi = texteSaisi2;
-      } else {
-          // Sinon, utilisez la valeur de inputText
-          Nom_Symbol = "Symbol";
-          texteSaisi = document.getElementById("inputText").value.toLowerCase();
-}
-
-      fetch(`/stock_data/${texteSaisi}/${Nom_Symbol}`)
+        fetch(`/prix_européen/${Echeance}/${Nom}/${Prix}`)
         .then(response => response.json())
         .then(data => {
-
-          if (myChart) {
-          myChart.destroy();
-           }
-
-          ctx = document.getElementById('stockChart').getContext('2d');
-          myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: data.labels,
-              datasets: [{
-                label: 'Cours de l\'action',
-                data: data.values,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-              }]
-            },
-            options: {
-              // Configuration du graphique (titre, légende, axes, etc.)
-              // Vous pouvez personnaliser selon vos besoins
-            }
-          });
-          $('#myModal').modal('show'); 
-        
-        });
+            document.getElementById('price').innerText = 'Prix: ' + data.resultat_americaine;
+        })
+        .catch(error => console.error('Error:', error));
     }
-    
-  </script>
+    </script>
     <style>
       /* Ajoutez du CSS pour aligner les éléments côte à côte */
       .input-container {
@@ -157,7 +118,7 @@ color: white;
 
   <main id="main-container" class="main-container">
     <header class="header">
-      <h1 class="header-title">Marché d'actions</h1>
+      <h1 class="header-title">Marché d'options européennes</h1>
     </header>
     <section class="messages-container" id="messages-container">
       <div class="message">
@@ -169,22 +130,25 @@ color: white;
     <p>Bonjour, {{ username }} ! Votre solde actuel est de {{ balance }} euros.</p>
     
 
-    <h4>Acheter ou vendre des actions</h4>
+    <h4>Acheter ou vendre des Options européennes</h4>
     
     <!-- Formulaire pour acheter des actions -->
     <div class="sell_european_option">
       <form action="/sell_european_option" method="post">
-        <label for="option_name_sell_eur">Nom de l'action:</label>
+        <label for="option_name_sell_eur">Nom de l'option:</label>
         <input type="text" id="option_name_sell_eur" name="option_name_sell_eur" required>
-  
-        <label for="number_of_option_sell_eur">Nombre d'options:</label>
-        <input type="number" id="number_of_option_sell_eur" name="number_of_option_sell_eur" required>
 
         <label for="Maturité">Maturité:</label>
         <input type="number" id="K_sell_eur" name="K_sell_eur" required>
 
         <label for="échéance">échéance:</label>
-        <input type="number" id="T_sell_eur" name="T_sell_eur" required>      
+        <input type="number" id="T_sell_eur" name="T_sell_eur" required>
+        
+        <button type="button" onclick="calculatePrice_eur()">Calculer le Prix</button>
+        <span id="price"></span><br><br>
+
+        <label for="number_of_option_sell_eur">Nombre d'options:</label>
+        <input type="number" id="number_of_option_sell_eur" name="number_of_option_sell_eur" required>
   
         <button type="submit" class="button-primary" name="buy_button">Vendre</button>
       </form>
@@ -192,17 +156,20 @@ color: white;
 
     <div class="buy_european_option">
         <form action="/buy_european_option" method="post">
-          <label for="option_name_sell_eur">Nom de l'action:</label>
+          <label for="option_name_sell_eur">Nom de l'option:</label>
           <input type="text" id="option_name_buy_eur" name="option_name_buy_eur" required>
-    
-          <label for="number_of_option_sell_eur">Nombre d'options:</label>
-          <input type="number" id="number_of_option_buy_eur" name="number_of_option_buy_eur" required>
   
           <label for="Maturité">Maturité:</label>
           <input type="number" id="K_buy_eur" name="K_buy_eur" required>
   
           <label for="échéance">échéance:</label>
-          <input type="number" id="T_buy_eur" name="T_buy_eur" required>      
+          <input type="number" id="T_buy_eur" name="T_buy_eur" required>
+          
+          <button type="button" onclick="calculatePrice_eur()">Calculer le Prix</button>
+          <span id="price"></span><br><br>
+
+          <label for="number_of_option_sell_eur">Nombre d'options:</label>
+          <input type="number" id="number_of_option_buy_eur" name="number_of_option_buy_eur" required>
     
           <button type="submit" name="buy_button">Acheter</button>
         </form>
@@ -254,49 +221,6 @@ color: white;
 {% endwith %}
 </div>
 
-
-<!-- Bouton pour afficher la pop-up en fonction du texte saisi -->
-<button class="btn btn-primary" onclick="afficherPopup()">Valider</button>
-    <script>
-      function getStockSuggestions(input) {
-        fetch(`/get_stock_suggestions?input=${input}`)
-          .then(response => response.json())
-          .then(suggestions => {
-            const suggestionsContainer = document.getElementById('suggestions-container');
-            suggestionsContainer.innerHTML = "";
-    
-            // Créer un menu déroulant avec les suggestions
-            const select = document.createElement("select");
-            for (const suggestion of suggestions) {
-              const option = document.createElement("option");
-              option.value = suggestion;
-              option.text = suggestion;
-              select.appendChild(option);
-            }
-    
-            // Ajouter le menu déroulant aux suggestionsContainer
-            suggestionsContainer.appendChild(select);
-          });
-      }
-    </script>
-    <!-- Modal (Pop-up) -->
-    <div class="modal fade" id="myModal">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <!-- Contenu de la pop-up -->
-          <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-body">
-                <canvas id="stockChart" width="400" height="200"></canvas>
-              </div>
-              <!-- Bouton pour fermer la pop-up -->
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-              </div>
-            </div>
-          </div>
-        </div>
-  </main>
   <script src="{{ url_for('static', filename='prompt.js') }}"></script>
 </body>
 
