@@ -95,10 +95,10 @@ def buy_stock():
             print('user.stock_portfolio after purchase:', user.stock_portfolio)
 
             flash(f"Achat réussi! Tu as acheté {number_of_stocks} actions de {stock_name} cotées {stock_price}€ pour un total de {number_of_stocks * stock_price}€ ")
-            return render_template('actions.html', username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
+            return render_template('actions.html', username=user.username, balance=round(user.balance, 2), stock_portfolio=user.stock_portfolio, real_user=user)
         else:
             flash(f"Solde insuffisant pour acheter cette action.")
-            return render_template('actions.html', username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
+            return render_template('actions.html', username=user.username, balance=round(user.balance, 2), stock_portfolio=user.stock_portfolio, real_user=user)
     return redirect(url_for('login'))
 
 @app.route('/sell_stock', methods=['POST'])
@@ -134,11 +134,11 @@ def sell_stock():
             print('user.stock_portfolio after purchase:', user.stock_portfolio)
 
             flash(f"Vente réussie! Tu as vendu {number_of_stocks} actions de {stock_name} cotées {stock_price}€ pour un total de {number_of_stocks * stock_price}€ ")
-            return render_template('actions.html', username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
+            return render_template('actions.html', username=user.username, balance=round(user.balance, 2), stock_portfolio=user.stock_portfolio, real_user=user)
         
         else:
             flash(f"Nombre d'actions dans le portefeuille insuffisant pour vendre ce nombre d'actions.")
-            return render_template('actions.html', username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
+            return render_template('actions.html', username=user.username, balance=round(user.balance, 2), stock_portfolio=user.stock_portfolio, real_user=user)
     return redirect(url_for('login'))
 
 import copy
@@ -192,7 +192,7 @@ def sell_european_option():
         else:
             flash("Stock not found in the portfolio.")
 
-        return render_template('european.html', username=user.username, balance=user.balance, european_option_portfolio=user.european_option_portfolio, real_user=user)
+        return render_template('european.html', username=user.username, balance=round(user.balance, 2), european_option_portfolio=user.european_option_portfolio, real_user=user)
 
     return redirect(url_for('login'))
 
@@ -251,10 +251,10 @@ def buy_european_option():
                     print('user.european_option_portfolio after purchase:', user.european_option_portfolio)
 
                     flash(f"Achat réussi! Tu as acheté {number_of_option_eur} options de {option_name} cotées {option_price}€ pour un total de {number_of_option_eur * option_price}€ ")
-                    return render_template('european.html', username=user.username, balance=user.balance, european_option_portfolio=user.european_option_portfolio, real_user=user)
+                    return render_template('european.html', username=user.username, balance=round(user.balance, 2), european_option_portfolio=user.european_option_portfolio, real_user=user)
                 else:
                     flash("Solde insuffisant pour acheter ces options.")
-                    return render_template('european.html', username=user.username, balance=user.balance, european_option_portfolio=user.european_option_portfolio, real_user=user)
+                    return render_template('european.html', username=user.username, balance=round(user.balance, 2), european_option_portfolio=user.european_option_portfolio, real_user=user)
             except ValueError:
                 flash("Invalid input for the number of american options. Please enter a valid number.")
                 return redirect(url_for('your_redirect_route'))  # Adjust this to your actual redirect route
@@ -313,7 +313,7 @@ def sell_american_option():
         else:
             flash("Stock not found in the portfolio.")
 
-        return render_template('american.html', username=user.username, balance=user.balance, american_option_portfolio=user.american_option_portfolio, real_user=user)
+        return render_template('american.html', username=user.username, balance=round(user.balance, 2), american_option_portfolio=user.american_option_portfolio, real_user=user)
 
     return redirect(url_for('login'))
 
@@ -423,10 +423,10 @@ def sell_ammerican_option():
                     print('user.american_option_portfolio after purchase:', user.american_option_portfolio)
 
                     flash(f"Achat réussi! Tu as acheté {number_of_option_am} options de {option_name} cotées {option_price}€ pour un total de {number_of_option_am * option_price}€ ")
-                    return render_template('american.html', username=user.username, balance=user.balance, american_option_portfolio=user.american_option_portfolio, real_user=user)
+                    return render_template('american.html', username=user.username, balance=round(user.balance, 2), american_option_portfolio=user.american_option_portfolio, real_user=user)
                 else:
                     flash("Solde insuffisant pour acheter ces options.")
-                    return render_template('american.html', username=user.username, balance=user.balance, american_option_portfolio=user.american_option_portfolio, real_user=user)
+                    return render_template('american.html', username=user.username, balance=round(user.balance, 2), american_option_portfolio=user.american_option_portfolio, real_user=user)
             except ValueError:
                 flash("Invalid input for the number of American options. Please enter a valid number.")
                 return redirect(url_for('your_redirect_route'))  # Adjust this to your actual redirect route
@@ -490,10 +490,10 @@ def buy_american_option():
                     print('user.american_option_portfolio after purchase:', user.american_option_portfolio)
 
                     flash(f"Achat réussi! Tu as acheté {number_of_option_am} options de {option_name} cotées {option_price}€ pour un total de {number_of_option_am * option_price}€ ")
-                    return render_template('american.html', username=user.username, balance=user.balance, american_option_portfolio=user.american_option_portfolio, real_user=user)
+                    return render_template('american.html', username=user.username, balance=round(user.balance, 2), american_option_portfolio=user.american_option_portfolio, real_user=user)
                 else:
                     flash("Solde insuffisant pour acheter ces options.")
-                    return render_template('american.html', username=user.username, balance=user.balance, american_option_portfolio=user.american_option_portfolio, real_user=user)
+                    return render_template('american.html', username=user.username, balance=round(user.balance, 2), american_option_portfolio=user.american_option_portfolio, real_user=user)
             except ValueError:
                 flash("Invalid input for the number of american options. Please enter a valid number.")
                 return redirect(url_for('your_redirect_route'))  # Adjust this to your actual redirect route
@@ -542,7 +542,7 @@ def add_money():
 
 
         flash(f"Montant ajouté avec succès! Nouveau solde: {user.balance} euros.")
-        return render_template('index.html',list_valeur_par_action = list_valeur_par_action, tot_portfolio = tot_portfolio, username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
+        return render_template('index.html',list_valeur_par_action = list_valeur_par_action, tot_portfolio = round(tot_portfolio, 2), username=user.username, balance=round(user.balance, 2), stock_portfolio=user.stock_portfolio, real_user=user)
 
     return redirect(url_for('login'))
 
@@ -575,7 +575,7 @@ def index():
               
 
         # Render the template with the portfolio value
-        return render_template('index.html',list_valeur_par_action = list_valeur_par_action, tot_portfolio = tot_portfolio,username=user.username, balance=user.balance, portfolio_value=portfolio_value, stock_portfolio=user.stock_portfolio, real_user=user)
+        return render_template('index.html',list_valeur_par_action = list_valeur_par_action, tot_portfolio = round(tot_portfolio, 2) ,username=user.username, balance=round(user.balance, 2), portfolio_value=portfolio_value, stock_portfolio=user.stock_portfolio, real_user=user)
     else:
         return redirect(url_for('login'))
 
@@ -653,11 +653,11 @@ def upload():
 @app.route('/stock_data/<symbol>/<Nom_Symbol>')
 def stock_data(symbol, Nom_Symbol):
     if (Nom_Symbol== "Nom"):
-        Real_Symbol = fonction_2(symbol)
+        Real_Symbol = nom_marque_to_symbol(symbol)
     else:
         Real_Symbol = symbol
     # Code pour récupérer les données du cours de l'action
-    L, V = fonction(Real_Symbol)
+    L, V = plot_yesterday_stock(Real_Symbol)
     stock_data = {
         "labels": L,
         "values": V,
