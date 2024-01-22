@@ -168,8 +168,7 @@ def sell_european_option():
         sport_price = prix_actuelle(option_name)
         option_price = Black_Scholes(sport_price, K, 0.05, T, sigma)
 
-        print('option_price = ', option_price)
-        print('portfolioofdsin', new_european_option_portfolio['AAPL']['200'].keys())
+       
 
         if option_name in new_european_option_portfolio.keys():
             if str(K) in (new_european_option_portfolio[option_name]).keys():
@@ -197,7 +196,72 @@ def sell_european_option():
 
     return redirect(url_for('login'))
 
+@app.route('/buy_european_option', methods=['POST'])
+def buy_european_option():
+    if 'user_id' in session:
+        user_id = session['user_id']
+        print(user_id)
+        user = User.query.get(user_id)
 
+        option_name = request.form.get('option_name_buy_eur')
+        number_of_option_eur_str = request.form.get('number_of_option_buy_eur')
+
+        K = int(request.form.get('K_buy_eur'))
+        T = int(request.form.get('T_buy_eur'))
+        sigma = prix_de_cloture_passé(option_name)
+
+        new_european_option_portfolio = copy.deepcopy(user.european_option_portfolio)
+
+        print(option_name)
+        if not option_name:
+            flash("Invalid option name.")
+            return redirect(url_for('your_redirect_route'))  # Adjust this to your actual redirect route
+
+        if number_of_option_eur_str is not None:
+            try:
+
+                number_of_option_eur = int(number_of_option_eur_str)
+
+                sport_price = prix_actuelle(option_name)
+                option_price = Black_Scholes(sport_price, K, 0.05, T, sigma)
+
+                print('option_price = ', option_price)
+
+                if user.balance >= number_of_option_eur * option_price:
+                    user.balance -= number_of_option_eur * option_price
+                    print('user.balance after purchase:', user.balance)
+
+                    # Check if the option_name exists in the portfolio
+                    if option_name in new_european_option_portfolio:
+                        # Check if K exists for the option_name
+                        if K in new_european_option_portfolio[option_name]:
+                            # Check if T exists for the option_name and K
+                            if T in new_european_option_portfolio[option_name][K]:
+                                new_european_option_portfolio[option_name][K][T] += number_of_option_eur
+                            else:
+                                new_european_option_portfolio[option_name][K][T] = number_of_option_eur
+                        else:
+                            new_european_option_portfolio[option_name][K] = {T: number_of_option_eur}
+                    else:
+                        new_european_option_portfolio[option_name] = {K: {T: number_of_option_eur}}
+
+                    user.european_option_portfolio = new_european_option_portfolio
+                    db.session.commit()
+
+                    print('user.european_option_portfolio after purchase:', user.european_option_portfolio)
+
+                    flash(f"Achat réussi! Tu as acheté {number_of_option_eur} options de {option_name} cotées {option_price}€ pour un total de {number_of_option_eur * option_price}€ ")
+                    return render_template('european.html', username=user.username, balance=user.balance, european_option_portfolio=user.european_option_portfolio, real_user=user)
+                else:
+                    flash("Solde insuffisant pour acheter ces options.")
+                    return render_template('european.html', username=user.username, balance=user.balance, european_option_portfolio=user.european_option_portfolio, real_user=user)
+            except ValueError:
+                flash("Invalid input for the number of american options. Please enter a valid number.")
+                return redirect(url_for('your_redirect_route'))  # Adjust this to your actual redirect route
+        else:
+            flash("The number of american options is not provided. Please enter a valid number.")
+            return redirect(url_for('your_redirect_route'))  # Adjust this to your actual redirect route
+    return redirect(url_for('login'))
 
 
 
@@ -224,8 +288,8 @@ def sell_american_option():
         sport_price = prix_actuelle(option_name)
         option_price = Black_Scholes(sport_price, K, 0.05, T, sigma)
 
-        print('option_price = ', option_price)
-        print('portfolioofdsin', new_american_option_portfolio['AAPL']['200'].keys())
+        #print('option_price = ', option_price)
+        #print('portfolioofdsin', new_american_option_portfolio['AAPL']['200'].keys())
 
         if option_name in new_american_option_portfolio.keys():
             if str(K) in (new_american_option_portfolio[option_name]).keys():
@@ -439,8 +503,6 @@ def buy_american_option():
     return redirect(url_for('login'))
 
 
-
-
 @app.route('/add_money', methods=['POST'])
 def add_money():
     if 'user_id' in session:
@@ -568,7 +630,6 @@ def actions():
         user_id = session['user_id']
         user = User.query.get(user_id)
     return render_template("actions.html",username=user.username, balance=user.balance, stock_portfolio=user.stock_portfolio, real_user=user)
-
 
 
 #####fin ajout

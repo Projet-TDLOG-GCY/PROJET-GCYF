@@ -217,25 +217,39 @@ color: white;
 
 <div class="user-portfolio">
   <h2>User's Portfolio</h2>
-  <ul>      
-    {% for stock_name, data in european_option_portfolio.items() %}
-        {% for K, T_data in data.items() %}
-            {% for T, quantity in T_data.items() %}
-                <li>{{ stock_name }}: K={{ K }}, T={{ T }}, Quantity={{ quantity }} options</li>
-            {% endfor %}
+  <table>
+    <thead>
+      <tr>
+        <th>Option Name</th>
+        
+        <th>Maturity</th>
+        <th>Expiration</th>
+        <th>Quantity</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for stock_name, data in european_option_portfolio.items()  %}
+      {% for K, T_data in data.items() %}
+        {% for T, quantity in T_data.items() %}
+        <tr>
+          <td>{{ stock_name }}</td>
+          <td>{{ K }}</td>
+          <td>{{ T }}</td>
+          <td>{{ quantity }}</td>
+        </tr>
         {% endfor %}
     {% endfor %}
-   
-  </ul>
-</div>
+    {% endfor %}
+    </tbody>
 
 {% with messages = get_flashed_messages() %}
 {% if messages %}
-  <ul class="flash-messages">
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
+<ul class="flash-messages">
+  {% for message in messages %}
+    <li>{{ message }}</li>
+  {% endfor %}
+</ul>
 {% endif %}
 {% endwith %}
 </div>
