@@ -142,12 +142,6 @@
     <p>Bonjour, {{ username }} ! Votre solde actuel est de {{ balance }} euros.</p>
     
     
-    <head>
-      <title>Graphique d'action</title>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclure Chart.js -->
-  </head>
-  <body>
-
     <!-- buy stocks -->
     <!-- <div class="buy-stock">
       <form action="/buy_stock" method="post">
@@ -186,19 +180,6 @@
     </form>
   </div>
 
-  <div>
-      <canvas id="stockChart" width="400" height="200"></canvas>
-
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class="flash-messages">
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-  </div>
   <!-- <div class="user-portfolio">
     <h2>User's Portfolio</h2>
     <ul>
