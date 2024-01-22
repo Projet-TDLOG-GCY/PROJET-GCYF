@@ -66,7 +66,6 @@ def prix_de_cloture_passé(symbol):
     else:
         print('Échec de la requête. Vérifiez votre clé API ou le symbole de l\'action.')
 
-print(prix_de_cloture_passé('NVDA'))
 # def prix_actuelle(symbol):
 #     #current_price_url = f'https://financialmodelingprep.com/api/v3/quote/{symbol}?apikey={key}'
 #     current_price_url=f'https://financialmodelingprep.com/api/v3/stock/real-time-price/{symbol}?apikey=84b2859fb03d27f28125c365b0b8967d'
@@ -100,9 +99,6 @@ def prix_actuelle(symbol):
     except requests.exceptions.RequestException as e:
         print(f"Erreur lors de la requête API : {e}")
         return None
-
-print('prix actuelle =',prix_actuelle('AAPL'))
-
 
 
 
