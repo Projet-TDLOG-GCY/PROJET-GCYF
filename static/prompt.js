@@ -48,7 +48,7 @@ function getStockSuggestionsNoms(input){
 
 }
 function getBuySuggestionsNoms(input){
-  fetch(`/get_stock_suggestions_noms_buy?input=${input}`)
+  fetch(`/get_stock_suggestions?input=${input}`)
     .then(response => response.json())
     .then(suggestions => {
       const datalist = document.getElementById('buyStockSuggestions');
